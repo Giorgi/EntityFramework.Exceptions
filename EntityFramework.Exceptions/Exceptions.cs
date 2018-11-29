@@ -41,21 +41,40 @@ namespace EntityFramework.Exceptions
         }
     }
 
-    public class MaxLengthException : Exception
+    public class MaxLengthExceededException : Exception
     {
-        public MaxLengthException()
+        public MaxLengthExceededException()
         {
         }
 
-        protected MaxLengthException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected MaxLengthExceededException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 
-        public MaxLengthException(string message) : base(message)
+        public MaxLengthExceededException(string message) : base(message)
         {
         }
 
-        public MaxLengthException(string message, Exception innerException) : base(message, innerException)
+        public MaxLengthExceededException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
+    public class NumericOverflowException : Exception
+    {
+        public NumericOverflowException()
+        {
+        }
+
+        protected NumericOverflowException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        public NumericOverflowException(string message) : base(message)
+        {
+        }
+
+        public NumericOverflowException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

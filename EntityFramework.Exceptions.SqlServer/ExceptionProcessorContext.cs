@@ -13,6 +13,8 @@ namespace EntityFramework.Exceptions.SqlServer
                 case 2601:
                 case 2627:
                     return DatabaseError.UniqueConstraint;
+                case 8115:
+                    return DatabaseError.NumericOverflow;
                 case 8152:
                     return DatabaseError.MaxLength;
                 default:

@@ -13,9 +13,10 @@ namespace EntityFramework.Exceptions
     {
         private static readonly Dictionary<DatabaseError, Func<Exception, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<Exception, Exception>>
         {
-            {DatabaseError.MaxLength, exception => new MaxLengthException("", exception) },
+            {DatabaseError.MaxLength, exception => new MaxLengthExceededException("Maximum length exceeded", exception) },
             {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception) },
-            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception) }
+            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception) },
+            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception) }
         };
 
         public override int SaveChanges()
@@ -47,6 +48,7 @@ namespace EntityFramework.Exceptions
     {
         UniqueConstraint,
         CannotInsertNull,
-        MaxLength
+        MaxLength,
+        NumericOverflow
     }
 }

@@ -8,6 +8,10 @@ namespace EntityFramework.Exceptions.PostgreSQL
         {
             switch (postgresException.SqlState)
             {
+                case "22001":
+                    return DatabaseError.MaxLength;
+                case "22003":
+                    return DatabaseError.NumericOverflow;
                 case "23502":
                     return DatabaseError.CannotInsertNull;
                 case "23505":
