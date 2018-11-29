@@ -12,6 +12,13 @@ namespace EntityFramework.Exceptions
 {
     public abstract class ExceptionProcessorContextBase<T> : DbContext where T : Exception
     {
+        private static readonly Dictionary<DatabaseError, Func<Exception, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<Exception, Exception>>
+        {
+            {DatabaseError.MaxLength, exception => new MaxLengthException("", exception) },
+            {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception) },
+            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception) }
+        };
+
         public override int SaveChanges()
         {
             try
@@ -24,9 +31,9 @@ namespace EntityFramework.Exceptions
 
                 var error = GetDatabaseError(baseException as T);
 
-                if (error != null)
+                if (error != null && ExceptionMapping.TryGetValue(error.Value, out var ctor))
                 {
-
+                    throw ctor(ex);
                 }
 
                 throw;
