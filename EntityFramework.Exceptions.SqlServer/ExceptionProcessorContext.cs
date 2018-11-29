@@ -4,18 +4,24 @@ namespace EntityFramework.Exceptions.SqlServer
 {
     public class ExceptionProcessorContext : ExceptionProcessorContextBase<SqlException>
     {
+        private const int CannotInsertNull = 515;
+        private const int CannotInsertDuplicateKeyUniqueIndex = 2601;
+        private const int CannotInsertDuplicateKeyUniqueConstraint = 2627;
+        private const int ArithmeticOverflow = 8115;
+        private const int StringOrBinaryDataWouldBeTruncated = 8152;
+
         internal override DatabaseError? GetDatabaseError(SqlException sqlException)
         {
             switch (sqlException.Number)
             {
-                case 515:
+                case CannotInsertNull:
                     return DatabaseError.CannotInsertNull;
-                case 2601:
-                case 2627:
+                case CannotInsertDuplicateKeyUniqueIndex:
+                case CannotInsertDuplicateKeyUniqueConstraint:
                     return DatabaseError.UniqueConstraint;
-                case 8115:
+                case ArithmeticOverflow:
                     return DatabaseError.NumericOverflow;
-                case 8152:
+                case StringOrBinaryDataWouldBeTruncated:
                     return DatabaseError.MaxLength;
                 default:
                     return null;
