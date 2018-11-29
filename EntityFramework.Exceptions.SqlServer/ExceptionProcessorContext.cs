@@ -10,9 +10,9 @@ namespace EntityFramework.Exceptions.SqlServer
         private const int ArithmeticOverflow = 8115;
         private const int StringOrBinaryDataWouldBeTruncated = 8152;
 
-        internal override DatabaseError? GetDatabaseError(SqlException sqlException)
+        internal override DatabaseError? GetDatabaseError(SqlException dbException)
         {
-            switch (sqlException.Number)
+            switch (dbException.Number)
             {
                 case CannotInsertNull:
                     return DatabaseError.CannotInsertNull;

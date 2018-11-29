@@ -42,7 +42,7 @@ namespace EntityFramework.Exceptions
             }
         }
 
-        internal abstract DatabaseError? GetDatabaseError(T exception);
+        internal abstract DatabaseError? GetDatabaseError(T dbException);
     }
 
     internal enum DatabaseError

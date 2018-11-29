@@ -9,9 +9,9 @@ namespace EntityFramework.Exceptions.MySQL
         private const int OutOfRangeValueForColumn = 1264;
         private const int DataTooLongForColumn = 1406;
 
-        internal override DatabaseError? GetDatabaseError(MySqlException mySqlException)
+        internal override DatabaseError? GetDatabaseError(MySqlException dbException)
         {
-            switch (mySqlException.Number)
+            switch (dbException.Number)
             {
                 case ColumnCannotBeNull:
                     return DatabaseError.CannotInsertNull;
