@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 namespace EntityFramework.Exceptions.SqlServer
 {
@@ -7,11 +6,6 @@ namespace EntityFramework.Exceptions.SqlServer
     {
         internal override DatabaseError? GetDatabaseError(SqlException sqlException)
         {
-            if (sqlException == null)
-            {
-                return null;
-            }
-
             switch (sqlException.Number)
             {
                 case 515:

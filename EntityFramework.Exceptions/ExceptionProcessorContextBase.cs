@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 [assembly: InternalsVisibleTo("EntityFramework.Exceptions.SqlServer")]
@@ -27,13 +26,14 @@ namespace EntityFramework.Exceptions
             }
             catch (DbUpdateException ex)
             {
-                var baseException = ex.GetBaseException();
-
-                var error = GetDatabaseError(baseException as T);
-
-                if (error != null && ExceptionMapping.TryGetValue(error.Value, out var ctor))
+                if (ex.GetBaseException() is T dbException)
                 {
-                    throw ctor(ex);
+                    var error = GetDatabaseError(dbException);
+
+                    if (error != null && ExceptionMapping.TryGetValue(error.Value, out var ctor))
+                    {
+                        throw ctor(ex);
+                    }
                 }
 
                 throw;

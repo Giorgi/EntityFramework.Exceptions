@@ -1,5 +1,4 @@
-﻿using System;
-using Npgsql;
+﻿using Npgsql;
 
 namespace EntityFramework.Exceptions.PostgreSQL
 {
@@ -7,11 +6,6 @@ namespace EntityFramework.Exceptions.PostgreSQL
     {
         internal override DatabaseError? GetDatabaseError(PostgresException postgresException)
         {
-            if (postgresException == null)
-            {
-                return null;
-            }
-
             switch (postgresException.SqlState)
             {
                 case "23502":
