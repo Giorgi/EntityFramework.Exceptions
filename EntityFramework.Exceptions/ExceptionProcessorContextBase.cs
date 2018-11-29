@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 
+[assembly: InternalsVisibleTo("EntityFramework.Exceptions.MySQL")]
 [assembly: InternalsVisibleTo("EntityFramework.Exceptions.SqlServer")]
 [assembly: InternalsVisibleTo("EntityFramework.Exceptions.PostgreSQL")]
 

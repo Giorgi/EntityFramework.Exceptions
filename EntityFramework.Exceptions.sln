@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.PostgreSQL", "EntityFramework.Exceptions.PostgreSQL\EntityFramework.Exceptions.PostgreSQL.csproj", "{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.MySQL", "EntityFramework.Exceptions.MySQL\EntityFramework.Exceptions.MySQL.csproj", "{9B0F41DF-0B14-4948-B197-DB77444FD064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B0F41DF-0B14-4948-B197-DB77444FD064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B0F41DF-0B14-4948-B197-DB77444FD064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B0F41DF-0B14-4948-B197-DB77444FD064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B0F41DF-0B14-4948-B197-DB77444FD064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
