@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions\EntityFramework.Exceptions.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
   </ItemGroup>
 
 </Project>

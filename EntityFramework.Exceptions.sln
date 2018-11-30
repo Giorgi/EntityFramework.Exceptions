@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions", "EntityFramework.Exceptions\EntityFramework.Exceptions.csproj", "{CCEF78F9-AADE-4487-9C1D-BF179647094E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.Common", "EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj", "{CCEF78F9-AADE-4487-9C1D-BF179647094E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.SqlServer", "EntityFramework.Exceptions.SqlServer\EntityFramework.Exceptions.SqlServer.csproj", "{4509BB2B-7373-49E3-85A6-40BD79C72FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.SqlServer", "EntityFramework.Exceptions.SqlServer\EntityFramework.Exceptions.SqlServer.csproj", "{4509BB2B-7373-49E3-85A6-40BD79C72FAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.PostgreSQL", "EntityFramework.Exceptions.PostgreSQL\EntityFramework.Exceptions.PostgreSQL.csproj", "{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.PostgreSQL", "EntityFramework.Exceptions.PostgreSQL\EntityFramework.Exceptions.PostgreSQL.csproj", "{5D2A0BDD-6505-418C-BF0A-2741B7BF6564}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.MySQL", "EntityFramework.Exceptions.MySQL\EntityFramework.Exceptions.MySQL.csproj", "{9B0F41DF-0B14-4948-B197-DB77444FD064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.MySQL", "EntityFramework.Exceptions.MySQL\EntityFramework.Exceptions.MySQL.csproj", "{9B0F41DF-0B14-4948-B197-DB77444FD064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
