@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 [assembly: InternalsVisibleTo("EntityFramework.Exceptions.PostgreSQL")]
 
 
-namespace EntityFramework.Exceptions
+namespace EntityFramework.Exceptions.Common
 {
     public abstract class ExceptionProcessorContextBase<T> : DbContext where T : Exception
     {

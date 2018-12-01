@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using EntityFramework.Exceptions.Common;
+using MySql.Data.MySqlClient;
 
 namespace EntityFramework.Exceptions.MySQL
 {

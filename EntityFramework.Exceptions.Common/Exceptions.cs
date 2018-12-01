@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace EntityFramework.Exceptions
+namespace EntityFramework.Exceptions.Common
 {
     public class UniqueConstraintException : Exception
     {

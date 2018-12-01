@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using EntityFramework.Exceptions.Common;
 
 namespace EntityFramework.Exceptions.SqlServer
 {

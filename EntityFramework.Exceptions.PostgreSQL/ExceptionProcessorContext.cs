@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using EntityFramework.Exceptions.Common;
+using Npgsql;
 
 namespace EntityFramework.Exceptions.PostgreSQL
 {
