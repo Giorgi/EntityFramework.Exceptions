@@ -1,9 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0.0</Version>
+    <Authors>Giorgi Dalakishvili</Authors>
+    <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
+    <PackageTags>EntityFramework EF Exception SqlServer PostgreSQL MySql Data Database</PackageTags>
+    <PackageLicenseUrl>https://github.com/Giorgi/EntityFramework.Exceptions/blob/master/License.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
   </ItemGroup>

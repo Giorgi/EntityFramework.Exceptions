@@ -2,12 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0.0</Version>
+    <Authors>Giorgi Dalakishvili</Authors>
+    <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
+    <PackageTags>EntityFramework EF PostgreSQL npgsql Data Database</PackageTags>
+    <PackageLicenseUrl>https://github.com/Giorgi/EntityFramework.Exceptions/blob/master/License.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
   </ItemGroup>
