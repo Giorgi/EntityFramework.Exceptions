@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0.0</Version>
+    <Version>0.1.0-beta</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
-    <PackageTags>EntityFramework EF PostgreSQL npgsql Data Database</PackageTags>
+    <PackageTags>EntityFramework EF PostgreSQL npgsql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
     <PackageLicenseUrl>https://github.com/Giorgi/EntityFramework.Exceptions/blob/master/License.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
