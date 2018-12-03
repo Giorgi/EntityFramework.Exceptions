@@ -28,14 +28,9 @@ namespace EntityFramework.Exceptions.Common
             }
             catch (DbUpdateException ex)
             {
-                if (ex.GetBaseException() is T dbException)
+                if (ex.GetBaseException() is T dbException && GetDatabaseError(dbException) is DatabaseError error && ExceptionMapping.TryGetValue(error, out var ctor))
                 {
-                    var error = GetDatabaseError(dbException);
-
-                    if (error != null && ExceptionMapping.TryGetValue(error.Value, out var ctor))
-                    {
-                        throw ctor(ex);
-                    }
+                    throw ctor(ex);
                 }
 
                 throw;
