@@ -15,6 +15,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
