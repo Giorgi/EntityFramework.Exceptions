@@ -3,6 +3,8 @@
 # EntityFramework.Exceptions
 Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL and MySql
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](License.md)
+
 ### What does EntityFramework.Exceptions do?
 
 When using Entity Framework Core for data access all database exceptions are wrapped in `DbUpdateException`. If you need to find 
