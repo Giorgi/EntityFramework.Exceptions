@@ -4,6 +4,7 @@
 Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL and MySql
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](License.md)
+[![AppVeyor](https://img.shields.io/appveyor/ci/Giorgi/EntityFramework-Exceptions.svg)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
 
 ### What does EntityFramework.Exceptions do?
 
