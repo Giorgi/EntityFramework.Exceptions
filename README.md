@@ -20,15 +20,15 @@ to do is inherit your `DbContext` from `ExceptionProcessorContext` and handle th
 First, install the package corresponding to your database:
 
 ```
-PM> Install-Package EntityFramework.Exceptions.SqlServer
+PM> Install-Package EntityFrameworkCore.Exceptions.SqlServer
 ```
 
 ```
-PM> Install-Package EntityFramework.Exceptions.MySql
+PM> Install-Package EntityFrameworkCore.Exceptions.MySql
 ```
 
 ```
-PM> Install-Package EntityFramework.Exceptions.PostgreSQL
+PM> Install-Package EntityFrameworkCore.Exceptions.PostgreSQL
 ```
 
 Then inherit your DbContext from ExceptionProcessorContext

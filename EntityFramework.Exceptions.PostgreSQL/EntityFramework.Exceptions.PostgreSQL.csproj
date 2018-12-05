@@ -17,6 +17,7 @@
     <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException</Description>
+    <PackageId>EntityFrameworkCore.Exceptions.PostgreSQL</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

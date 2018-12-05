@@ -19,6 +19,7 @@
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException
 
 This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
+    <PackageId>EntityFrameworkCore.Exceptions.Common</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
