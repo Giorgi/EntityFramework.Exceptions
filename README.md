@@ -6,6 +6,10 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](License.md)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Giorgi/EntityFramework-Exceptions.svg)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
 
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
+
 ### What does EntityFramework.Exceptions do?
 
 When using Entity Framework Core for data access all database exceptions are wrapped in `DbUpdateException`. If you need to find 
