@@ -10,7 +10,7 @@ namespace EntityFramework.Exceptions.MySQL
         private const int OutOfRangeValueForColumn = 1264;
         private const int DataTooLongForColumn = 1406;
 
-        internal override DatabaseError? GetDatabaseError(MySqlException dbException)
+        protected override DatabaseError? GetDatabaseError(MySqlException dbException)
         {
             switch (dbException.Number)
             {

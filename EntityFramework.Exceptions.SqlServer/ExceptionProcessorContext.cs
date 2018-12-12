@@ -11,7 +11,7 @@ namespace EntityFramework.Exceptions.SqlServer
         private const int ArithmeticOverflow = 8115;
         private const int StringOrBinaryDataWouldBeTruncated = 8152;
 
-        internal override DatabaseError? GetDatabaseError(SqlException dbException)
+        protected override DatabaseError? GetDatabaseError(SqlException dbException)
         {
             switch (dbException.Number)
             {

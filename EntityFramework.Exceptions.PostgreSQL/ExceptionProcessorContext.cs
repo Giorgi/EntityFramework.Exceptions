@@ -5,7 +5,7 @@ namespace EntityFramework.Exceptions.PostgreSQL
 {
     public class ExceptionProcessorContext : ExceptionProcessorContextBase<PostgresException>
     {
-        internal override DatabaseError? GetDatabaseError(PostgresException dbException)
+        protected override DatabaseError? GetDatabaseError(PostgresException dbException)
         {
             switch (dbException.SqlState)
             {

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
-
-[assembly: InternalsVisibleTo("EntityFramework.Exceptions.MySQL")]
-[assembly: InternalsVisibleTo("EntityFramework.Exceptions.SqlServer")]
-[assembly: InternalsVisibleTo("EntityFramework.Exceptions.PostgreSQL")]
 
 
 namespace EntityFramework.Exceptions.Common
@@ -37,14 +32,14 @@ namespace EntityFramework.Exceptions.Common
             }
         }
 
-        internal abstract DatabaseError? GetDatabaseError(T dbException);
-    }
+        protected abstract DatabaseError? GetDatabaseError(T dbException);
 
-    internal enum DatabaseError
-    {
-        UniqueConstraint,
-        CannotInsertNull,
-        MaxLength,
-        NumericOverflow
+        protected enum DatabaseError
+        {
+            UniqueConstraint,
+            CannotInsertNull,
+            MaxLength,
+            NumericOverflow
+        }
     }
 }
