@@ -12,12 +12,12 @@ namespace EntityFramework.Exceptions.Common
 {
     public abstract class ExceptionProcessorContextBase<T> : DbContext where T : Exception
     {
-        private static readonly Dictionary<DatabaseError, Func<Exception, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<Exception, Exception>>
+        private static readonly Dictionary<DatabaseError, Func<DbUpdateException, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<DbUpdateException, Exception>>
         {
-            {DatabaseError.MaxLength, exception => new MaxLengthExceededException("Maximum length exceeded", exception) },
-            {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception) },
-            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception) },
-            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception) }
+            {DatabaseError.MaxLength, exception => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException) },
+            {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception.InnerException) },
+            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception.InnerException) },
+            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception.InnerException) }
         };
 
         public override int SaveChanges()

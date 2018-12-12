@@ -1,80 +1,66 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update;
 
 namespace EntityFramework.Exceptions.Common
 {
-    public class UniqueConstraintException : Exception
+    public class UniqueConstraintException : DbUpdateException
     {
-        public UniqueConstraintException()
-        {
-        }
-
-        public UniqueConstraintException(string message) : base(message)
-        {
-        }
-
         public UniqueConstraintException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
-        protected UniqueConstraintException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public UniqueConstraintException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        {
+        }
+
+        public UniqueConstraintException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
         {
         }
     }
 
-    public class CannotInsertNullException : Exception
+    public class CannotInsertNullException : DbUpdateException
     {
-        public CannotInsertNullException()
-        {
-        }
-
-        protected CannotInsertNullException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
-        public CannotInsertNullException(string message) : base(message)
-        {
-        }
-
         public CannotInsertNullException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public CannotInsertNullException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        {
+        }
+
+        public CannotInsertNullException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        {
+        }
     }
 
-    public class MaxLengthExceededException : Exception
+    public class MaxLengthExceededException : DbUpdateException
     {
-        public MaxLengthExceededException()
-        {
-        }
-
-        protected MaxLengthExceededException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
-        public MaxLengthExceededException(string message) : base(message)
-        {
-        }
-
         public MaxLengthExceededException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public MaxLengthExceededException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        {
+        }
+
+        public MaxLengthExceededException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        {
+        }
     }
 
-    public class NumericOverflowException : Exception
+    public class NumericOverflowException : DbUpdateException
     {
-        public NumericOverflowException()
-        {
-        }
-
-        protected NumericOverflowException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
-        public NumericOverflowException(string message) : base(message)
-        {
-        }
-
         public NumericOverflowException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        public NumericOverflowException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        {
+        }
+
+        public NumericOverflowException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
         {
         }
     }
