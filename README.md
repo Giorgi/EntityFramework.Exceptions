@@ -17,7 +17,7 @@ whether the exception was caused by a unique constraint, value being too long or
 the concrete `DbException` subclass instance and check the error code to determine the exact cause.
 
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
-to do is inherit your `DbContext` from `ExceptionProcessorContext` and handle the exception(s) such as `UniqueConstraintException`,
+to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s) such as `UniqueConstraintException`,
 `CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException` you need.
 
 ### How do I get started?
@@ -35,15 +35,18 @@ PM> Install-Package EntityFrameworkCore.Exceptions.MySql
 PM> Install-Package EntityFrameworkCore.Exceptions.PostgreSQL
 ```
 
-Then inherit your DbContext from ExceptionProcessorContext
+Then in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
 
 ```
-class DemoContext : ExceptionProcessorContext
+class DemoContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSale> ProductSale { get; set; }
 
-    //More code
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseExceptionProcessor();
+    }
 }
 ```    
 
