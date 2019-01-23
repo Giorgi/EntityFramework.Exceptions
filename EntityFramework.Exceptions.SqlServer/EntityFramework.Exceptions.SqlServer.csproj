@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0-beta</Version>
+    <Version>1.0.0</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
     <PackageTags>EntityFramework EF SqlServer EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
@@ -18,6 +18,8 @@
     <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException</Description>
     <PackageId>EntityFrameworkCore.Exceptions.SqlServer</PackageId>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

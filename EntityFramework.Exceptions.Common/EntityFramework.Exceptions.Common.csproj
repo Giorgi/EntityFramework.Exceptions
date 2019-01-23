@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0-beta</Version>
+    <Version>1.0.0</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
     <PackageTags>EntityFramework EF Exception SqlServer PostgreSQL MySql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
@@ -20,6 +20,8 @@
 
 This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
     <PackageId>EntityFrameworkCore.Exceptions.Common</PackageId>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
