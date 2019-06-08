@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
@@ -33,6 +35,25 @@ namespace EntityFramework.Exceptions.Common
             try
             {
                 return base.SaveChanges(entriesToSave);
+            }
+            catch (DbUpdateException originalException)
+            {
+                var exception = GetConstructor(originalException);
+
+                if (exception != null)
+                {
+                    throw exception;
+                }
+
+                throw;
+            }
+        }
+
+        protected override async Task<int> SaveChangesAsync(IReadOnlyList<InternalEntityEntry> entriesToSave, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                return await base.SaveChangesAsync(entriesToSave, cancellationToken);
             }
             catch (DbUpdateException originalException)
             {
