@@ -11,6 +11,7 @@ namespace EntityFramework.Exceptions.SqlServer
         {
         }
 
+        private const int ReferenceConstraint = 547;
         private const int CannotInsertNull = 515;
         private const int CannotInsertDuplicateKeyUniqueIndex = 2601;
         private const int CannotInsertDuplicateKeyUniqueConstraint = 2627;
@@ -21,6 +22,8 @@ namespace EntityFramework.Exceptions.SqlServer
         {
             switch (dbException.Number)
             {
+                case ReferenceConstraint:
+                    return DatabaseError.ReferenceConstraint;
                 case CannotInsertNull:
                     return DatabaseError.CannotInsertNull;
                 case CannotInsertDuplicateKeyUniqueIndex:
