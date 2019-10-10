@@ -15,7 +15,8 @@ namespace EntityFramework.Exceptions.Common
             UniqueConstraint,
             CannotInsertNull,
             MaxLength,
-            NumericOverflow
+            NumericOverflow,
+            ReferenceConstraint
         }
 
         private static readonly Dictionary<DatabaseError, Func<DbUpdateException, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<DbUpdateException, Exception>>
@@ -23,7 +24,8 @@ namespace EntityFramework.Exceptions.Common
             {DatabaseError.MaxLength, exception => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException) },
             {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception.InnerException) },
             {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception.InnerException) },
-            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception.InnerException) }
+            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception.InnerException) },
+            {DatabaseError.ReferenceConstraint, exception => new ReferenceConstraintException("Reference constraint violation", exception.InnerException) }
         };
 
         protected ExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
