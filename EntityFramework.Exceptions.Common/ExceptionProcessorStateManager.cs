@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Update;
 
 namespace EntityFramework.Exceptions.Common
 {
@@ -32,7 +33,7 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        protected override int SaveChanges(IReadOnlyList<InternalEntityEntry> entriesToSave)
+        protected override int SaveChanges(IList<IUpdateEntry> entriesToSave)
         {
             try
             {
@@ -51,7 +52,7 @@ namespace EntityFramework.Exceptions.Common
             }
         }
 
-        protected override async Task<int> SaveChangesAsync(IReadOnlyList<InternalEntityEntry> entriesToSave, CancellationToken cancellationToken = default(CancellationToken))
+        protected override async Task<int> SaveChangesAsync(IList<IUpdateEntry> entriesToSave, CancellationToken cancellationToken = default)
         {
             try
             {
