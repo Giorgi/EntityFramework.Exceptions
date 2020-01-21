@@ -23,6 +23,8 @@ namespace EntityFramework.Exceptions.PostgreSQL
                     return DatabaseError.CannotInsertNull;
                 case PostgresErrorCodes.UniqueViolation:
                     return DatabaseError.UniqueConstraint;
+                case PostgresErrorCodes.ForeignKeyViolation:
+                    return DatabaseError.ReferenceConstraint;
                 default:
                     return null;
             }

@@ -7,6 +7,8 @@ namespace EntityFramework.Exceptions.MySQL
 {
     class MySqlExceptionProcessorStateManager : ExceptionProcessorStateManager<MySqlException>
     {
+        private const int NoReferencedRow = 1216;
+        private const int NoReferencedRow2 = 1452;
         private const int ColumnCannotBeNull = 1048;
         private const int DuplicateEntryForKey = 1062;
         private const int OutOfRangeValueForColumn = 1264;
@@ -28,6 +30,9 @@ namespace EntityFramework.Exceptions.MySQL
                     return DatabaseError.NumericOverflow;
                 case DataTooLongForColumn:
                     return DatabaseError.MaxLength;
+                case NoReferencedRow:
+                case NoReferencedRow2:
+                    return DatabaseError.ReferenceConstraint;
                 default:
                     return null;
             }
