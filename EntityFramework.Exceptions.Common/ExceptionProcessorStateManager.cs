@@ -32,11 +32,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        protected override int SaveChanges(IReadOnlyList<InternalEntityEntry> entriesToSave)
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             try
             {
-                return base.SaveChanges(entriesToSave);
+                return base.SaveChanges(acceptAllChangesOnSuccess);
             }
             catch (DbUpdateException originalException)
             {
@@ -51,11 +51,12 @@ namespace EntityFramework.Exceptions.Common
             }
         }
 
-        protected override async Task<int> SaveChangesAsync(IReadOnlyList<InternalEntityEntry> entriesToSave, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
             try
             {
-                return await base.SaveChangesAsync(entriesToSave, cancellationToken);
+                var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+                return result;
             }
             catch (DbUpdateException originalException)
             {

@@ -1,7 +1,7 @@
 ﻿using EntityFramework.Exceptions.Common;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System.Data.SqlClient;
 
 namespace EntityFramework.Exceptions.SqlServer
 {
