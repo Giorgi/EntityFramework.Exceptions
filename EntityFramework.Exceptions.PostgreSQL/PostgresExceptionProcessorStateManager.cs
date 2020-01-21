@@ -15,14 +15,13 @@ namespace EntityFramework.Exceptions.PostgreSQL
         {
             switch (dbException.SqlState)
             {
-                //Use https://github.com/npgsql/npgsql/blob/dev/src/Npgsql/PostgresErrorCodes.cs when new version of Npgsql is released.
-                case "22001":
+                case PostgresErrorCodes.StringDataRightTruncation:
                     return DatabaseError.MaxLength;
-                case "22003":
+                case PostgresErrorCodes.NumericValueOutOfRange:
                     return DatabaseError.NumericOverflow;
-                case "23502":
+                case PostgresErrorCodes.NotNullViolation:
                     return DatabaseError.CannotInsertNull;
-                case "23505":
+                case PostgresErrorCodes.UniqueViolation:
                     return DatabaseError.UniqueConstraint;
                 default:
                     return null;
