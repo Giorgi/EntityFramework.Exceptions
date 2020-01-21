@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>3.1.1</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
     <PackageTags>EntityFramework EF Exception SqlServer PostgreSQL MySql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
@@ -14,14 +14,17 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageReleaseNotes>Added support for SaveChangesAsync</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      Added support for Entity Framework Core 3
+Added support for ReferenceConstraintException
+    </PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException
 
 This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
     <PackageId>EntityFrameworkCore.Exceptions.Common</PackageId>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
