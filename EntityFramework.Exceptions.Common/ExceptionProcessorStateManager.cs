@@ -40,7 +40,7 @@ namespace EntityFramework.Exceptions.Common
             }
             catch (DbUpdateException originalException)
             {
-                var exception = GetConstructor(originalException);
+                var exception = GetException(originalException);
 
                 if (exception != null)
                 {
@@ -60,7 +60,7 @@ namespace EntityFramework.Exceptions.Common
             }
             catch (DbUpdateException originalException)
             {
-                var exception = GetConstructor(originalException);
+                var exception = GetException(originalException);
 
                 if (exception != null)
                 {
@@ -71,7 +71,7 @@ namespace EntityFramework.Exceptions.Common
             }
         }
 
-        private Exception GetConstructor(DbUpdateException ex)
+        private Exception GetException(DbUpdateException ex)
         {
             if (ex.GetBaseException() is T dbException && GetDatabaseError(dbException) is DatabaseError error && ExceptionMapping.TryGetValue(error, out var ctor))
             {
