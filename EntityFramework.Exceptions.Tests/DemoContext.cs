@@ -1,5 +1,4 @@
 ﻿using System;
-using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
 namespace EntityFramework.Exceptions.Tests
@@ -18,11 +17,6 @@ namespace EntityFramework.Exceptions.Tests
             builder.Entity<Product>().HasIndex(u => u.Name).IsUnique();
             builder.Entity<Product>().Property(b => b.Name).IsRequired().HasMaxLength(15);
             builder.Entity<ProductSale>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseExceptionProcessor();
         }
     }
 
