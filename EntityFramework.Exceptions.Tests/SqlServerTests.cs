@@ -74,7 +74,8 @@ namespace EntityFramework.Exceptions.Tests
 
         public DemoContextFixture()
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
             var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
             var connectionString = configuration.GetConnectionString("SqlServer");
             
