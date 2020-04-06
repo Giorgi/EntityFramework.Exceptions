@@ -1,5 +1,5 @@
 ﻿using EntityFramework.Exceptions.Common;
-using EntityFramework.Exceptions.PostgreSQL;
+using EntityFramework.Exceptions.MySQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,11 +7,11 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class PostgreSQLTests : IClassFixture<PostgreSQLDemoContextFixture>, IDisposable
+    public class MySQLServerTests : IClassFixture<MySQLDemoContextFixture>, IDisposable
     {
         private readonly DemoContextFixture fixture;
 
-        public PostgreSQLTests(PostgreSQLDemoContextFixture fixture)
+        public MySQLServerTests(MySQLDemoContextFixture fixture)
         {
             this.fixture = fixture;
         }
@@ -68,11 +68,11 @@ namespace EntityFramework.Exceptions.Tests
         }
     }
 
-    public class PostgreSQLDemoContextFixture : DemoContextFixture
+    public class MySQLDemoContextFixture : DemoContextFixture
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL"), options => options.SetPostgresVersion(new Version(9, 6))).UseExceptionProcessor();
+            return builder.UseMySQL(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
         }
     }
 }
