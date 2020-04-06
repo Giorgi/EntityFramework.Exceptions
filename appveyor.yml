@@ -4,7 +4,7 @@ environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
 services:
 - mssql2017
-- postgresql
+- postgresql101
 - mysql
 before_build:
 - cmd: nuget restore
