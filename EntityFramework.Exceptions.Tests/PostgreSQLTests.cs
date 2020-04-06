@@ -72,7 +72,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL")).UseExceptionProcessor();
+            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL"), options => options.SetPostgresVersion(new Version(9, 6))).UseExceptionProcessor();
         }
     }
 }
