@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    internal class DemoContext : DbContext
+    public class DemoContext : DbContext
     {
         public DemoContext(DbContextOptions options) : base(options)
         {
@@ -20,13 +20,13 @@ namespace EntityFramework.Exceptions.Tests
         }
     }
 
-    internal class Product
+    public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
-    internal class ProductSale
+    public class ProductSale
     {
         public int Id { get; set; }
         public decimal Price { get; set; }

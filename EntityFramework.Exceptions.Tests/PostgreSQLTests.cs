@@ -1,17 +1,17 @@
 ﻿using EntityFramework.Exceptions.Common;
-using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using EntityFramework.Exceptions.PostgreSQL;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class SqlServerTests : IClassFixture<SqlServerDemoContextFixture>, IDisposable
+    public class PostgreSQLTests : IClassFixture<PostgreSQLDemoContextFixture>, IDisposable
     {
         private readonly DemoContextFixture fixture;
 
-        public SqlServerTests(SqlServerDemoContextFixture fixture)
+        public PostgreSQLTests(PostgreSQLDemoContextFixture fixture)
         {
             this.fixture = fixture;
         }
@@ -68,11 +68,11 @@ namespace EntityFramework.Exceptions.Tests
         }
     }
 
-    public class SqlServerDemoContextFixture : DemoContextFixture
+    public class PostgreSQLDemoContextFixture : DemoContextFixture
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseSqlServer(configuration.GetConnectionString("SqlServer")).UseExceptionProcessor();
+            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL")).UseExceptionProcessor();
         }
     }
 }
