@@ -1,0 +1,15 @@
+version: 3.1.{build}
+image: Visual Studio 2019
+environment:
+  ASPNETCORE_ENVIRONMENT: Appveyor
+services:
+- mssql2017
+- postgresql
+- mysql
+before_build:
+- cmd: nuget restore
+build:
+  parallel: true
+  verbosity: minimal
+test_script:
+- cmd: dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" -c Release
