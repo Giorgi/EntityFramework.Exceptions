@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>3.1.1</Version>
+    <Authors>Giorgi Dalakishvili</Authors>
+    <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
+    <PackageTags>EntityFramework EF MySql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
+    <PackageLicenseUrl>https://github.com/Giorgi/EntityFramework.Exceptions/blob/master/License.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageReleaseNotes>
+      Added support for Entity Framework Core 3
+Added support for ReferenceConstraintException
+    </PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
+    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException</Description>
+    <PackageId>EntityFrameworkCore.Exceptions.Sqlite</PackageId>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SQLite" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
+  </ItemGroup>
+
+</Project>
