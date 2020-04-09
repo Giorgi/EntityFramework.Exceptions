@@ -1,7 +1,7 @@
 ![EntityFramework.Exceptions](Icon.png "EntityFramework.Exceptions")
 
 # EntityFramework.Exceptions
-Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL and MySql
+Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite and MySql
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](License.md)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Giorgi/EntityFramework-Exceptions.svg)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
@@ -9,6 +9,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 
 ### What does EntityFramework.Exceptions do?
 
@@ -33,6 +34,10 @@ PM> Install-Package EntityFrameworkCore.Exceptions.MySql
 
 ```
 PM> Install-Package EntityFrameworkCore.Exceptions.PostgreSQL
+```
+
+```
+PM> Install-Package EntityFrameworkCore.Exceptions.Sqlite
 ```
 
 Then in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
