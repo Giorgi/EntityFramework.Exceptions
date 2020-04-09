@@ -1,5 +1,4 @@
-﻿using EntityFramework.Exceptions.Common;
-using EntityFramework.Exceptions.Sqlite;
+﻿using EntityFramework.Exceptions.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,46 +6,22 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class SqliteTests : IClassFixture<SqliteDemoContextFixture>, IDisposable
+    public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>, IDisposable
     {
-        private readonly DemoContextFixture fixture;
-
-        public SqliteTests(SqliteDemoContextFixture fixture)
+        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.Context)
         {
-            this.fixture = fixture;
         }
 
-        [Fact]
-        public void UniqueColumnViolationThrowsUniqueConstraintException()
+        [Fact(Skip = "Skipping as SQLite does not enforce max length")]
+        public override void MaxLengthViolationThrowsMaxLengthExceededException()
         {
-            fixture.Context.Products.Add(new Product { Name = "GD" });
-            fixture.Context.Products.Add(new Product { Name = "GD" });
-
-            Assert.Throws<UniqueConstraintException>(() => fixture.Context.SaveChanges());
+               
         }
 
-        [Fact]
-        public void RequiredColumnViolationThrowsCannotInsertNullException()
+        [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]
+        public override void NumericOverflowViolationThrowsNumericOverflowException()
         {
-            fixture.Context.Products.Add(new Product());
-
-            Assert.Throws<CannotInsertNullException>(() => fixture.Context.SaveChanges());
-        }
-
-        [Fact]
-        public void ReferenceViolationThrowsReferenceConstraintException()
-        {
-            fixture.Context.ProductSales.Add(new ProductSale { Price = 3.14m});
-
-            Assert.Throws<ReferenceConstraintException>(() => fixture.Context.SaveChanges());
-        }
-
-        public void Dispose()
-        {
-            foreach (var entityEntry in fixture.Context.ChangeTracker.Entries())
-            {
-                entityEntry.State = EntityState.Detached;
-            }
+            
         }
     }
 
