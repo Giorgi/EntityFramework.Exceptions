@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFramework.Exceptions.Tests", "EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj", "{683A266C-5559-4453-A681-861EA68825BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Exceptions.Sqlite", "EntityFramework.Exceptions.Sqlite\EntityFramework.Exceptions.Sqlite.csproj", "{A46DB793-7671-4919-9DE4-4E64ADEDB38E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{683A266C-5559-4453-A681-861EA68825BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{683A266C-5559-4453-A681-861EA68825BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{683A266C-5559-4453-A681-861EA68825BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46DB793-7671-4919-9DE4-4E64ADEDB38E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46DB793-7671-4919-9DE4-4E64ADEDB38E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46DB793-7671-4919-9DE4-4E64ADEDB38E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46DB793-7671-4919-9DE4-4E64ADEDB38E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
