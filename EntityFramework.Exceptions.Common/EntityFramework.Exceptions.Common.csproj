@@ -7,24 +7,25 @@
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
     <PackageTags>EntityFramework EF Exception SqlServer PostgreSQL MySql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
-    <PackageLicenseUrl>https://github.com/Giorgi/EntityFramework.Exceptions/blob/master/License.md</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageReleaseNotes>
-      Added support for Entity Framework Core 3
+    <PackageReleaseNotes>Added support for Entity Framework Core 3
 Added support for ReferenceConstraintException
-    </PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/master/Icon.png</PackageIconUrl>
+</PackageReleaseNotes>
+    <PackageIconUrl></PackageIconUrl>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException
 
 This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
     <PackageId>EntityFrameworkCore.Exceptions.Common</PackageId>
     <AssemblyVersion>3.1.1.0</AssemblyVersion>
     <FileVersion>3.1.1.0</FileVersion>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageIcon>Icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,16 @@ This is a base package for database specific packages. Install one of the specif
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\License.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
