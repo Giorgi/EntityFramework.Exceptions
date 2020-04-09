@@ -44,8 +44,7 @@ namespace EntityFramework.Exceptions.Sqlite
             return self;
         }
 
-        public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(
-            this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
+        public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
         {
             self.ReplaceService<IStateManager, SqliteExceptionProcessorStateManager>();
             return self;
