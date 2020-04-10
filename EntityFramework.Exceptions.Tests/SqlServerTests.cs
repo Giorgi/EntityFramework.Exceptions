@@ -8,7 +8,12 @@ namespace EntityFramework.Exceptions.Tests
 {
     public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextFixture>, IDisposable
     {
-        public SqlServerTests(SqlServerDemoContextFixture fixture) : base(fixture.Context)
+        public SqlServerTests(SqlServerDemoContextFixture fixture) : base(fixture.ContextOptions)
+        {
+        }
+
+        [Fact(Skip = "Skipping as IDENTITY_INSERT must be set to ON to write IDs directly in db")]
+        public override void PrimaryKeyViolationThrowsUniqueConstraintException()
         {
         }
     }

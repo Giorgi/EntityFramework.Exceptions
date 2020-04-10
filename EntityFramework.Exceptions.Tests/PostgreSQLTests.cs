@@ -8,7 +8,7 @@ namespace EntityFramework.Exceptions.Tests
 {
     public class PostgreSQLTests : DatabaseTests, IClassFixture<PostgreSQLDemoContextFixture>, IDisposable
     {
-        public PostgreSQLTests(PostgreSQLDemoContextFixture fixture): base(fixture.Context)
+        public PostgreSQLTests(PostgreSQLDemoContextFixture fixture): base(fixture.ContextOptions)
         {
         }
     }

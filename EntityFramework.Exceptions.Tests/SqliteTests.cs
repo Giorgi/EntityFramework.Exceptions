@@ -8,7 +8,7 @@ namespace EntityFramework.Exceptions.Tests
 {
     public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>, IDisposable
     {
-        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.Context)
+        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.ContextOptions)
         {
         }
 

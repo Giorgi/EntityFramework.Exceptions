@@ -8,12 +8,22 @@ namespace EntityFramework.Exceptions.Tests
 {
     public class MySQLServerTests : DatabaseTests, IClassFixture<MySQLDemoContextFixture>, IDisposable
     {
-        public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.Context)
+        public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.ContextOptions)
         {
         }
 
         [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
         public override void UniqueColumnViolationThrowsUniqueConstraintException()
+        {
+        }
+
+        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
+        public override void PrimaryKeyViolationThrowsUniqueConstraintException()
+        {
+        }
+
+        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
+        public override void PrimaryCompositeKeyViolationThrowsUniqueConstraintException()
         {
         }
 

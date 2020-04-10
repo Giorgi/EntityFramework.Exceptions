@@ -7,6 +7,7 @@ namespace EntityFramework.Exceptions.Tests
     public abstract class DemoContextFixture : IDisposable
     {
         internal DemoContext Context { get; }
+        internal DbContextOptions<DemoContext> ContextOptions { get; }
 
         protected DemoContextFixture()
         {
@@ -15,8 +16,10 @@ namespace EntityFramework.Exceptions.Tests
             var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
             
             var builder = BuildOptions(new DbContextOptionsBuilder<DemoContext>(), configuration);
+            ContextOptions = builder.Options;
 
-            Context = new DemoContext(builder.Options);
+            Context = new DemoContext(ContextOptions);
+            Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
         }
 
