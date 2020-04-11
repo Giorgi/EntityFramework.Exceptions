@@ -15,7 +15,7 @@ namespace EntityFramework.Exceptions.Tests
             Context = GetNewContext();
         }
 
-        private DemoContext GetNewContext()
+        protected virtual DemoContext GetNewContext()
         {
             return new DemoContext(ContextOptions);
         }
@@ -35,11 +35,11 @@ namespace EntityFramework.Exceptions.Tests
             var product1 = new Product { Name = "PROD1", Id = 42 };
             var product2 = new Product { Name = "PROD2", Id = 42 };
 
-            var context1 = GetNewContext();
+            using var context1 = GetNewContext();
             context1.Products.Add(product1);
             context1.SaveChanges();
 
-            var context2 = GetNewContext();
+            using var context2 = GetNewContext();
             context2.Products.Add(product2);
             Assert.Throws<UniqueConstraintException>(() => context2.SaveChanges());
         }
@@ -57,11 +57,11 @@ namespace EntityFramework.Exceptions.Tests
             var item2 = new CompositeKeyItem
                 {ProductId = product.Id, ProductSaleId = productSale.Id};
 
-            var context1 = GetNewContext();
+            using var context1 = GetNewContext();
             context1.CompositeKeyItems.Add(item1);
             context1.SaveChanges();
 
-            var context2 = GetNewContext();
+            using var context2 = GetNewContext();
             context2.CompositeKeyItems.Add(item2);
             Assert.Throws<UniqueConstraintException>(() => context2.SaveChanges());
         }
