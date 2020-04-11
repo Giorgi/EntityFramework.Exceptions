@@ -62,6 +62,9 @@ namespace EntityFramework.Exceptions.Tests
             {
                 entityEntry.State = EntityState.Detached;
             }
+
+            Context.Products.RemoveRange(Context.Products);
+            Context.SaveChanges();
         }
     }
 }
