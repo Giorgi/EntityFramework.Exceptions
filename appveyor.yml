@@ -7,9 +7,17 @@ services:
 - postgresql101
 - mysql
 before_build:
-- cmd: nuget restore
+- cmd: >-
+
+    nuget restore
+
+    choco install codecov
 build:
   parallel: true
   verbosity: minimal
 test_script:
-- cmd: dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" -c Release
+- cmd: >-
+
+    dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover -c Release
+
+    codecov -f "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml"
