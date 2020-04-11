@@ -6,6 +6,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
 [![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/master.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
 [![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/master?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
+[![codecov](https://img.shields.io/codecov/c/github/Giorgi/EntityFramework.Exceptions?logo=codecov&style=flat-square)](https://codecov.io/gh/Giorgi/EntityFramework.Exceptions)
 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
