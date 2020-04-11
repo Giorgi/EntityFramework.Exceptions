@@ -3,13 +3,14 @@
 # EntityFramework.Exceptions
 Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite and MySql
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](License.md)
-[![AppVeyor](https://img.shields.io/appveyor/ci/Giorgi/EntityFramework-Exceptions.svg)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
+[![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/master.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
+[![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/master?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
 
-[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
-[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
-[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
-[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 
 ### What does EntityFramework.Exceptions do?
 
