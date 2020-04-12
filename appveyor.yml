@@ -26,4 +26,4 @@ test_script:
 
     dotnet tool install coveralls.net --tool-path tools
 
-    "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN% --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+    "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN% --commitId %APPVEYOR_REPO_COMMIT% --commitBranch %APPVEYOR_REPO_BRANCH% --commitAuthor %APPVEYOR_REPO_COMMIT_AUTHOR% --commitEmail %APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL% --commitMessage %APPVEYOR_REPO_COMMIT_MESSAGE% --jobId %APPVEYOR_JOB_ID%
