@@ -20,7 +20,7 @@ namespace EntityFramework.Exceptions.Tests
             
             base.PrimaryKeyViolationThrowsUniqueConstraintException();
             
-            Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
+            Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products OFF");
 
             Context.Database.CloseConnection();
         }
