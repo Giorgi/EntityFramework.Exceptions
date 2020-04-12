@@ -2,6 +2,8 @@ version: 3.1.{build}
 image: Visual Studio 2019
 environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
+  COVERALLS_REPO_TOKEN:
+    secure: vwONgnel4MS/HvymcUOgqSAl1R1AtAfGMD0xy4QDNrgLSDYWTrd9673dM2GCMJv7
 services:
 - mssql2017
 - postgresql101
@@ -21,3 +23,7 @@ test_script:
     dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception" -c Release
 
     codecov -f "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml"
+
+    dotnet tool install coveralls.net --tool-path tools
+
+    "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN% --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
