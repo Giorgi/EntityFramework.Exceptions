@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using MySql.Data.MySqlClient;
 
+#if POMELO
+namespace EntityFramework.Exceptions.MySQL.Pomelo
+#else
 namespace EntityFramework.Exceptions.MySQL
+#endif
 {
     class MySqlExceptionProcessorStateManager : ExceptionProcessorStateManager<MySqlException>
     {

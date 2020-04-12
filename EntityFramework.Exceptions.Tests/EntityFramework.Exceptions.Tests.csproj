@@ -13,8 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.19" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL\EntityFramework.Exceptions.MySQL.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL.Pomelo\EntityFramework.Exceptions.MySQL.Pomelo.csproj" />
     <ProjectReference Include="..\EntityFramework.Exceptions.PostgreSQL\EntityFramework.Exceptions.PostgreSQL.csproj" />
     <ProjectReference Include="..\EntityFramework.Exceptions.Sqlite\EntityFramework.Exceptions.Sqlite.csproj" />
     <ProjectReference Include="..\EntityFramework.Exceptions.SqlServer\EntityFramework.Exceptions.SqlServer.csproj" />

@@ -1,4 +1,4 @@
-﻿using EntityFramework.Exceptions.MySQL;
+﻿using EntityFramework.Exceptions.MySQL.Pomelo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,31 +10,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.Context)
         {
-        }
 
-        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
-        public override void UniqueColumnViolationThrowsUniqueConstraintException()
-        {
-        }
-
-        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
-        public override void RequiredColumnViolationThrowsCannotInsertNullException()
-        {
-        }
-
-        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
-        public override void MaxLengthViolationThrowsMaxLengthExceededException()
-        {
-        }
-
-        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
-        public override void NumericOverflowViolationThrowsNumericOverflowException()
-        {
-        }
-
-        [Fact(Skip = "Skipping until EF Core 3.1 is supported by MySQL")]
-        public override void ReferenceViolationThrowsReferenceConstraintException()
-        {
         }
     }
 
@@ -42,7 +18,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseMySQL(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
+            return builder.UseMySql(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
         }
     }
 }
