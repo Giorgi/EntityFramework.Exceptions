@@ -26,6 +26,7 @@ namespace EntityFramework.Exceptions.Sqlite
                     case SQLITE_CONSTRAINT_NOTNULL:
                         return DatabaseError.CannotInsertNull;
                     case SQLITE_CONSTRAINT_UNIQUE:
+                    case SQLITE_CONSTRAINT_PRIMARYKEY:
                         return DatabaseError.UniqueConstraint;
                     case SQLITE_CONSTRAINT_FOREIGNKEY:
                         return DatabaseError.ReferenceConstraint;
