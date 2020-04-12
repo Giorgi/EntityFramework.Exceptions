@@ -11,6 +11,19 @@ namespace EntityFramework.Exceptions.Tests
         public SqlServerTests(SqlServerDemoContextFixture fixture) : base(fixture.Context)
         {
         }
+
+        public override void PrimaryKeyViolationThrowsUniqueConstraintException()
+        {
+            Context.Database.OpenConnection();
+
+            Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
+            
+            base.PrimaryKeyViolationThrowsUniqueConstraintException();
+            
+            Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
+
+            Context.Database.CloseConnection();
+        }
     }
 
     public class SqlServerDemoContextFixture : DemoContextFixture

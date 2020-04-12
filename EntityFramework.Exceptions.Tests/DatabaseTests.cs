@@ -23,6 +23,20 @@ namespace EntityFramework.Exceptions.Tests
         }
 
         [Fact]
+        public virtual void PrimaryKeyViolationThrowsUniqueConstraintException()
+        {
+            var product1 = new Product { Name = "GD", Id = 42 };
+            var product2 = new Product { Name = "GD", Id = 42 };
+
+            Context.Products.Add(product1);
+            Context.SaveChanges();
+            Context.Entry(product1).State = EntityState.Detached;
+
+            Context.Products.Add(product2);
+            Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
+        }
+
+        [Fact]
         public virtual void RequiredColumnViolationThrowsCannotInsertNullException()
         {
             Context.Products.Add(new Product());
