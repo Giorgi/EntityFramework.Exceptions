@@ -18,6 +18,6 @@ build:
 test_script:
 - cmd: >-
 
-    dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover -c Release
+    dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception" -c Release
 
     codecov -f "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml"
