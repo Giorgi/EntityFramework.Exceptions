@@ -55,8 +55,7 @@ namespace EntityFramework.Exceptions.Common
         {
             try
             {
-                var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-                return result;
+                return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
             }
             catch (DbUpdateException originalException)
             {
