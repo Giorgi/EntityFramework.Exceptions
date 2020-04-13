@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
@@ -12,13 +13,13 @@ namespace EntityFramework.Exceptions.Tests
         {
         }
 
-        public override void PrimaryKeyViolationThrowsUniqueConstraintException()
+        public override async Task PrimaryKeyViolationThrowsUniqueConstraintException()
         {
             Context.Database.OpenConnection();
 
             Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
             
-            base.PrimaryKeyViolationThrowsUniqueConstraintException();
+            await base.PrimaryKeyViolationThrowsUniqueConstraintException();
             
             Context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products OFF");
 

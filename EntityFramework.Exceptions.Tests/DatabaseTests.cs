@@ -1,4 +1,5 @@
-﻿using EntityFramework.Exceptions.Common;
+﻿using System.Threading.Tasks;
+using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -14,16 +15,17 @@ namespace EntityFramework.Exceptions.Tests
         }
 
         [Fact]
-        public virtual void UniqueColumnViolationThrowsUniqueConstraintException()
+        public virtual async Task UniqueColumnViolationThrowsUniqueConstraintException()
         {
             Context.Products.Add(new Product { Name = "GD" });
             Context.Products.Add(new Product { Name = "GD" });
 
             Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<UniqueConstraintException>(() => Context.SaveChangesAsync());
         }
 
         [Fact]
-        public virtual void PrimaryKeyViolationThrowsUniqueConstraintException()
+        public virtual async Task PrimaryKeyViolationThrowsUniqueConstraintException()
         {
             var product1 = new Product { Name = "GD", Id = 42 };
             var product2 = new Product { Name = "GD", Id = 42 };
@@ -34,40 +36,45 @@ namespace EntityFramework.Exceptions.Tests
 
             Context.Products.Add(product2);
             Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<UniqueConstraintException>(() => Context.SaveChangesAsync());
         }
 
         [Fact]
-        public virtual void RequiredColumnViolationThrowsCannotInsertNullException()
+        public virtual async Task RequiredColumnViolationThrowsCannotInsertNullException()
         {
             Context.Products.Add(new Product());
 
             Assert.Throws<CannotInsertNullException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<CannotInsertNullException>(() => Context.SaveChangesAsync());
         }
 
         [Fact]
-        public virtual void MaxLengthViolationThrowsMaxLengthExceededException()
+        public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
             Context.Products.Add(new Product { Name = new string('G', 20) });
 
             Assert.Throws<MaxLengthExceededException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<MaxLengthExceededException>(() => Context.SaveChangesAsync());
         }
 
         [Fact]
-        public virtual void NumericOverflowViolationThrowsNumericOverflowException()
+        public virtual async Task NumericOverflowViolationThrowsNumericOverflowException()
         {
             var product = new Product { Name = "GD" };
             Context.Products.Add(product);
             Context.ProductSales.Add(new ProductSale { Price = 3141.59265m, Product = product });
 
             Assert.Throws<NumericOverflowException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<NumericOverflowException>(() => Context.SaveChangesAsync());
         }
 
         [Fact]
-        public virtual void ReferenceViolationThrowsReferenceConstraintException()
+        public virtual async Task ReferenceViolationThrowsReferenceConstraintException()
         {
             Context.ProductSales.Add(new ProductSale { Price = 3.14m });
 
             Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
         }
 
         public virtual void Dispose()

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
@@ -13,15 +14,15 @@ namespace EntityFramework.Exceptions.Tests
         }
 
         [Fact(Skip = "Skipping as SQLite does not enforce max length")]
-        public override void MaxLengthViolationThrowsMaxLengthExceededException()
+        public override Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
-               
+            return Task.CompletedTask;
         }
 
         [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]
-        public override void NumericOverflowViolationThrowsNumericOverflowException()
+        public override Task NumericOverflowViolationThrowsNumericOverflowException()
         {
-            
+            return Task.CompletedTask;
         }
     }
 
