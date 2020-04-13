@@ -14,15 +14,12 @@ namespace EntityFramework.Exceptions.Sqlite
 
         protected override DatabaseError? GetDatabaseError(SqliteException dbException)
         {
-            if (dbException.SqliteErrorCode == SQLITE_TOOBIG)
-            {
-                return DatabaseError.MaxLength;
-            }
-
-            if (dbException.SqliteErrorCode == SQLITE_CONSTRAINT)
+            if (dbException.SqliteErrorCode == SQLITE_CONSTRAINT || dbException.SqliteErrorCode == SQLITE_TOOBIG)
             {
                 switch (dbException.SqliteExtendedErrorCode)
                 {
+                    case SQLITE_TOOBIG:
+                        return DatabaseError.MaxLength;
                     case SQLITE_CONSTRAINT_NOTNULL:
                         return DatabaseError.CannotInsertNull;
                     case SQLITE_CONSTRAINT_UNIQUE:

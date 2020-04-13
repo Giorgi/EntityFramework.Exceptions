@@ -1,7 +1,10 @@
 ﻿using EntityFramework.Exceptions.Sqlite;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SQLitePCL;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -9,14 +12,28 @@ namespace EntityFramework.Exceptions.Tests
 {
     public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>, IDisposable
     {
+        private const int SqliteLimitLength = 0;
+
         public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.Context)
         {
         }
 
-        [Fact(Skip = "Skipping as SQLite does not enforce max length")]
-        public override Task MaxLengthViolationThrowsMaxLengthExceededException()
+        [DllImport("e_sqlite3", CallingConvention = CallingConvention.Cdecl,EntryPoint = "sqlite3_limit")]
+        private static extern int SetLimit(sqlite3 db, int id, int newVal);
+
+        [Fact]
+        public override async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
-            return Task.CompletedTask;
+            Context.Database.OpenConnection();
+            
+            var handle = (Context.Database.GetDbConnection() as SqliteConnection).Handle;
+            var limit = SetLimit(handle, SqliteLimitLength, 15);
+            
+            await base.MaxLengthViolationThrowsMaxLengthExceededException();
+
+            SetLimit(handle, SqliteLimitLength, limit);
+
+            Context.Database.CloseConnection();
         }
 
         [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]

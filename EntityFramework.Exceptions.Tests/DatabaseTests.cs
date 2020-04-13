@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using EntityFramework.Exceptions.Common;
+﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
