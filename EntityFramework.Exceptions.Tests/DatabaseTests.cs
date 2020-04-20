@@ -1,5 +1,6 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -75,6 +76,22 @@ namespace EntityFramework.Exceptions.Tests
 
             Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
             await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
+        }
+
+        [Fact]
+        public virtual async Task NotHandledViolationReThrowsOriginalException()
+        {
+            var product = new Product { Name = "GD" };
+            Context.Products.Add(product);
+
+            Context.SaveChanges();
+            Context.Database.ExecuteSqlInterpolated(Context.Database.IsMySql()
+                ? $"Delete from products where id={product.Id}"
+                : (FormattableString) $"Delete from \"Products\" where \"Id\"={product.Id}");
+            product.Name = "G";
+
+            Assert.ThrowsAny<DbUpdateException>(() => Context.SaveChanges());
+            await Assert.ThrowsAnyAsync<DbUpdateException>(() => Context.SaveChangesAsync());
         }
 
         public virtual void Dispose()
