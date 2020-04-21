@@ -13,8 +13,6 @@ before_build:
 
     nuget restore
 
-    choco install codecov
-
     dotnet tool install coveralls.net --tool-path tools
 build:
   parallel: true
@@ -24,7 +22,4 @@ test_script:
 
 after_test:
 - cmd: >-
-
-    codecov -f "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml"
-
     "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
