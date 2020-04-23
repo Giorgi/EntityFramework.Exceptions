@@ -11,6 +11,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.Pomelo.svg?label=EntityFrameworkCore.Exceptions.MySQL.Pomelo&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL.Pomelo/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Nuget)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 
 ### What does EntityFramework.Exceptions do?
@@ -32,6 +33,10 @@ PM> Install-Package EntityFrameworkCore.Exceptions.SqlServer
 
 ```
 PM> Install-Package EntityFrameworkCore.Exceptions.MySql
+```
+
+```
+PM> Install-Package EntityFrameworkCore.Exceptions.MySql.Pomelo
 ```
 
 ```
