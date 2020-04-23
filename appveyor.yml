@@ -14,6 +14,8 @@ before_build:
     nuget restore
 
     dotnet tool install coveralls.net --tool-path tools
+
+    dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
 build:
   parallel: true
   verbosity: minimal
@@ -23,3 +25,5 @@ test_script:
 after_test:
 - cmd: >-
     "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
+    
+    "%APPVEYOR_BUILD_FOLDER%\tools\reportgenerator" "-reports:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
