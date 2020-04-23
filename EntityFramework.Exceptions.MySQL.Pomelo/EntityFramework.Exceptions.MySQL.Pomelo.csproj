@@ -6,7 +6,7 @@
     <Version>3.1.2</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2020 Giorgi Dalakishvili</Copyright>
-    <PackageTags>EntityFramework EF MySql MySqlConnector Pomelo EntityFrameworkCore entity-framework-core EFCoreData Database</PackageTags>
+    <PackageTags>EntityFramework EF MySql MySqlConnector Pomelo EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
     <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
