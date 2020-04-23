@@ -27,3 +27,6 @@ after_test:
     "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
     
     "%APPVEYOR_BUILD_FOLDER%\tools\reportgenerator" "-reports:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
+
+artifacts:
+  - path: EntityFramework.Exceptions.Tests\TestResults
