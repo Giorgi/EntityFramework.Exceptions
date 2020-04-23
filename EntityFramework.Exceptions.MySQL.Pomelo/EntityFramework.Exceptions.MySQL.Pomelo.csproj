@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>3.1.2</Version>
+    <Authors>Giorgi Dalakishvili</Authors>
+    <Copyright>Copyright (c) 2020 Giorgi Dalakishvili</Copyright>
+    <PackageTags>EntityFramework EF MySql MySqlConnector Pomelo EntityFrameworkCore entity-framework-core EFCoreData Database</PackageTags>
+    <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException
+
+Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Core provider for MySQL</Description>
+    <PackageId>EntityFrameworkCore.Exceptions.MySQL.Pomelo</PackageId>
+    <AssemblyVersion>3.1.2.0</AssemblyVersion>
+    <FileVersion>3.1.2.0</FileVersion>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -22,5 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\License.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
