@@ -20,13 +20,13 @@ build:
   parallel: true
   verbosity: minimal
 test_script:
-- cmd: dotnet test "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception" -c Release
+- cmd: dotnet test "EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception" -c Release
 
 after_test:
 - cmd: >-
-    "%APPVEYOR_BUILD_FOLDER%\tools\csmacnz.coveralls.exe" --opencover -i "%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
+    "tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
     
-    "%APPVEYOR_BUILD_FOLDER%\tools\reportgenerator" "-reports:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:%APPVEYOR_BUILD_FOLDER%\EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
+    "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
 
 artifacts:
   - path: EntityFramework.Exceptions.Tests\TestResults
