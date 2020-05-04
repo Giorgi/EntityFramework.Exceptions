@@ -16,9 +16,9 @@
     <PackageReleaseNotes>Added support for Entity Framework Core 3
 Added support for ReferenceConstraintException
 </PackageReleaseNotes>
-    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException instead of generic DbUpdateException
+    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException
 
-This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
+      This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
     <PackageId>EntityFrameworkCore.Exceptions.Common</PackageId>
     <AssemblyVersion>3.1.1.0</AssemblyVersion>
     <FileVersion>3.1.1.0</FileVersion>
