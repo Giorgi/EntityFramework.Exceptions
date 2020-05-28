@@ -39,7 +39,7 @@ Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Co
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="MySqlConnector" Version="0.63.2" />
+    <PackageReference Include="MySqlConnector" Version="0.66.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
