@@ -27,6 +27,8 @@ namespace EntityFramework.Exceptions.Sqlite
                         return DatabaseError.UniqueConstraint;
                     case SQLITE_CONSTRAINT_FOREIGNKEY:
                         return DatabaseError.ReferenceConstraint;
+                    default:
+                        return null;
                 }
             }
 
