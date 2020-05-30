@@ -7,7 +7,7 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextFixture>, IDisposable
+    public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextFixture>
     {
         public SqlServerTests(SqlServerDemoContextFixture fixture) : base(fixture.Context)
         {

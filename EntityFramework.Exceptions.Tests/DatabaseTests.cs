@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public abstract class DatabaseTests
+    public abstract class DatabaseTests : IDisposable
     {
         internal DemoContext Context { get; }
 

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>, IDisposable
+    public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>
     {
         private const int SqliteLimitLength = 0;
 

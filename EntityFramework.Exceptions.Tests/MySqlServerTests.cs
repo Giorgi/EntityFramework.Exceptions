@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class MySQLServerTests : DatabaseTests, IClassFixture<MySQLDemoContextFixture>, IDisposable
+    public class MySQLServerTests : DatabaseTests, IClassFixture<MySQLDemoContextFixture>
     {
         public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.Context)
         {
