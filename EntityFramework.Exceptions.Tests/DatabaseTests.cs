@@ -1,5 +1,6 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Extensions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -85,7 +86,7 @@ namespace EntityFramework.Exceptions.Tests
             Context.Products.Add(product);
 
             Context.SaveChanges();
-            Context.Database.ExecuteSqlInterpolated(Context.Database.IsMySql()
+            Context.Database.ExecuteSqlInterpolated(MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database)
                 ? $"Delete from products where id={product.Id}"
                 : (FormattableString) $"Delete from \"Products\" where \"Id\"={product.Id}");
             product.Name = "G";

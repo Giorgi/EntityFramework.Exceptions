@@ -1,7 +1,6 @@
-﻿using EntityFramework.Exceptions.MySQL.Pomelo;
+﻿using EntityFramework.Exceptions.MySQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
@@ -18,7 +17,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseMySql(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
+            return builder.UseMySQL(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
         }
     }
 }
