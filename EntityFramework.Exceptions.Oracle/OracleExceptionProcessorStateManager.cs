@@ -51,6 +51,5 @@ namespace EntityFramework.Exceptions.Oracle
             self.ReplaceService<IStateManager, OracleExceptionProcessorStateManager>();
             return self;
         }
-        
     }
 }
