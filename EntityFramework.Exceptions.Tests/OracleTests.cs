@@ -5,20 +5,19 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class OracleTests : DatabaseTests, IClassFixture<OracleTestsontextFixture>
+    
+    class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
     {
-        public OracleTests(OracleTestsontextFixture fixture) : base(fixture.Context)
+        public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
         {
         }
-
     }
     
-    public class OracleTestsontextFixture : DemoContextFixture
+    public class OracleTestContextFixture : DemoContextFixture
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            //var connectionString = configuration.GetConnectionString("Oracle");
-            var connectionString = "Data Source=brio.WORLD;Persist Security Info=True;User ID=bri;Password=bri;";
+            var connectionString = configuration.GetConnectionString("Oracle");
             return builder.UseOracle(connectionString).UseExceptionProcessor();
         }
     }
