@@ -10,9 +10,9 @@ namespace EntityFramework.Exceptions.Tests
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductSale> ProductSales { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<ProductSale> ProductSales { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {

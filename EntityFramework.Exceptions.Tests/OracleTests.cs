@@ -7,14 +7,13 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
+    class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
     {
-        public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
+        OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
         {
         }
 
-        [Fact]
-        public async Task DeleteOfProductInSaleShouldThrowReferenceConstraintException()
+        private async Task DeleteOfProductInSaleShouldThrowReferenceConstraintException()
         {
             var author = new Author
             {
@@ -43,7 +42,6 @@ namespace EntityFramework.Exceptions.Tests
             }
         }
     }
-
     public class OracleTestContextFixture : DemoContextFixture
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(
