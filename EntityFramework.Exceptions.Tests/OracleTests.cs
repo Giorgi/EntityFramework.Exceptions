@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,35 +12,6 @@ namespace EntityFramework.Exceptions.Tests
     {
         OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
         {
-        }
-
-        private async Task DeleteOfProductInSaleShouldThrowReferenceConstraintException()
-        {
-            var author = new Author
-            {
-                Name = "William Shakespeare"
-            };
-            var book = new Book
-            {
-                Name = "Hamlet",
-                Author = author
-            };
-            Context.Books.Add(book);
-            await Context.SaveChangesAsync();
-            CleanupContext();
-
-            var newAuthor = Context.Authors.Find(author.Id);
-            Context.Authors.Remove(newAuthor);
-            Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
-            await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
-        }
-
-        private void CleanupContext()
-        {
-            foreach (var entityEntry in Context.ChangeTracker.Entries())
-            {
-                entityEntry.State = EntityState.Detached;
-            }
         }
     }
     public class OracleTestContextFixture : DemoContextFixture
