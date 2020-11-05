@@ -97,13 +97,41 @@ namespace EntityFramework.Exceptions.Tests
 
         public virtual void Dispose()
         {
+            CleanupContext();
+            Context.ProductPriceHistories.RemoveRange(Context.ProductPriceHistories);
+            Context.Products.RemoveRange(Context.Products);
+            Context.SaveChanges();
+        }
+
+        protected void CleanupContext()
+        {
             foreach (var entityEntry in Context.ChangeTracker.Entries())
             {
                 entityEntry.State = EntityState.Detached;
             }
+        }
 
-            Context.Products.RemoveRange(Context.Products);
-            Context.SaveChanges();
+        [Fact]
+        public async Task DeleteOfProcuctWithPriceHistoryShouldThrowReferenceConstraintException()
+        {
+            var product = new Product
+            {
+                Name = "AN"
+            };
+            var productPriceHistory = new ProductPriceHistory
+            {
+                Product = product,
+                Price = 15.27m,
+                EffectiveDate = DateTime.Now.Date.AddDays(-10)
+            };
+            Context.ProductPriceHistories.Add(productPriceHistory);
+            await Context.SaveChangesAsync();
+            CleanupContext();
+
+            product = Context.Products.Find(product.Id);
+            Context.Products.Remove(product);
+            Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
         }
     }
 }

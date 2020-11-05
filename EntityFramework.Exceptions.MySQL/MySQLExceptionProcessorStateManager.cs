@@ -1,4 +1,5 @@
-﻿using EntityFramework.Exceptions.Common;
+﻿using System;
+using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using MySql.Data.MySqlClient;
@@ -12,6 +13,7 @@ namespace EntityFramework.Exceptions.MySQL
     class MySqlExceptionProcessorStateManager : ExceptionProcessorStateManager<MySqlException>
     {
         private const int NoReferencedRow = 1216;
+        private const int CannotDeleteOrUpdateParentRow = 1451;
         private const int NoReferencedRow2 = 1452;
         private const int ColumnCannotBeNull = 1048;
         private const int DuplicateEntryForKey = 1062;
@@ -36,6 +38,7 @@ namespace EntityFramework.Exceptions.MySQL
                     return DatabaseError.MaxLength;
                 case NoReferencedRow:
                 case NoReferencedRow2:
+                case CannotDeleteOrUpdateParentRow:
                     return DatabaseError.ReferenceConstraint;
                 default:
                     return null;

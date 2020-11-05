@@ -10,6 +10,7 @@ namespace EntityFramework.Exceptions.Oracle
         private const int CannotInsertNull = 1400;
         private const int UniqueConstraintViolation = 1;
         private const int IntegrityConstraintViolation = 2291;
+        private const int ChildRecordFound = 2292;
         private const int NumericOverflow = 1438;
         private const int NumericOrValueError = 12899;
 
@@ -21,7 +22,8 @@ namespace EntityFramework.Exceptions.Oracle
         {
             switch (dbException.Number)
             {
-                case IntegrityConstraintViolation:
+                case IntegrityConstraintViolation: 
+                case ChildRecordFound:
                     return DatabaseError.ReferenceConstraint;
                 case CannotInsertNull:
                     return DatabaseError.CannotInsertNull;
