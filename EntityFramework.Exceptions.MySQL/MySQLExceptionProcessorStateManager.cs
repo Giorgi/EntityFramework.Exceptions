@@ -13,7 +13,8 @@ namespace EntityFramework.Exceptions.MySQL
     class MySqlExceptionProcessorStateManager : ExceptionProcessorStateManager<MySqlException>
     {
         private const int NoReferencedRow = 1216;
-        private const int CannotDeleteOrUpdateParentRow = 1451;
+        private const int RowIsReferenced = 1217;
+        private const int RowIsReferenced2 = 1451;
         private const int NoReferencedRow2 = 1452;
         private const int ColumnCannotBeNull = 1048;
         private const int DuplicateEntryForKey = 1062;
@@ -37,8 +38,9 @@ namespace EntityFramework.Exceptions.MySQL
                 case DataTooLongForColumn:
                     return DatabaseError.MaxLength;
                 case NoReferencedRow:
+                case RowIsReferenced:
                 case NoReferencedRow2:
-                case CannotDeleteOrUpdateParentRow:
+                case RowIsReferenced2:
                     return DatabaseError.ReferenceConstraint;
                 default:
                     return null;
