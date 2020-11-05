@@ -13,6 +13,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.Pomelo.svg?label=EntityFrameworkCore.Exceptions.MySQL.Pomelo&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL.Pomelo/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Oracle.svg?label=EntityFrameworkCore.Exceptions.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Oracle/)
 
 ### What does EntityFramework.Exceptions do?
 
@@ -45,6 +46,10 @@ PM> Install-Package EntityFrameworkCore.Exceptions.PostgreSQL
 
 ```
 PM> Install-Package EntityFrameworkCore.Exceptions.Sqlite
+```
+
+```
+PM> Install-Package EntityFrameworkCore.Exceptions.Oracle
 ```
 
 Then in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
