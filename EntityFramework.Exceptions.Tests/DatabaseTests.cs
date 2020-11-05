@@ -34,7 +34,8 @@ namespace EntityFramework.Exceptions.Tests
 
             Context.Products.Add(product1);
             Context.SaveChanges();
-            Context.Entry(product1).State = EntityState.Detached;
+
+            CleanupContext();
 
             Context.Products.Add(product2);
             Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
@@ -88,11 +89,28 @@ namespace EntityFramework.Exceptions.Tests
             Context.SaveChanges();
             Context.Database.ExecuteSqlInterpolated(MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database)
                 ? $"Delete from products where id={product.Id}"
-                : (FormattableString) $"Delete from \"Products\" where \"Id\"={product.Id}");
+                : (FormattableString)$"Delete from \"Products\" where \"Id\"={product.Id}");
             product.Name = "G";
 
             Assert.ThrowsAny<DbUpdateException>(() => Context.SaveChanges());
             await Assert.ThrowsAnyAsync<DbUpdateException>(() => Context.SaveChangesAsync());
+        }
+
+        [Fact]
+        public virtual async Task DeleteParentItemThrowsReferenceConstraintException()
+        {
+            var product = new Product { Name = "AN" };
+            var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTime.Now.Date.AddDays(-10) };
+            Context.ProductPriceHistories.Add(productPriceHistory);
+            await Context.SaveChangesAsync();
+
+            CleanupContext();
+
+            product = Context.Products.Find(product.Id);
+            Context.Products.Remove(product);
+
+            Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
+            await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
         }
 
         public virtual void Dispose()
@@ -109,29 +127,6 @@ namespace EntityFramework.Exceptions.Tests
             {
                 entityEntry.State = EntityState.Detached;
             }
-        }
-
-        [Fact]
-        public async Task DeleteOfProcuctWithPriceHistoryShouldThrowReferenceConstraintException()
-        {
-            var product = new Product
-            {
-                Name = "AN"
-            };
-            var productPriceHistory = new ProductPriceHistory
-            {
-                Product = product,
-                Price = 15.27m,
-                EffectiveDate = DateTime.Now.Date.AddDays(-10)
-            };
-            Context.ProductPriceHistories.Add(productPriceHistory);
-            await Context.SaveChangesAsync();
-            CleanupContext();
-
-            product = Context.Products.Find(product.Id);
-            Context.Products.Remove(product);
-            Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
-            await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
         }
     }
 }

@@ -12,27 +12,15 @@ namespace EntityFramework.Exceptions.Tests
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductSale> ProductSales { get; set; }
         public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Product>().HasIndex(u => u.Name).IsUnique();
             builder.Entity<Product>().Property(b => b.Name).IsRequired().HasMaxLength(15);
             builder.Entity<ProductSale>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
-            builder.Entity<ProductSale>()
-                .HasOne(b => b.Product)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
-            builder.Entity<ProductPriceHistory>()
-                .Property(b => b.Price)
-                .HasColumnType("decimal(5,2)")
-                .IsRequired();
-            builder.Entity<ProductPriceHistory>()
-                .Property(p => p.EffectiveDate)
-                .IsRequired();
-            builder.Entity<ProductPriceHistory>()
-                .HasOne(p => p.Product)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<ProductPriceHistory>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
+            builder.Entity<ProductPriceHistory>().Property(p => p.EffectiveDate).IsRequired();
+            builder.Entity<ProductPriceHistory>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.NoAction);
         }
     }
 
