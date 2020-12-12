@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Icon.png">

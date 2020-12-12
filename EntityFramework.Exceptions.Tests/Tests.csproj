@@ -29,12 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL.Pomelo\EntityFramework.Exceptions.MySQL.Pomelo.csproj" />
-    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL\EntityFramework.Exceptions.MySQL.csproj" />
-    <ProjectReference Include="..\EntityFramework.Exceptions.Oracle\EntityFramework.Exceptions.Oracle.csproj" />
-    <ProjectReference Include="..\EntityFramework.Exceptions.PostgreSQL\EntityFramework.Exceptions.PostgreSQL.csproj" />
-    <ProjectReference Include="..\EntityFramework.Exceptions.Sqlite\EntityFramework.Exceptions.Sqlite.csproj" />
-    <ProjectReference Include="..\EntityFramework.Exceptions.SqlServer\EntityFramework.Exceptions.SqlServer.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL.Pomelo\MySQL.Pomelo.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.MySQL\MySQL.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.Oracle\Oracle.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.PostgreSQL\PostgreSQL.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.Sqlite\Sqlite.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.SqlServer\SqlServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

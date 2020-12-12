@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
     <Version>3.1.1</Version>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 Giorgi Dalakishvili</Copyright>
-    <PackageTags>EntityFramework EF Oracle EntityFrameworkCore ODP.NET entity-framework-core EFCore Data Database</PackageTags>
+    <PackageTags>EntityFramework EF SqlServer EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
     <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -14,10 +14,11 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackageReleaseNotes>
-      Initial Release for Oracle
+      Added support for Entity Framework Core 3
+Added support for ReferenceConstraintException
     </PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException</Description>
-    <PackageId>EntityFrameworkCore.Exceptions.Oracle</PackageId>
+    <PackageId>EntityFrameworkCore.Exceptions.SqlServer</PackageId>
     <AssemblyVersion>3.1.1.0</AssemblyVersion>
     <FileVersion>3.1.1.0</FileVersion>
     <PackageIcon>Icon.png</PackageIcon>
@@ -25,12 +26,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.80" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="1.1.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions.Common\EntityFramework.Exceptions.Common.csproj" />
+    <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Icon.png">
