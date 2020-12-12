@@ -11,7 +11,7 @@
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 - 2021 Giorgi Dalakishvili</Copyright>
 
-    <PackageId>$(SolutionName).$(MSBuildProjectName)</PackageId>
+    <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageLicenseFile>License.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
