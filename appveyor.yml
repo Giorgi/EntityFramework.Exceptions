@@ -20,7 +20,7 @@ build:
   parallel: true
   verbosity: minimal
 test_script:
-- cmd: dotnet test "EntityFramework.Exceptions.Tests\EntityFramework.Exceptions.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+- cmd: dotnet test "EntityFramework.Exceptions.Tests\Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
 
 after_test:
 - cmd: >-
