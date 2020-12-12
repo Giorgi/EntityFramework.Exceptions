@@ -4,6 +4,27 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Label="Common assembly attributes">
+    <Version>3.1.4</Version>
+    <FileVersion>3.1.4.0</FileVersion>
+    <AssemblyVersion>3.1.4.0</AssemblyVersion>
+    <Authors>Giorgi Dalakishvili</Authors>
+    <Copyright>Copyright (c) 2018 - 2021 Giorgi Dalakishvili</Copyright>
+
+    <PackageId>$(SolutionName).$(MSBuildProjectName)</PackageId>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Giorgi/EntityFramework.Exceptions</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Giorgi/EntityFramework.Exceptions</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\Icon.png">
       <Pack>True</Pack>
