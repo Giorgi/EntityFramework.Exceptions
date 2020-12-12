@@ -38,7 +38,6 @@ Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Co
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="MySqlConnector" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>

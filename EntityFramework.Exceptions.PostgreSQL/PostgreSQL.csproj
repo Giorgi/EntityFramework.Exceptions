@@ -28,10 +28,6 @@ Added support for ReferenceConstraintException
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.1.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
   </ItemGroup>
