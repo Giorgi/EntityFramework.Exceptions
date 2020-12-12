@@ -2,11 +2,12 @@
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using MySql.Data.MySqlClient;
 
 #if POMELO
+using MySqlConnector;
 namespace EntityFramework.Exceptions.MySQL.Pomelo
 #else
+using MySql.Data.MySqlClient;
 namespace EntityFramework.Exceptions.MySQL
 #endif
 {
