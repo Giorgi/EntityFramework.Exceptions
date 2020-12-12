@@ -6,7 +6,7 @@ using Xunit;
 namespace EntityFramework.Exceptions.Tests
 {
     [Collection("MySQL Test Collection")]
-    public class MySQLServerPomeloTests : DatabaseTests, IClassFixture<MySQLDemoContextPomeloFixture>
+    class MySQLServerPomeloTests : DatabaseTests, IClassFixture<MySQLDemoContextPomeloFixture>
     {
         public MySQLServerPomeloTests(MySQLDemoContextPomeloFixture fixture) : base(fixture.Context)
         {
