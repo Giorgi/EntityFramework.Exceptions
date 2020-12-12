@@ -39,4 +39,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName) != 'Common'">
+    <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
+  </ItemGroup>
 </Project>

@@ -13,7 +13,4 @@ Added support for ReferenceConstraintException
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.21" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
-  </ItemGroup>
 </Project>
