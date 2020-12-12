@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup Label="Configure assembly names and namespaces">
+    <AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+</Project>
