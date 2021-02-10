@@ -22,16 +22,25 @@ namespace EntityFramework.Exceptions.Common
 
         private static readonly Dictionary<DatabaseError, Func<DbUpdateException, List<InternalEntityEntry>, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<DbUpdateException, List<InternalEntityEntry>, Exception>>
         {
-            {DatabaseError.MaxLength, (exception, entries) => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException, entries) },
-            {DatabaseError.UniqueConstraint, (exception, entries) => new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries) },
-            {DatabaseError.CannotInsertNull, (exception, entries) => new CannotInsertNullException("Cannot insert null", exception.InnerException, entries) },
-            {DatabaseError.NumericOverflow, (exception, entries) => new NumericOverflowException("Numeric overflow", exception.InnerException, entries) },
-            {DatabaseError.ReferenceConstraint, (exception, entries) => new ReferenceConstraintException("Reference constraint violation", exception.InnerException, entries) }
+            {DatabaseError.MaxLength, (exception, entries) => entries.Count == 0 ? new MaxLengthExceededException("Maximum length exceeded", exception.InnerException) :
+                                                                                   new MaxLengthExceededException("Maximum length exceeded", exception.InnerException, entries) },
+
+            {DatabaseError.UniqueConstraint, (exception, entries) => entries.Count == 0 ? new UniqueConstraintException("Unique constraint violation", exception.InnerException) :
+                                                                                          new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries) },
+
+            {DatabaseError.CannotInsertNull, (exception, entries) => entries.Count == 0 ? new CannotInsertNullException("Cannot insert null", exception.InnerException) : 
+                                                                                          new CannotInsertNullException("Cannot insert null", exception.InnerException, entries) },
+
+            {DatabaseError.NumericOverflow, (exception, entries) => entries.Count == 0 ? new NumericOverflowException("Numeric overflow", exception.InnerException):
+                                                                                         new NumericOverflowException("Numeric overflow", exception.InnerException, entries) },
+
+            {DatabaseError.ReferenceConstraint, (exception, entries) => entries.Count == 0 ? new ReferenceConstraintException("Reference constraint violation", exception.InnerException) :
+                                                                                             new ReferenceConstraintException("Reference constraint violation", exception.InnerException, entries) }
         };
 
         protected ExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
         {
-            
+
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
