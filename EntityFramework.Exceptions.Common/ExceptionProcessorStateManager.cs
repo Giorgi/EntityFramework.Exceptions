@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +20,18 @@ namespace EntityFramework.Exceptions.Common
             ReferenceConstraint
         }
 
-        private static readonly Dictionary<DatabaseError, Func<DbUpdateException, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<DbUpdateException, Exception>>
+        private static readonly Dictionary<DatabaseError, Func<DbUpdateException, List<InternalEntityEntry>, Exception>> ExceptionMapping = new Dictionary<DatabaseError, Func<DbUpdateException, List<InternalEntityEntry>, Exception>>
         {
-            {DatabaseError.MaxLength, exception => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException) },
-            {DatabaseError.UniqueConstraint, exception => new UniqueConstraintException("Unique constraint violation", exception.InnerException) },
-            {DatabaseError.CannotInsertNull, exception => new CannotInsertNullException("Cannot insert null", exception.InnerException) },
-            {DatabaseError.NumericOverflow, exception => new NumericOverflowException("Numeric overflow", exception.InnerException) },
-            {DatabaseError.ReferenceConstraint, exception => new ReferenceConstraintException("Reference constraint violation", exception.InnerException) }
+            {DatabaseError.MaxLength, (exception, entries) => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException, entries) },
+            {DatabaseError.UniqueConstraint, (exception, entries) => new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries) },
+            {DatabaseError.CannotInsertNull, (exception, entries) => new CannotInsertNullException("Cannot insert null", exception.InnerException, entries) },
+            {DatabaseError.NumericOverflow, (exception, entries) => new NumericOverflowException("Numeric overflow", exception.InnerException, entries) },
+            {DatabaseError.ReferenceConstraint, (exception, entries) => new ReferenceConstraintException("Reference constraint violation", exception.InnerException, entries) }
         };
 
         protected ExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
         {
+            
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -74,7 +76,8 @@ namespace EntityFramework.Exceptions.Common
         {
             if (ex.GetBaseException() is T dbException && GetDatabaseError(dbException) is DatabaseError error && ExceptionMapping.TryGetValue(error, out var ctor))
             {
-                return ctor(ex);
+                var entries = ex.Entries.Select(entry => base.GetOrCreateEntry(entry.Entity, entry.Metadata)).ToList();
+                return ctor(ex, entries);
             }
 
             return null;
