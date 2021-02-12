@@ -3,10 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageTags>EntityFramework EF PostgreSQL npgsql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
-    <PackageReleaseNotes>
-      Added support for Entity Framework Core 3
-Added support for ReferenceConstraintException
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>Populate Entries property of the exceptions</PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException</Description>
   </PropertyGroup>
 
