@@ -8,9 +8,9 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
+    public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
     {
-        OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
+        public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
         {
         }
     }
