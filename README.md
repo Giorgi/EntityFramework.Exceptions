@@ -9,6 +9,8 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/Giorgi/EntityFramework.Exceptions.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Giorgi/EntityFramework.Exceptions/alerts/)
 
+[![Build Stats](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)
+
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
