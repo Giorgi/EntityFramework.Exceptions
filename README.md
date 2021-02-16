@@ -55,7 +55,33 @@ PM> Install-Package EntityFrameworkCore.Exceptions.Sqlite
 PM> Install-Package EntityFrameworkCore.Exceptions.Oracle
 ```
 
-Then in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
+Or:
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.SqlServer
+```
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.MySql
+```
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.MySql.Pomelo
+```
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.PostgreSQL
+```
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.Sqlite
+```
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.Oracle
+```
+
+Next, in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
 
 ```
 class DemoContext : DbContext
@@ -70,7 +96,7 @@ class DemoContext : DbContext
 }
 ```    
 
-You will now start getting different exception for different database errors. For example when a unique constraints fails you will get `UniqueConstraintException` exception:
+You will now start getting different exception for different database error. For example, when a unique constraints fails you will get `UniqueConstraintException` exception:
 
 ```
 using (var demoContext = new DemoContext())
