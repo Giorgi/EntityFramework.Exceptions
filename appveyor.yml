@@ -22,12 +22,12 @@ before_build:
 
     dotnet tool install dotnet-sonarscanner --tool-path tools
 
-    "tools\dotnet-sonarscanner" begin /k:"EntityFramework.Exceptions" /o:"giorgi" /d:sonar.login="%SONAR_TOKEN%" /d:sonar.host.url=https://sonarcloud.io
+    "tools\dotnet-sonarscanner" begin /k:"EntityFramework.Exceptions" /o:"giorgi" /d:sonar.login="%SONAR_TOKEN%" /d:sonar.host.url=https://sonarcloud.io /d:"sonar.cs.opencover.reportsPaths=**/*.opencover.xml" /d:"sonar.cs.vstest.reportsPaths=**/*.trx"
 build:
   parallel: true
   verbosity: minimal
 test_script:
-- cmd: dotnet test "EntityFramework.Exceptions.Tests\Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+- cmd: dotnet test --logger trx "EntityFramework.Exceptions.Tests\Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
 
 after_test:
 - cmd: >-
