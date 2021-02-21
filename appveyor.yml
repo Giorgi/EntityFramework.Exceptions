@@ -4,6 +4,8 @@ environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
   COVERALLS_REPO_TOKEN:
     secure: vwONgnel4MS/HvymcUOgqSAl1R1AtAfGMD0xy4QDNrgLSDYWTrd9673dM2GCMJv7
+  SONAR_TOKEN:
+    secure: vLE/BPEfei+Li0PjsVhpsL6Bj5nRTP2J4FpaEldGgqBTNCrtmUf34VS4na2Ogmyj
 services:
 - mssql2017
 - postgresql101
@@ -16,6 +18,10 @@ before_build:
     dotnet tool install coveralls.net --tool-path tools
 
     dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+
+    dotnet tool install dotnet-sonarscanner --tool-path tools
+
+    "tools\sonarscanner" begin /k:"EntityFramework.Exceptions" /o:"giorgi" /d:sonar.login="%SONAR_TOKEN%" /d:sonar.host.url=https://sonarcloud.io
 build:
   parallel: true
   verbosity: minimal
@@ -27,6 +33,8 @@ after_test:
     "tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
     
     "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
+
+    "tools\sonarscanner" end /d:sonar.login="0c265007ce2b2184cd222f66489f567e0b059260"
 
 artifacts:
   - path: EntityFramework.Exceptions.Tests\TestResults
