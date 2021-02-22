@@ -7,7 +7,14 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/master.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
 [![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/master?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/Giorgi/EntityFramework.Exceptions.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Giorgi/EntityFramework.Exceptions/alerts/)
+
+
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=bugs)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=code_smells)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=coverage)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 
 [![Build Stats](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)
 
