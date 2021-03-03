@@ -7,7 +7,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/master.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
 [![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/master?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
-[![Ko-Fi](https://img.shields.io/static/v1?style=flat-square&logo=appveyor&message=Support%20the%20Project&color=success&style=plastic&logo=ko-fi&label=$$)](https://ko-fi.com/U6U81LHU8)
+[![Ko-Fi](https://img.shields.io/static/v1?style=flat-square&message=Support%20the%20Project&color=success&style=plastic&logo=ko-fi&label=$$)](https://ko-fi.com/U6U81LHU8)
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
