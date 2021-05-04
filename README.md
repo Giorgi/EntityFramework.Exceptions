@@ -25,6 +25,10 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Oracle.svg?label=EntityFrameworkCore.Exceptions.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Oracle/)
 
+### Entity Framework Community Standup Live Show
+
+[![Entity Framework Community Standup - Typed Exceptions for Entity Framework Core](https://img.youtube.com/vi/aUl5QfswNU4/0.jpg)](https://www.youtube.com/watch?v=aUl5QfswNU4)
+
 ### What does EntityFramework.Exceptions do?
 
 When using Entity Framework Core for data access all database exceptions are wrapped in `DbUpdateException`. If you need to find 
