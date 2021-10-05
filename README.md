@@ -95,7 +95,7 @@ dotnet add package EntityFrameworkCore.Exceptions.Oracle
 
 Next, in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
 
-```
+```csharp
 class DemoContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
@@ -110,7 +110,7 @@ class DemoContext : DbContext
 
 You will now start getting different exception for different database error. For example, when a unique constraints fails you will get `UniqueConstraintException` exception:
 
-```
+```csharp
 using (var demoContext = new DemoContext())
 {
     demoContext.Products.Add(new Product
