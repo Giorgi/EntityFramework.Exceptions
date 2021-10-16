@@ -1,16 +1,11 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace EntityFramework.Exceptions.SqlServer
 {
-    class SqlServerExceptionProcessorStateManager: ExceptionProcessorStateManager<SqlException>
+    class SqlServerExceptionProcessorInterceptor: ExceptionProcessorInterceptor<SqlException>
     {
-        public SqlServerExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
-        {
-        }
-
         private const int ReferenceConstraint = 547;
         private const int CannotInsertNull = 515;
         private const int CannotInsertDuplicateKeyUniqueIndex = 2601;
@@ -43,13 +38,13 @@ namespace EntityFramework.Exceptions.SqlServer
     {
         public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
         {
-            self.ReplaceService<IStateManager, SqlServerExceptionProcessorStateManager>();
+            self.AddInterceptors(new SqlServerExceptionProcessorInterceptor());
             return self;
         }
 
         public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
         {
-            self.ReplaceService<IStateManager, SqlServerExceptionProcessorStateManager>();
+            self.AddInterceptors(new SqlServerExceptionProcessorInterceptor());
             return self;
         }
     }

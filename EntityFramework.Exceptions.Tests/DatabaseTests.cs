@@ -1,8 +1,8 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore.Extensions;
 using System;
 using System.Threading.Tasks;
+using MySql.EntityFrameworkCore.Extensions;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
