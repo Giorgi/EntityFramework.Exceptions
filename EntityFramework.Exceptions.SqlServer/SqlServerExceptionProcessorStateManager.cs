@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EntityFramework.Exceptions.SqlServer
 {
@@ -50,6 +51,15 @@ namespace EntityFramework.Exceptions.SqlServer
         public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
         {
             self.ReplaceService<IStateManager, SqlServerExceptionProcessorStateManager>();
+            return self;
+        }
+
+        /// <summary>
+        /// Adds the exception processor. Needed only in advanced scenarios when EF is configured with UseInternalServiceProvider(IServiceProvider).
+        /// </summary>
+        public static IServiceCollection AddExceptionProcessor(this IServiceCollection self)
+        {
+            self.AddScoped<IStateManager, SqlServerExceptionProcessorStateManager>();
             return self;
         }
     }
