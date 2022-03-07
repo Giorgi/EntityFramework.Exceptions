@@ -116,9 +116,6 @@ namespace EntityFramework.Exceptions.Tests
         public virtual void Dispose()
         {
             CleanupContext();
-            Context.ProductPriceHistories.RemoveRange(Context.ProductPriceHistories);
-            Context.Products.RemoveRange(Context.Products);
-            Context.SaveChanges();
         }
 
         protected void CleanupContext()
