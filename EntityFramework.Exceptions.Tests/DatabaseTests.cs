@@ -83,7 +83,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task NotHandledViolationReThrowsOriginalException()
         {
-            var product = new Product { Name = "GD" };
+            var product = new Product { Name = "Unhandled Violation Test" };
             Context.Products.Add(product);
 
             Context.SaveChanges();
