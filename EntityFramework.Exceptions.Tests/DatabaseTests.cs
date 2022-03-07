@@ -54,7 +54,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
-            Context.Products.Add(new Product { Name = new string('G', 20) });
+            Context.Products.Add(new Product { Name = new string('G', DemoContext.ProductNameMaxLength + 5) });
 
             Assert.Throws<MaxLengthExceededException>(() => Context.SaveChanges());
             await Assert.ThrowsAsync<MaxLengthExceededException>(() => Context.SaveChangesAsync());

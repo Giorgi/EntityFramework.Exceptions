@@ -16,12 +16,14 @@ namespace EntityFramework.Exceptions.Tests
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Product>().HasIndex(u => u.Name).IsUnique();
-            builder.Entity<Product>().Property(b => b.Name).IsRequired().HasMaxLength(15);
+            builder.Entity<Product>().Property(b => b.Name).IsRequired().HasMaxLength(ProductNameMaxLength);
             builder.Entity<ProductSale>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
             builder.Entity<ProductPriceHistory>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
             builder.Entity<ProductPriceHistory>().Property(p => p.EffectiveDate).IsRequired();
             builder.Entity<ProductPriceHistory>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.NoAction);
         }
+
+        public const int ProductNameMaxLength = 25;
     }
 
     public class Product
