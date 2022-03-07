@@ -63,7 +63,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task NumericOverflowViolationThrowsNumericOverflowException()
         {
-            var product = new Product { Name = "GD" };
+            var product = new Product { Name = "Numeric Overflow Test" };
             Context.Products.Add(product);
             Context.ProductSales.Add(new ProductSale { Price = 3141.59265m, Product = product });
 
