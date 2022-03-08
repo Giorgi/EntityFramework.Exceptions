@@ -5,8 +5,8 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
 [![Target](https://img.shields.io/static/v1?label=target&message=net6.0&color=512bd4&logo=.net&style=flat-square)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)
-[![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/master.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
-[![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/master?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
+[![AppVeyor](https://img.shields.io/appveyor/build/Giorgi/EntityFramework-Exceptions/main.svg?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions)
+[![AppVeyor](https://img.shields.io/appveyor/tests/Giorgi/EntityFramework-Exceptions/main?style=flat-square&logo=appveyor)](https://ci.appveyor.com/project/Giorgi/entityframework-exceptions/build/tests)
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
 [![Ko-Fi](https://img.shields.io/static/v1?style=flat-square&message=Support%20the%20Project&color=success&style=plastic&logo=ko-fi&label=$$)](https://ko-fi.com/U6U81LHU8)
 
@@ -17,7 +17,7 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=coverage)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 
-[![Build Stats](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=master)
+[![Build Stats](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=main)](https://buildstats.info/AppVeyor/chart/Giorgi/EntityFramework-Exceptions?branch=main)
 
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)

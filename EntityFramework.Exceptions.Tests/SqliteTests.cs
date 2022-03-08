@@ -27,7 +27,7 @@ namespace EntityFramework.Exceptions.Tests
             Context.Database.OpenConnection();
             
             var handle = (Context.Database.GetDbConnection() as SqliteConnection).Handle;
-            var limit = SetLimit(handle, SqliteLimitLength, 15);
+            var limit = SetLimit(handle, SqliteLimitLength, DemoContext.ProductNameMaxLength);
             
             await base.MaxLengthViolationThrowsMaxLengthExceededException();
 

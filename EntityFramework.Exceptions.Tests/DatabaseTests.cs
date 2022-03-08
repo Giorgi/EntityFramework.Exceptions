@@ -54,7 +54,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
-            Context.Products.Add(new Product { Name = new string('G', 20) });
+            Context.Products.Add(new Product { Name = new string('G', DemoContext.ProductNameMaxLength + 5) });
 
             Assert.Throws<MaxLengthExceededException>(() => Context.SaveChanges());
             await Assert.ThrowsAsync<MaxLengthExceededException>(() => Context.SaveChangesAsync());
@@ -63,7 +63,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task NumericOverflowViolationThrowsNumericOverflowException()
         {
-            var product = new Product { Name = "GD" };
+            var product = new Product { Name = "Numeric Overflow Test" };
             Context.Products.Add(product);
             Context.ProductSales.Add(new ProductSale { Price = 3141.59265m, Product = product });
 
@@ -83,7 +83,7 @@ namespace EntityFramework.Exceptions.Tests
         [Fact]
         public virtual async Task NotHandledViolationReThrowsOriginalException()
         {
-            var product = new Product { Name = "GD" };
+            var product = new Product { Name = "Unhandled Violation Test" };
             Context.Products.Add(product);
 
             Context.SaveChanges();
@@ -116,9 +116,6 @@ namespace EntityFramework.Exceptions.Tests
         public virtual void Dispose()
         {
             CleanupContext();
-            Context.ProductPriceHistories.RemoveRange(Context.ProductPriceHistories);
-            Context.Products.RemoveRange(Context.Products);
-            Context.SaveChanges();
         }
 
         protected void CleanupContext()
