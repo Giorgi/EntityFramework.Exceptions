@@ -21,7 +21,7 @@ namespace EntityFramework.Exceptions.Tests
         [DllImport("e_sqlite3", CallingConvention = CallingConvention.Cdecl,EntryPoint = "sqlite3_limit")]
         private static extern int SetLimit(sqlite3 db, int id, int newVal);
 
-        [Fact(Skip = "")]
+        [Fact(Skip = "Skip temporarily")]
         public override async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
             Context.Database.OpenConnection();
