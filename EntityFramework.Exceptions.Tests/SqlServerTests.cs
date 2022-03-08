@@ -25,6 +25,12 @@ namespace EntityFramework.Exceptions.Tests
 
             Context.Database.CloseConnection();
         }
+
+        [Fact(Skip = "Skipping as Microsoft.Data.SqlClient throws ArgumentException when numeric value is not in range.")]
+        public override Task NumericOverflowViolationThrowsNumericOverflowException()
+        {
+            return Task.CompletedTask;
+        }
     }
 
     public class SqlServerDemoContextFixture : DemoContextFixture

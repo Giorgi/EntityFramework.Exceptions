@@ -36,7 +36,6 @@ namespace EntityFramework.Exceptions.Tests
     {
         public int Id { get; set; }
         public decimal Price { get; set; }
-        public DateTimeOffset SoldAt { get; set; }
 
         public int ProductId { get; set; }
         public Product Product { get; set; }
