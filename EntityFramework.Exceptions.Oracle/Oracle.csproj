@@ -10,4 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 </Project>

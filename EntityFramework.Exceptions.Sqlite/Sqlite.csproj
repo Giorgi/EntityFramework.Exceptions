@@ -10,4 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SQLite" Version="6.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 </Project>

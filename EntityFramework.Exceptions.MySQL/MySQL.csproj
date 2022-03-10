@@ -10,4 +10,8 @@
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 </Project>
