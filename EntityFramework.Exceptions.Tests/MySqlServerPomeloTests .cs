@@ -18,7 +18,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
-            return builder.UseMySql(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
+            return builder.UseMySql(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("5.7")).UseExceptionProcessor();
         }
     }
 }

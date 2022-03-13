@@ -1,11 +1,10 @@
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Oracle.ManagedDataAccess.Client;
 
 namespace EntityFramework.Exceptions.Oracle
 {
-    public class OracleExceptionProcessorStateManager : ExceptionProcessorStateManager<OracleException>
+    public class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<OracleException>
     {
         private const int CannotInsertNull = 1400;
         private const int UniqueConstraintViolation = 1;
@@ -13,11 +12,7 @@ namespace EntityFramework.Exceptions.Oracle
         private const int ChildRecordFound = 2292;
         private const int NumericOverflow = 1438;
         private const int NumericOrValueError = 12899;
-
-        public OracleExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
-        {
-        }
-
+        
         protected override DatabaseError? GetDatabaseError(OracleException dbException)
         {
             switch (dbException.Number)
@@ -43,14 +38,14 @@ namespace EntityFramework.Exceptions.Oracle
     {
         public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
         {
-            self.ReplaceService<IStateManager, OracleExceptionProcessorStateManager>();
+            self.AddInterceptors(new OracleExceptionProcessorInterceptor());
             return self;
         }
 
         public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self)
             where TContext : DbContext
         {
-            self.ReplaceService<IStateManager, OracleExceptionProcessorStateManager>();
+            self.AddInterceptors(new OracleExceptionProcessorInterceptor());
             return self;
         }
     }

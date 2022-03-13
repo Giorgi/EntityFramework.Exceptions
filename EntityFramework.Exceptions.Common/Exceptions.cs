@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EntityFramework.Exceptions.Common
 {
@@ -20,11 +20,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        public UniqueConstraintException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        public UniqueConstraintException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
         {
         }
 
-        public UniqueConstraintException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        public UniqueConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
         {
         }
 
@@ -47,11 +47,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        public CannotInsertNullException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        public CannotInsertNullException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
         {
         }
 
-        public CannotInsertNullException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        public CannotInsertNullException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
         {
         }
 
@@ -74,11 +74,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        public MaxLengthExceededException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        public MaxLengthExceededException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
         {
         }
 
-        public MaxLengthExceededException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        public MaxLengthExceededException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
         {
         }
 
@@ -101,11 +101,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        public NumericOverflowException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        public NumericOverflowException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
         {
         }
 
-        public NumericOverflowException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        public NumericOverflowException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
         {
         }
 
@@ -128,11 +128,11 @@ namespace EntityFramework.Exceptions.Common
         {
         }
 
-        public ReferenceConstraintException(string message, IReadOnlyList<IUpdateEntry> entries) : base(message, entries)
+        public ReferenceConstraintException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
         {
         }
 
-        public ReferenceConstraintException(string message, Exception innerException, IReadOnlyList<IUpdateEntry> entries) : base(message, innerException, entries)
+        public ReferenceConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
         {
         }
 

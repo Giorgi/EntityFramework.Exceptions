@@ -1,7 +1,6 @@
 ﻿using System;
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 #if POMELO
 using MySqlConnector;
@@ -11,7 +10,7 @@ using MySql.Data.MySqlClient;
 namespace EntityFramework.Exceptions.MySQL
 #endif
 {
-    class MySqlExceptionProcessorStateManager : ExceptionProcessorStateManager<MySqlException>
+    class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlException>
     {
         private const int NoReferencedRow = 1216;
         private const int RowIsReferenced = 1217;
@@ -21,11 +20,7 @@ namespace EntityFramework.Exceptions.MySQL
         private const int DuplicateEntryForKey = 1062;
         private const int OutOfRangeValueForColumn = 1264;
         private const int DataTooLongForColumn = 1406;
-
-        public MySqlExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
-        {
-        }
-
+        
         protected override DatabaseError? GetDatabaseError(MySqlException dbException)
         {
             switch (dbException.Number)
@@ -53,13 +48,13 @@ namespace EntityFramework.Exceptions.MySQL
     {
         public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
         {
-            self.ReplaceService<IStateManager, MySqlExceptionProcessorStateManager>();
+            self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
             return self;
         }
 
         public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
         {
-            self.ReplaceService<IStateManager, MySqlExceptionProcessorStateManager>();
+            self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
             return self;
         }
     }

@@ -1,16 +1,11 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Npgsql;
 
 namespace EntityFramework.Exceptions.PostgreSQL
 {
-    class PostgresExceptionProcessorStateManager : ExceptionProcessorStateManager<PostgresException>
+    class PostgresExceptionProcessorInterceptor : ExceptionProcessorInterceptor<PostgresException>
     {
-        public PostgresExceptionProcessorStateManager(StateManagerDependencies dependencies) : base(dependencies)
-        {
-        }
-
         protected override DatabaseError? GetDatabaseError(PostgresException dbException)
         {
             switch (dbException.SqlState)
@@ -35,13 +30,13 @@ namespace EntityFramework.Exceptions.PostgreSQL
     {
         public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
         {
-            self.ReplaceService<IStateManager, PostgresExceptionProcessorStateManager>();
+            self.AddInterceptors(new PostgresExceptionProcessorInterceptor());
             return self;
         }
 
         public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
         {
-            self.ReplaceService<IStateManager, PostgresExceptionProcessorStateManager>();
+            self.AddInterceptors(new PostgresExceptionProcessorInterceptor());
             return self;
         }
     }
