@@ -18,7 +18,7 @@ namespace EntityFramework.Exceptions.MySQL
             #if POMELO
             return dbException.ErrorCode switch
             #else
-            return (MySqlErrorCode)dbException.Code switch
+            return (MySqlErrorCode)dbException.Number switch
             #endif
             {
                 MySqlErrorCode.ColumnCannotBeNull => DatabaseError.CannotInsertNull,
