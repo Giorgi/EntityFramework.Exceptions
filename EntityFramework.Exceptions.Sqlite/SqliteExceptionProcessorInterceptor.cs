@@ -11,20 +11,15 @@ namespace EntityFramework.Exceptions.Sqlite
         {
             if (dbException.SqliteErrorCode == SQLITE_CONSTRAINT || dbException.SqliteErrorCode == SQLITE_TOOBIG)
             {
-                switch (dbException.SqliteExtendedErrorCode)
+                return dbException.SqliteExtendedErrorCode switch
                 {
-                    case SQLITE_TOOBIG:
-                        return DatabaseError.MaxLength;
-                    case SQLITE_CONSTRAINT_NOTNULL:
-                        return DatabaseError.CannotInsertNull;
-                    case SQLITE_CONSTRAINT_UNIQUE:
-                    case SQLITE_CONSTRAINT_PRIMARYKEY:
-                        return DatabaseError.UniqueConstraint;
-                    case SQLITE_CONSTRAINT_FOREIGNKEY:
-                        return DatabaseError.ReferenceConstraint;
-                    default:
-                        return null;
-                }
+                    SQLITE_TOOBIG => DatabaseError.MaxLength,
+                    SQLITE_CONSTRAINT_NOTNULL => DatabaseError.CannotInsertNull,
+                    SQLITE_CONSTRAINT_UNIQUE => DatabaseError.UniqueConstraint,
+                    SQLITE_CONSTRAINT_PRIMARYKEY => DatabaseError.UniqueConstraint,
+                    SQLITE_CONSTRAINT_FOREIGNKEY => DatabaseError.ReferenceConstraint,
+                    _ => null
+                };
             }
 
             return null;

@@ -4,7 +4,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace EntityFramework.Exceptions.Oracle
 {
-    public class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<OracleException>
+    class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<OracleException>
     {
         private const int CannotInsertNull = 1400;
         private const int UniqueConstraintViolation = 1;
@@ -15,22 +15,16 @@ namespace EntityFramework.Exceptions.Oracle
         
         protected override DatabaseError? GetDatabaseError(OracleException dbException)
         {
-            switch (dbException.Number)
+            return dbException.Number switch
             {
-                case IntegrityConstraintViolation: 
-                case ChildRecordFound:
-                    return DatabaseError.ReferenceConstraint;
-                case CannotInsertNull:
-                    return DatabaseError.CannotInsertNull;
-                case NumericOrValueError:
-                    return DatabaseError.MaxLength;
-                case NumericOverflow:
-                    return DatabaseError.NumericOverflow;
-                case UniqueConstraintViolation:
-                    return DatabaseError.UniqueConstraint;
-                default:
-                    return null;
-            }
+                IntegrityConstraintViolation => DatabaseError.ReferenceConstraint,
+                ChildRecordFound => DatabaseError.ReferenceConstraint,
+                CannotInsertNull => DatabaseError.CannotInsertNull,
+                NumericOrValueError => DatabaseError.MaxLength,
+                NumericOverflow => DatabaseError.NumericOverflow,
+                UniqueConstraintViolation => DatabaseError.UniqueConstraint,
+                _ => null
+            };
         }
     }
     

@@ -15,22 +15,16 @@ namespace EntityFramework.Exceptions.SqlServer
 
         protected override DatabaseError? GetDatabaseError(SqlException dbException)
         {
-            switch (dbException.Number)
+            return dbException.Number switch
             {
-                case ReferenceConstraint:
-                    return DatabaseError.ReferenceConstraint;
-                case CannotInsertNull:
-                    return DatabaseError.CannotInsertNull;
-                case CannotInsertDuplicateKeyUniqueIndex:
-                case CannotInsertDuplicateKeyUniqueConstraint:
-                    return DatabaseError.UniqueConstraint;
-                case ArithmeticOverflow:
-                    return DatabaseError.NumericOverflow;
-                case StringOrBinaryDataWouldBeTruncated:
-                    return DatabaseError.MaxLength;
-                default:
-                    return null;
-            }
+                ReferenceConstraint => DatabaseError.ReferenceConstraint,
+                CannotInsertNull => DatabaseError.CannotInsertNull,
+                CannotInsertDuplicateKeyUniqueIndex => DatabaseError.UniqueConstraint,
+                CannotInsertDuplicateKeyUniqueConstraint => DatabaseError.UniqueConstraint,
+                ArithmeticOverflow => DatabaseError.NumericOverflow,
+                StringOrBinaryDataWouldBeTruncated => DatabaseError.MaxLength,
+                _ => null
+            };
         }
     }
 

@@ -23,24 +23,18 @@ namespace EntityFramework.Exceptions.MySQL
         
         protected override DatabaseError? GetDatabaseError(MySqlException dbException)
         {
-            switch (dbException.Number)
+            return dbException.Number switch
             {
-                case ColumnCannotBeNull:
-                    return DatabaseError.CannotInsertNull;
-                case DuplicateEntryForKey:
-                    return DatabaseError.UniqueConstraint;
-                case OutOfRangeValueForColumn:
-                    return DatabaseError.NumericOverflow;
-                case DataTooLongForColumn:
-                    return DatabaseError.MaxLength;
-                case NoReferencedRow:
-                case RowIsReferenced:
-                case NoReferencedRow2:
-                case RowIsReferenced2:
-                    return DatabaseError.ReferenceConstraint;
-                default:
-                    return null;
-            }
+                ColumnCannotBeNull => DatabaseError.CannotInsertNull,
+                DuplicateEntryForKey => DatabaseError.UniqueConstraint,
+                OutOfRangeValueForColumn => DatabaseError.NumericOverflow,
+                DataTooLongForColumn => DatabaseError.MaxLength,
+                NoReferencedRow => DatabaseError.ReferenceConstraint,
+                RowIsReferenced => DatabaseError.ReferenceConstraint,
+                NoReferencedRow2 => DatabaseError.ReferenceConstraint,
+                RowIsReferenced2 => DatabaseError.ReferenceConstraint,
+                _ => null
+            };
         }
     }
 

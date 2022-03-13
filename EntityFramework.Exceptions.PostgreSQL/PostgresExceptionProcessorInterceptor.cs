@@ -8,21 +8,15 @@ namespace EntityFramework.Exceptions.PostgreSQL
     {
         protected override DatabaseError? GetDatabaseError(PostgresException dbException)
         {
-            switch (dbException.SqlState)
+            return dbException.SqlState switch
             {
-                case PostgresErrorCodes.StringDataRightTruncation:
-                    return DatabaseError.MaxLength;
-                case PostgresErrorCodes.NumericValueOutOfRange:
-                    return DatabaseError.NumericOverflow;
-                case PostgresErrorCodes.NotNullViolation:
-                    return DatabaseError.CannotInsertNull;
-                case PostgresErrorCodes.UniqueViolation:
-                    return DatabaseError.UniqueConstraint;
-                case PostgresErrorCodes.ForeignKeyViolation:
-                    return DatabaseError.ReferenceConstraint;
-                default:
-                    return null;
-            }
+                PostgresErrorCodes.StringDataRightTruncation => DatabaseError.MaxLength,
+                PostgresErrorCodes.NumericValueOutOfRange => DatabaseError.NumericOverflow,
+                PostgresErrorCodes.NotNullViolation => DatabaseError.CannotInsertNull,
+                PostgresErrorCodes.UniqueViolation => DatabaseError.UniqueConstraint,
+                PostgresErrorCodes.ForeignKeyViolation => DatabaseError.ReferenceConstraint,
+                _ => null
+            };
         }
     }
 
