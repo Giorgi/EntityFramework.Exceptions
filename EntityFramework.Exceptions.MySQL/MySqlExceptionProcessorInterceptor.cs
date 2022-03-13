@@ -12,27 +12,23 @@ namespace EntityFramework.Exceptions.MySQL
 {
     class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlException>
     {
-        private const int NoReferencedRow = 1216;
-        private const int RowIsReferenced = 1217;
-        private const int RowIsReferenced2 = 1451;
-        private const int NoReferencedRow2 = 1452;
-        private const int ColumnCannotBeNull = 1048;
-        private const int DuplicateEntryForKey = 1062;
-        private const int OutOfRangeValueForColumn = 1264;
-        private const int DataTooLongForColumn = 1406;
-        
         protected override DatabaseError? GetDatabaseError(MySqlException dbException)
         {
-            return dbException.Number switch
+
+            #if POMELO
+            return dbException.ErrorCode switch
+            #else
+            return (MySqlErrorCode)dbException.Code switch
+            #endif
             {
-                ColumnCannotBeNull => DatabaseError.CannotInsertNull,
-                DuplicateEntryForKey => DatabaseError.UniqueConstraint,
-                OutOfRangeValueForColumn => DatabaseError.NumericOverflow,
-                DataTooLongForColumn => DatabaseError.MaxLength,
-                NoReferencedRow => DatabaseError.ReferenceConstraint,
-                RowIsReferenced => DatabaseError.ReferenceConstraint,
-                NoReferencedRow2 => DatabaseError.ReferenceConstraint,
-                RowIsReferenced2 => DatabaseError.ReferenceConstraint,
+                MySqlErrorCode.ColumnCannotBeNull => DatabaseError.CannotInsertNull,
+                MySqlErrorCode.DuplicateKeyEntry=> DatabaseError.UniqueConstraint,
+                MySqlErrorCode.WarningDataOutOfRange => DatabaseError.NumericOverflow,
+                MySqlErrorCode.DataTooLong => DatabaseError.MaxLength,
+                MySqlErrorCode.NoReferencedRow => DatabaseError.ReferenceConstraint,
+                MySqlErrorCode.RowIsReferenced => DatabaseError.ReferenceConstraint,
+                MySqlErrorCode.NoReferencedRow2 => DatabaseError.ReferenceConstraint,
+                MySqlErrorCode.RowIsReferenced2 => DatabaseError.ReferenceConstraint,
                 _ => null
             };
         }
