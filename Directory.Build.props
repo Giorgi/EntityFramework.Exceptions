@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Common assembly attributes">
-    <Version>3.1.4</Version>
-    <FileVersion>3.1.4.0</FileVersion>
-    <AssemblyVersion>3.1.4.0</AssemblyVersion>
+    <Version>6.0.3</Version>
+    <FileVersion>6.0.3.0</FileVersion>
+    <AssemblyVersion>6.0.3.0</AssemblyVersion>
     <Authors>Giorgi Dalakishvili</Authors>
-    <Copyright>Copyright (c) 2018 - 2021 Giorgi Dalakishvili</Copyright>
+    <Copyright>Copyright (c) 2018 - 2022 Giorgi Dalakishvili</Copyright>
 
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
     <PackageIcon>Icon.png</PackageIcon>
