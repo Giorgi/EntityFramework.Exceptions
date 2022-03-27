@@ -2,29 +2,28 @@
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace EntityFramework.Exceptions.Tests
+namespace EntityFramework.Exceptions.Tests;
+
+public abstract class DemoContextFixture : IDisposable
 {
-    public abstract class DemoContextFixture : IDisposable
+    internal DemoContext Context { get; }
+
+    protected DemoContextFixture()
     {
-        internal DemoContext Context { get; }
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
-        protected DemoContextFixture()
-        {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
-            var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
+        var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
             
-            var builder = BuildOptions(new DbContextOptionsBuilder<DemoContext>(), configuration);
+        var builder = BuildOptions(new DbContextOptionsBuilder<DemoContext>(), configuration);
 
-            Context = new DemoContext(builder.Options);
-            Context.Database.EnsureCreated();
-        }
+        Context = new DemoContext(builder.Options);
+        Context.Database.EnsureCreated();
+    }
 
-        protected abstract DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
+    protected abstract DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
 
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-        }
+    public void Dispose()
+    {
+        Context.Database.EnsureDeleted();
     }
 }

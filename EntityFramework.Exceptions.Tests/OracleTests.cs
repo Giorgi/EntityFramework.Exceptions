@@ -4,21 +4,20 @@ using Microsoft.Extensions.Configuration;
 using EntityFramework.Exceptions.Oracle;
 using Xunit;
 
-namespace EntityFramework.Exceptions.Tests
-{
-    public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
-    {
-        public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
-        {
-        }
-    }
+namespace EntityFramework.Exceptions.Tests;
 
-    public class OracleTestContextFixture : DemoContextFixture
+public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
+{
+    public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
     {
-        protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
-        {
-            var connectionString = Environment.GetEnvironmentVariable("Oracle");
-            return builder.UseOracle(connectionString).UseExceptionProcessor();
-        }
+    }
+}
+
+public class OracleTestContextFixture : DemoContextFixture
+{
+    protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    {
+        var connectionString = Environment.GetEnvironmentVariable("Oracle");
+        return builder.UseOracle(connectionString).UseExceptionProcessor();
     }
 }
