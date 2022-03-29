@@ -1,6 +1,8 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EntityFramework.Exceptions.SqlServer;
 
@@ -30,6 +32,12 @@ class SqlServerExceptionProcessorInterceptor: ExceptionProcessorInterceptor<SqlE
 
 public static class ExceptionProcessorExtensions
 {
+    public static IServiceCollection AddExceptionProcessor(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    {
+        services.Add(ServiceDescriptor.Describe(typeof(IInterceptor), typeof(SqlServerExceptionProcessorInterceptor), serviceLifetime));
+        return services;
+    }
+
     public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
     {
         return self.AddInterceptors(new SqlServerExceptionProcessorInterceptor());

@@ -1,5 +1,7 @@
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Oracle.ManagedDataAccess.Client;
 
 namespace EntityFramework.Exceptions.Oracle;
@@ -30,6 +32,12 @@ class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<Oracle
     
 public static class ExceptionProcessorExtensions
 {
+    public static IServiceCollection AddExceptionProcessor(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    {
+        services.Add(ServiceDescriptor.Describe(typeof(IInterceptor), typeof(OracleExceptionProcessorInterceptor), serviceLifetime));
+        return services;
+    }
+
     public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
     {
         return self.AddInterceptors(new OracleExceptionProcessorInterceptor());

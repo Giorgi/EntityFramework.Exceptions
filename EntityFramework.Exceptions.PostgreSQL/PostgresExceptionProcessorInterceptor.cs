@@ -1,5 +1,7 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
 namespace EntityFramework.Exceptions.PostgreSQL;
@@ -22,6 +24,12 @@ class PostgresExceptionProcessorInterceptor : ExceptionProcessorInterceptor<Post
 
 public static class ExceptionProcessorExtensions
 {
+    public static IServiceCollection AddExceptionProcessor(this IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+	{
+        services.Add(ServiceDescriptor.Describe(typeof(IInterceptor), typeof(PostgresExceptionProcessorInterceptor), serviceLifetime));
+        return services;
+    }
+
     public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
     {
         return self.AddInterceptors(new PostgresExceptionProcessorInterceptor());
