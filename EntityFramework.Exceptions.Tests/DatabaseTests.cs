@@ -100,7 +100,7 @@ public abstract class DatabaseTests : IDisposable
     public virtual async Task DeleteParentItemThrowsReferenceConstraintException()
     {
         var product = new Product { Name = "AN" };
-        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow.Date.AddDays(-10) };
+        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTime.UtcNow.Date.AddDays(-10) };
         Context.ProductPriceHistories.Add(productPriceHistory);
         await Context.SaveChangesAsync();
 

@@ -1,7 +1,9 @@
 ﻿using EntityFramework.Exceptions.Sqlite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SQLitePCL;
 using System;
 using System.Runtime.InteropServices;
@@ -40,6 +42,18 @@ namespace EntityFramework.Exceptions.Tests
         public override Task NumericOverflowViolationThrowsNumericOverflowException()
         {
             return Task.CompletedTask;
+        }
+
+        [Fact]
+        public void DependencyInjectionInterceptorTest()
+        {
+            using var services = new ServiceCollection()
+                .AddExceptionProcessor()
+                .BuildServiceProvider()
+            ;
+
+            var interceptor = services.GetRequiredService<IInterceptor>();
+            Assert.IsType<SqliteExceptionProcessorInterceptor>(interceptor);
         }
     }
 

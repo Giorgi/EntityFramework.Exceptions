@@ -1,6 +1,8 @@
 ﻿using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -10,6 +12,18 @@ namespace EntityFramework.Exceptions.Tests
     {
         public PostgreSQLTests(PostgreSQLDemoContextFixture fixture) : base(fixture.Context)
         {
+        }
+
+        [Fact]
+        public void DependencyInjectionInterceptorTest()
+        {
+            using var services = new ServiceCollection()
+                .AddExceptionProcessor()
+                .BuildServiceProvider()
+            ;
+
+            var interceptor = services.GetRequiredService<IInterceptor>();
+            Assert.IsType<PostgresExceptionProcessorInterceptor>(interceptor);
         }
     }
 

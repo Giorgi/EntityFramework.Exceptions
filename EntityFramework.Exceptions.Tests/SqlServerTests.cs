@@ -1,6 +1,8 @@
 ﻿using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -30,6 +32,18 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
     public override Task NumericOverflowViolationThrowsNumericOverflowException()
     {
         return Task.CompletedTask;
+    }
+
+    [Fact]
+    public void DependencyInjectionInterceptorTest()
+    {
+        using var services = new ServiceCollection()
+            .AddExceptionProcessor()
+            .BuildServiceProvider()
+        ;
+
+        var interceptor = services.GetRequiredService<IInterceptor>();
+        Assert.IsType<SqlServerExceptionProcessorInterceptor>(interceptor);
     }
 }
 
