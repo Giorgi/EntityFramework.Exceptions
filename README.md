@@ -1,7 +1,7 @@
 ![EntityFramework.Exceptions](Icon.png "EntityFramework.Exceptions")
 
 # EntityFramework.Exceptions
-Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite and MySql
+Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite, Oracle and MySql
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
 [![Target](https://img.shields.io/static/v1?label=target&message=net6.0&color=512bd4&logo=.net&style=flat-square)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)
