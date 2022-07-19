@@ -33,7 +33,7 @@ test_script:
 
 after_test:
 - cmd: >-
-    "tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
+    #"tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
     
     "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
 
