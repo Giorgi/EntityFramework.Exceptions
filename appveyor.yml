@@ -4,7 +4,7 @@ environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
   JAVA_HOME: C:\Program Files\Java\jdk15
   COVERALLS_REPO_TOKEN:
-    secure: vwONgnel4MS/HvymcUOgqSAl1R1AtAfGMD0xy4QDNrgLSDYWTrd9673dM2GCMJv7
+    secure: HS3I62bo7GH5+22WHl7WEmdKrUjmrDl0OFuCJo8fitWH6y/MY8d6NIqUgSHqfPal
   SONAR_TOKEN:
     secure: vLE/BPEfei+Li0PjsVhpsL6Bj5nRTP2J4FpaEldGgqBTNCrtmUf34VS4na2Ogmyj
   Oracle:
