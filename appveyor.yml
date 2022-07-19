@@ -33,8 +33,6 @@ test_script:
 
 after_test:
 - cmd: >-
-    #"tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
-    
     "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
 
     "tools\dotnet-sonarscanner" end /d:sonar.login="0c265007ce2b2184cd222f66489f567e0b059260"
