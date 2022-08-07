@@ -18,7 +18,7 @@ before_build:
 
     nuget restore
 
-    dotnet tool install --add-source https://ci.appveyor.com/nuget/coveralls-net-t37a9a9unhwk coveralls.net --tool-path tools
+    dotnet tool install coveralls.net --tool-path tools
 
     dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
 
