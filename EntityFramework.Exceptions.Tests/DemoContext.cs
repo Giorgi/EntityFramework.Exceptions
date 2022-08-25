@@ -9,6 +9,7 @@ public class DemoContext : DbContext
     {
     }
 
+    public DbSet<Customer> Customers { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSale> ProductSales { get; set; }
     public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
@@ -48,4 +49,10 @@ public class ProductPriceHistory
     public DateTimeOffset EffectiveDate { get; set; }
     public int ProductId { get; set; }
     public Product Product { get; set; }
+}
+
+public class Customer
+{
+    public int Id { get; set; }
+    public string Fullname { get; set; }
 }

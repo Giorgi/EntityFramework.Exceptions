@@ -1,6 +1,7 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using MySql.EntityFrameworkCore.Extensions;
 using Xunit;
@@ -81,7 +82,7 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
-    public virtual async Task NotHandledViolationReThrowsOriginalException()
+    public virtual async Task DatabaseUnrelatedExceptionThrowsOriginalException()
     {
         var product = new Product { Name = "Unhandled Violation Test" };
         Context.Products.Add(product);
@@ -111,6 +112,17 @@ public abstract class DatabaseTests : IDisposable
 
         Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
         await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
+    }
+
+    [Fact]
+    public async Task NotHandledViolationReThrowsOriginalException()
+    {
+        Context.Customers.Add(new Customer { Fullname = "Test" });
+        
+        await Context.Database.ExecuteSqlRawAsync("Drop table Customers");
+
+        Assert.Throws<DbUpdateException>(() => Context.SaveChanges());
+        await Assert.ThrowsAsync<DbUpdateException>(() => Context.SaveChangesAsync());
     }
 
     public virtual void Dispose()
