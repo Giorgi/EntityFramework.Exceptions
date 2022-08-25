@@ -10,11 +10,13 @@ namespace EntityFramework.Exceptions.Tests;
 
 public abstract class DatabaseTests : IDisposable
 {
+    private readonly bool isMySql;
     internal DemoContext Context { get; }
 
     protected DatabaseTests(DemoContext context)
     {
         Context = context;
+        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database);
     }
 
     [Fact]
@@ -88,7 +90,7 @@ public abstract class DatabaseTests : IDisposable
         Context.Products.Add(product);
 
         Context.SaveChanges();
-        Context.Database.ExecuteSqlInterpolated(MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database)
+        Context.Database.ExecuteSqlInterpolated(isMySql
             ? $"Delete from products where id={product.Id}"
             : (FormattableString)$"Delete from \"Products\" where \"Id\"={product.Id}");
         product.Name = "G";
@@ -118,8 +120,8 @@ public abstract class DatabaseTests : IDisposable
     public async Task NotHandledViolationReThrowsOriginalException()
     {
         Context.Customers.Add(new Customer { Fullname = "Test" });
-        
-        await Context.Database.ExecuteSqlRawAsync("Drop table Customers");
+
+        await Context.Database.ExecuteSqlRawAsync(isMySql ? "Drop table customers" : "Drop table \"Customers\"");
 
         Assert.Throws<DbUpdateException>(() => Context.SaveChanges());
         await Assert.ThrowsAsync<DbUpdateException>(() => Context.SaveChangesAsync());
