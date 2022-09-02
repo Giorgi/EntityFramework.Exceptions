@@ -12,6 +12,7 @@ class SqlServerExceptionProcessorInterceptor: ExceptionProcessorInterceptor<SqlE
     private const int CannotInsertDuplicateKeyUniqueConstraint = 2627;
     private const int ArithmeticOverflow = 8115;
     private const int StringOrBinaryDataWouldBeTruncated = 8152;
+    private const int StringOrBinaryDataWouldBeTruncated2019 = 2628;
 
     protected override DatabaseError? GetDatabaseError(SqlException dbException)
     {
@@ -23,6 +24,7 @@ class SqlServerExceptionProcessorInterceptor: ExceptionProcessorInterceptor<SqlE
             CannotInsertDuplicateKeyUniqueConstraint => DatabaseError.UniqueConstraint,
             ArithmeticOverflow => DatabaseError.NumericOverflow,
             StringOrBinaryDataWouldBeTruncated => DatabaseError.MaxLength,
+            StringOrBinaryDataWouldBeTruncated2019 => DatabaseError.MaxLength,
             _ => null
         };
     }
