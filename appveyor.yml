@@ -29,7 +29,7 @@ build:
   parallel: true
   verbosity: minimal
 test_script:
-- cmd: dotnet test --logger trx "EntityFramework.Exceptions.Tests\Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=\"json,opencover,lcov\" /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+- cmd: dotnet test --logger trx "EntityFramework.Exceptions.Tests\Tests.csproj" /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
 
 after_test:
 - cmd: >-
