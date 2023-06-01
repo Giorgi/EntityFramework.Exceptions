@@ -13,6 +13,7 @@
 
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
     <PackageIcon>Icon.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>License.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     
@@ -34,6 +35,10 @@
       <PackagePath></PackagePath>
     </None>
     <None Include="..\License.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

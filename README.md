@@ -1,4 +1,4 @@
-![EntityFramework.Exceptions](Icon.png "EntityFramework.Exceptions")
+![EntityFramework.Exceptions](https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/main/Icon.png "EntityFramework.Exceptions")
 
 # EntityFramework.Exceptions
 Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite, Oracle and MySql
