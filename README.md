@@ -38,7 +38,8 @@ the concrete `DbException` subclass instance and check the error code to determi
 
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
 to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s) such as `UniqueConstraintException`,
-`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException` you need. All these extensions inherit from `DbUpdateException` for backwards compatibility.
+`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException` you need. 
+All these exceptions inherit from `DbUpdateException` for backwards compatibility.
 
 ### How do I get started?
 First, install the package corresponding to your database:
