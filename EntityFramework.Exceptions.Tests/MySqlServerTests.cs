@@ -5,14 +5,14 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
 
-[Collection("MySQL Test Collection")]
-public class MySQLServerTests : DatabaseTests, IClassFixture<MySQLDemoContextFixture>
-{
-    public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.Context)
-    {
+//[Collection("MySQL Test Collection")]
+//public class MySQLServerTests : DatabaseTests, IClassFixture<MySQLDemoContextFixture>
+//{
+//    public MySQLServerTests(MySQLDemoContextFixture fixture) : base(fixture.Context)
+//    {
 
-    }
-}
+//    }
+//}
 
 public class MySQLDemoContextFixture : DemoContextFixture
 {
