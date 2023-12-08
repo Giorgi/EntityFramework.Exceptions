@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageTags>EntityFramework EF MySql MySqlConnector Pomelo EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
-    <PackageReleaseNotes>Update to .NET 6 and EF Core 6.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 8 and EF Core 8</PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException
 
 Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Core provider for MySQL</Description>

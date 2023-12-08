@@ -1,14 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>6.0.3.2</Version>
-    <FileVersion>6.0.3.2</FileVersion>
-    <AssemblyVersion>6.0.3.2</AssemblyVersion>
     <PackageTags>EntityFramework EF SqlServer EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
-    <PackageReleaseNotes>Update Microsoft.Data.SqlClient version
-
-Treat 2628 error as MaxLengthExceededException
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 8 and EF Core 8</PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException</Description>
   </PropertyGroup>
 
