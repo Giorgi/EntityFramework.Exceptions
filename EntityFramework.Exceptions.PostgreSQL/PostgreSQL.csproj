@@ -9,8 +9,4 @@
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="8.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-  </ItemGroup>
 </Project>
