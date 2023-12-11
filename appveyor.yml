@@ -15,7 +15,7 @@ environment:
 services:
 - mssql2017
 - postgresql13
-- mysql
+- #mysql
 before_build:
 - cmd: >-
     java -version
@@ -37,6 +37,10 @@ test_script:
 
 after_test:
 - cmd: >-
+    where java
+    
+    java --version
+    
     "tools\csmacnz.coveralls.exe" --opencover -i "EntityFramework.Exceptions.Tests\TestResults\coverage.net8.0.opencover.xml" --repoToken %COVERALLS_REPO_TOKEN%
     
     "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.net8.0.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
