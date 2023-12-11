@@ -4,7 +4,7 @@ init:
   - ps: Start-Service MySQL80
 environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
-  JAVA_HOME: C:\Program Files\Java\jdk15
+  JAVA_HOME: C:\Program Files\Java\jdk19
   COVERALLS_REPO_TOKEN:
     secure: HS3I62bo7GH5+22WHl7WEmdKrUjmrDl0OFuCJo8fitWH6y/MY8d6NIqUgSHqfPal
   SONAR_TOKEN:
