@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageTags>EntityFramework EF Exception SqlServer PostgreSQL MySql EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
-    <PackageReleaseNotes>Update to .NET 6 and EF Core 6.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 8 and EF Core 8</PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException
 
       This is a base package for database specific packages. Install one of the specific packages instead of this</Description>
