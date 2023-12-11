@@ -46,7 +46,5 @@ after_test:
     
     "tools\reportgenerator" "-reports:EntityFramework.Exceptions.Tests\TestResults\coverage.net8.0.opencover.xml" "-targetdir:EntityFramework.Exceptions.Tests\TestResults" -reporttypes:Html
 
-    "tools\dotnet-sonarscanner" end /d:sonar.login="0c265007ce2b2184cd222f66489f567e0b059260"
-
 artifacts:
   - path: EntityFramework.Exceptions.Tests\TestResults
