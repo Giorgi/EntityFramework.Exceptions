@@ -2,6 +2,7 @@ version: 8.0.{build}
 image: Visual Studio 2022
 init:
   - ps: Start-Service MySQL80
+  - set JAVA_HOME_11_X64=C:\Program Files\Java\jdk21
   - set PATH=C:\Program Files\Java\jdk21\bin;%PATH%
 environment:
   ASPNETCORE_ENVIRONMENT: Appveyor
