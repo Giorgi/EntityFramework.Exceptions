@@ -17,7 +17,7 @@
 
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
     <PackageIcon>Icon.png</PackageIcon>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>License.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     
