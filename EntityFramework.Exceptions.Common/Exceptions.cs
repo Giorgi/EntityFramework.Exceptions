@@ -27,10 +27,6 @@ public class UniqueConstraintException : DbUpdateException
     public UniqueConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
     {
     }
-
-    public UniqueConstraintException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
 }
 
 public class CannotInsertNullException : DbUpdateException
@@ -52,10 +48,6 @@ public class CannotInsertNullException : DbUpdateException
     }
 
     public CannotInsertNullException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
-    {
-    }
-
-    public CannotInsertNullException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }
@@ -81,10 +73,6 @@ public class MaxLengthExceededException : DbUpdateException
     public MaxLengthExceededException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
     {
     }
-
-    public MaxLengthExceededException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
 }
 
 public class NumericOverflowException : DbUpdateException
@@ -108,10 +96,6 @@ public class NumericOverflowException : DbUpdateException
     public NumericOverflowException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
     {
     }
-
-    public NumericOverflowException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
 }
 
 public class ReferenceConstraintException : DbUpdateException
@@ -133,10 +117,6 @@ public class ReferenceConstraintException : DbUpdateException
     }
 
     public ReferenceConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
-    {
-    }
-
-    public ReferenceConstraintException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }
