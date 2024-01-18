@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Common assembly attributes">
-    <Version>8.0.0.1</Version>
-    <FileVersion>8.0.0.1</FileVersion>
-    <AssemblyVersion>8.0.0.1</AssemblyVersion>
+    <Version>8.0.0.2</Version>
+    <FileVersion>8.0.0.2</FileVersion>
+    <AssemblyVersion>8.0.0.2</AssemblyVersion>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 - 2024 Giorgi Dalakishvili</Copyright>
 
