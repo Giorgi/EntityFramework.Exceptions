@@ -110,3 +110,14 @@ using (var demoContext = new DemoContext())
     }
 }
 ```
+
+### Usage with DbContext pooling
+
+Instead of calling `UseExceptionProcessor` in the `OnConfiguring` method, add it where you add your `DbContextPool`:
+
+```csharp
+// Replace UseNpgsql with the sql flavor you're using
+builder.Services.AddDbContextPool<DemoContext>(options => options
+    .UseNpgsql(config.GetConnectionString("DemoConnection"))
+    .UseExceptionProcessor());
+```
