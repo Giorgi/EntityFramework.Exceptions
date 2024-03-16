@@ -27,6 +27,8 @@ public class UniqueConstraintException : DbUpdateException
     public UniqueConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
     {
     }
+
+    public string ConstraintName { get; internal set; }
 }
 
 public class CannotInsertNullException : DbUpdateException

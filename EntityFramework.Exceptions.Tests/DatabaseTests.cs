@@ -11,12 +11,14 @@ namespace EntityFramework.Exceptions.Tests;
 public abstract class DatabaseTests : IDisposable
 {
     private readonly bool isMySql;
+    private bool isSqlite;
     internal DemoContext Context { get; }
 
     protected DatabaseTests(DemoContext context)
     {
         Context = context;
         isMySql = MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database);
+        isSqlite = context.Database.IsSqlite();
     }
 
     [Fact]
@@ -25,8 +27,13 @@ public abstract class DatabaseTests : IDisposable
         Context.Products.Add(new Product { Name = "GD" });
         Context.Products.Add(new Product { Name = "GD" });
 
-        Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
         await Assert.ThrowsAsync<UniqueConstraintException>(() => Context.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            Assert.NotEmpty(uniqueConstraintException.ConstraintName);
+        }
     }
 
     [Fact]

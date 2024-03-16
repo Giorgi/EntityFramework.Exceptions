@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,17 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             if (error != null && dbUpdateException != null)
             {
                 var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+
+                if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
+                {
+                    var indexes = eventData.Context.Model.GetEntityTypes().SelectMany(x => x.GetIndexes().Where(index => index.IsUnique));
+                    var indexNames = indexes.ToDictionary(x => x.GetDatabaseName()!, x => x.Properties);
+
+                    var (key, value) = indexNames.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
+
+                    uniqueConstraint.ConstraintName = key;
+                }
+
                 throw exception;
             }
         }
