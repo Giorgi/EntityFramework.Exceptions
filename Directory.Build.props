@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Common assembly attributes">
-    <Version>8.0.0.2</Version>
-    <FileVersion>8.0.0.2</FileVersion>
-    <AssemblyVersion>8.0.0.2</AssemblyVersion>
+    <Version>8.1.0</Version>
+    <FileVersion>8.1.0</FileVersion>
+    <AssemblyVersion>8.1.0</AssemblyVersion>
     <Authors>Giorgi Dalakishvili</Authors>
     <Copyright>Copyright (c) 2018 - 2024 Giorgi Dalakishvili</Copyright>
 
@@ -20,6 +20,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>License.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>Add ConstraintName and ConstraintProperties to UniqueConstraintException</PackageReleaseNotes>
     
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(Configuration)'=='Release'">True</ContinuousIntegrationBuild>

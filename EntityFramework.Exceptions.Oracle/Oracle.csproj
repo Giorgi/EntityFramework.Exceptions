@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <PackageTags>EntityFramework EF Oracle EntityFrameworkCore ODP.NET entity-framework-core EFCore Data Database</PackageTags>
-    <PackageReleaseNotes>Update to .NET 8 and EF Core 8</PackageReleaseNotes>
     <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException</Description>
   </PropertyGroup>
 
