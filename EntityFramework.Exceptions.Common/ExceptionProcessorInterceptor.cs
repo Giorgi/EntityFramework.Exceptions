@@ -1,14 +1,19 @@
-﻿using System.Data.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EntityFramework.Exceptions.Common;
 
 public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor where T : DbException
 {
+    private Dictionary<string, IReadOnlyList<IProperty>> uniqueIndexes;
+
     protected internal enum DatabaseError
     {
         UniqueConstraint,
@@ -35,12 +40,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
 
                 if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
                 {
-                    var indexes = eventData.Context.Model.GetEntityTypes().SelectMany(x => x.GetIndexes().Where(index => index.IsUnique));
-                    var indexNames = indexes.ToDictionary(x => x.GetDatabaseName()!, x => x.Properties);
-
-                    var (key, value) = indexNames.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
-
-                    uniqueConstraint.ConstraintName = key;
+                    SetConstraintName(eventData.Context, uniqueConstraint, providerException);
                 }
 
                 throw exception;
@@ -62,10 +62,29 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             if (error != null && dbUpdateException != null)
             {
                 var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+                
+                if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
+                {
+                    SetConstraintName(eventData.Context, uniqueConstraint, providerException);
+                }
+
                 throw exception;
             }
         }
 
         return base.SaveChangesFailedAsync(eventData, cancellationToken);
+    }
+
+    private void SetConstraintName(DbContext context, UniqueConstraintException exception, Exception providerException)
+    {
+        if (uniqueIndexes == null)
+        {
+            var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetIndexes().Where(index => index.IsUnique));
+            uniqueIndexes = indexes.ToDictionary(x => x.GetDatabaseName()!, x => x.Properties);
+        }
+
+        var (key, value) = uniqueIndexes.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
+
+        exception.ConstraintName = key;
     }
 }
