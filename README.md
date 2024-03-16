@@ -39,6 +39,15 @@ the concrete `DbException` subclass instance and check the error code to determi
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
 to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s) such as `UniqueConstraintException`,
 `CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException` you need. 
+
+In case of `UniqueConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will containt the properties of the constraint. 
+
+> [!WARNING]
+> `ConstraintName` and `ConstraintProperties` will be populated only if the index is defined in the Entity Framework Model. These properties will not be populated if the index exists in the database but isn't part of the model or if the index is added with [MigrationBuilder.Sql](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.migrations.migrationbuilder.sql?view=efcore-8.0) method.
+
+> [!WARNING]
+> `ConstraintName` and `ConstraintProperties` will not be populated when using SQLite. 
+
 All these exceptions inherit from `DbUpdateException` for backwards compatibility.
 
 ### How do I get started?
@@ -76,6 +85,11 @@ class DemoContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSale> ProductSale { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<Product>().HasIndex(u => u.Name).IsUnique();
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseExceptionProcessor();
@@ -90,14 +104,14 @@ using (var demoContext = new DemoContext())
 {
     demoContext.Products.Add(new Product
     {
-        Name = "a",
-        Price = 1
+        Name = "demo",
+        Price = 10
     });
 
     demoContext.Products.Add(new Product
     {
-        Name = "a",
-        Price = 1
+        Name = "demo",
+        Price = 100
     });
 
     try
@@ -107,6 +121,7 @@ using (var demoContext = new DemoContext())
     catch (UniqueConstraintException e)
     {
         //Handle exception here
+        Console.WriteLine($"Unique constraint {e.ConstraintName} violated. Duplicate value for {e.ConstraintProperties[0]}");
     }
 }
 ```
