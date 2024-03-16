@@ -40,7 +40,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
 
                 if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
                 {
-                    SetConstraintName(eventData.Context, uniqueConstraint, providerException);
+                    SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
                 }
 
                 throw exception;
@@ -62,10 +62,10 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             if (error != null && dbUpdateException != null)
             {
                 var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
-                
+
                 if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
                 {
-                    SetConstraintName(eventData.Context, uniqueConstraint, providerException);
+                    SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
                 }
 
                 throw exception;
@@ -75,7 +75,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         return base.SaveChangesFailedAsync(eventData, cancellationToken);
     }
 
-    private void SetConstraintName(DbContext context, UniqueConstraintException exception, Exception providerException)
+    private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
     {
         if (uniqueIndexes == null)
         {
@@ -86,5 +86,10 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         var (key, value) = uniqueIndexes.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
 
         exception.ConstraintName = key;
+
+        if (value != null)
+        {
+            exception.ConstraintProperties = value.Select(property => property.Name).ToList();
+        }
     }
 }

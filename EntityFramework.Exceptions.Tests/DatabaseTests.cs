@@ -1,6 +1,7 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using MySql.EntityFrameworkCore.Extensions;
@@ -11,7 +12,7 @@ namespace EntityFramework.Exceptions.Tests;
 public abstract class DatabaseTests : IDisposable
 {
     private readonly bool isMySql;
-    private bool isSqlite;
+    private readonly bool isSqlite;
     internal DemoContext Context { get; }
 
     protected DatabaseTests(DemoContext context)
@@ -32,7 +33,9 @@ public abstract class DatabaseTests : IDisposable
 
         if (!isSqlite)
         {
-            Assert.NotEmpty(uniqueConstraintException.ConstraintName);
+            Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
+            Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
+            Assert.Contains<string>(nameof(Product.Name), uniqueConstraintException.ConstraintProperties);
         }
     }
 
