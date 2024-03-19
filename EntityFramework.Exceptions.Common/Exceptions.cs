@@ -122,4 +122,8 @@ public class ReferenceConstraintException : DbUpdateException
     public ReferenceConstraintException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
     {
     }
+
+    public string TableName { get; set; }
+    public string ConstraintName { get; internal set; }
+    public IReadOnlyList<string> ConstraintProperties { get; internal set; }
 }

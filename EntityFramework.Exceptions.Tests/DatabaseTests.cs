@@ -89,8 +89,15 @@ public abstract class DatabaseTests : IDisposable
     {
         Context.ProductSales.Add(new ProductSale { Price = 3.14m });
 
-        Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
+        var referenceConstraintException = Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
         await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            Assert.False(string.IsNullOrEmpty(referenceConstraintException.ConstraintName));
+            Assert.NotEmpty(referenceConstraintException.ConstraintProperties);
+            Assert.Contains<string>(nameof(ProductSale.ProductId), referenceConstraintException.ConstraintProperties);
+        }
     }
 
     [Fact]

@@ -13,6 +13,7 @@ namespace EntityFramework.Exceptions.Common;
 public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor where T : DbException
 {
     private Dictionary<string, IReadOnlyList<IProperty>> uniqueIndexes;
+    private Dictionary<string, IReadOnlyList<IProperty>> foreignKeys;
 
     protected internal enum DatabaseError
     {
@@ -38,9 +39,14 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             {
                 var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
 
-                if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
+                switch (exception)
                 {
-                    SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+                    case UniqueConstraintException uniqueConstraint when eventData.Context != null:
+                        SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+                        break;
+                    case ReferenceConstraintException referenceConstraint when eventData.Context != null:
+                        SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
+                        break;
                 }
 
                 throw exception;
@@ -63,9 +69,14 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             {
                 var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
 
-                if (exception is UniqueConstraintException uniqueConstraint && eventData.Context != null)
+                switch (exception)
                 {
-                    SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+                    case UniqueConstraintException uniqueConstraint when eventData.Context != null:
+                        SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+                        break;
+                    case ReferenceConstraintException referenceConstraint when eventData.Context != null:
+                        SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
+                        break;
                 }
 
                 throw exception;
@@ -84,6 +95,24 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         }
 
         var (key, value) = uniqueIndexes.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
+
+        exception.ConstraintName = key;
+
+        if (value != null)
+        {
+            exception.ConstraintProperties = value.Select(property => property.Name).ToList();
+        }
+    }
+
+    private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, Exception providerException)
+    {
+        if (foreignKeys == null)
+        {
+            var keys = context.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys());
+            foreignKeys = keys.ToDictionary(key => key.GetConstraintName(), key => key.Properties);
+        }
+
+        var (key, value) = foreignKeys.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
 
         exception.ConstraintName = key;
 
