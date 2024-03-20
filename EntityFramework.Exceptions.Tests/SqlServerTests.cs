@@ -13,6 +13,7 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
     {
     }
 
+    [Fact]
     public override async Task PrimaryKeyViolationThrowsUniqueConstraintException()
     {
         Context.Database.OpenConnection();
