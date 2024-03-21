@@ -90,7 +90,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     {
         if (uniqueIndexes == null)
         {
-            var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetIndexes().Where(index => index.IsUnique));
+            var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredIndexes().Where(index => index.IsUnique));
             uniqueIndexes = indexes.ToDictionary(x => x.GetDatabaseName()!, x => x.Properties);
         }
 
@@ -108,7 +108,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     {
         if (foreignKeys == null)
         {
-            var keys = context.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys());
+            var keys = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredForeignKeys());
             foreignKeys = keys.ToDictionary(key => key.GetConstraintName(), key => key.Properties);
         }
 
