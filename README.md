@@ -40,7 +40,7 @@ EntityFramework.Exceptions simplifies this by handling all the database specific
 to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s) such as `UniqueConstraintException`,
 `CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException` you need. 
 
-In case of `UniqueConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will contain the properties that are part of the constraint. 
+In case of `UniqueConstraintException` and `ReferenceConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will contain the properties that are part of the constraint. 
 
 > [!WARNING]
 > `ConstraintName` and `ConstraintProperties` will be populated only if the index is defined in the Entity Framework Model. These properties will not be populated if the index exists in the database but isn't part of the model or if the index is added with [MigrationBuilder.Sql](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.migrations.migrationbuilder.sql?view=efcore-8.0) method.
