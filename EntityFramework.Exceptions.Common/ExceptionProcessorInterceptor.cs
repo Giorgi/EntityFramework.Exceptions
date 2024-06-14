@@ -12,8 +12,8 @@ namespace EntityFramework.Exceptions.Common;
 
 public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor where T : DbException
 {
-    private Dictionary<string, IReadOnlyList<IProperty>> uniqueIndexes;
     private Dictionary<string, IReadOnlyList<IProperty>> foreignKeys;
+    private List<IndexDetails> uniqueIndexDetailsList;
 
     protected internal enum DatabaseError
     {
@@ -88,22 +88,22 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
 
     private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
     {
-        if (uniqueIndexes == null)
+        if (uniqueIndexDetailsList == null)
         {
             var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredIndexes().Where(index => index.IsUnique));
 
             var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(), (index, tableIndex) => new { tableIndex, index.Properties });
 
-            uniqueIndexes = mappedIndexes.ToDictionary(arg => arg.tableIndex.Name, arg => arg.Properties);
+            uniqueIndexDetailsList = mappedIndexes.Select(arg => new IndexDetails(arg.tableIndex.Name, arg.tableIndex.Table.SchemaQualifiedName, arg.Properties)).ToList();
         }
 
-        var (key, value) = uniqueIndexes.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
+        var indexDetails = uniqueIndexDetailsList.FirstOrDefault(index => providerException.Message.Contains(index.Name) && providerException.Message.Contains(index.SchemaQualifiedTableName));
 
-        exception.ConstraintName = key;
-
-        if (value != null)
+        if (indexDetails != null)
         {
-            exception.ConstraintProperties = value.Select(property => property.Name).ToList();
+            exception.ConstraintName = indexDetails.Name;
+
+            exception.ConstraintProperties = indexDetails.Properties.Select(property => property.Name).ToList();
         }
     }
 
