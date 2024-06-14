@@ -97,13 +97,14 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             uniqueIndexDetailsList = mappedIndexes.Select(arg => new IndexDetails(arg.tableIndex.Name, arg.tableIndex.Table.SchemaQualifiedName, arg.Properties)).ToList();
         }
 
-        var indexDetails = uniqueIndexDetailsList.FirstOrDefault(index => providerException.Message.Contains(index.Name) && providerException.Message.Contains(index.SchemaQualifiedTableName));
+        var matchingIndexes = uniqueIndexDetailsList.Where(index => providerException.Message.Contains(index.Name)).ToList();
+        var match = matchingIndexes.Count == 1 ? matchingIndexes[0] : matchingIndexes.FirstOrDefault(index => providerException.Message.Contains(index.SchemaQualifiedTableName));
 
-        if (indexDetails != null)
+        if (match != null)
         {
-            exception.ConstraintName = indexDetails.Name;
+            exception.ConstraintName = match.Name;
 
-            exception.ConstraintProperties = indexDetails.Properties.Select(property => property.Name).ToList();
+            exception.ConstraintProperties = match.Properties.Select(property => property.Name).ToList();
         }
     }
 
