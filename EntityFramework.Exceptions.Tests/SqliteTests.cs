@@ -48,5 +48,10 @@ namespace EntityFramework.Exceptions.Tests
         {
             return builder.UseSqlite(configuration.GetConnectionString("Sqlite")).UseExceptionProcessor();
         }
+
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+        {
+            return builder.UseSqlite(configuration.GetConnectionString("Sqlite")).UseExceptionProcessor();
+        }
     }
 }
