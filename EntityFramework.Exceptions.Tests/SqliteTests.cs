@@ -13,7 +13,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         private const int SqliteLimitLength = 0;
 
-        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.Context)
+        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.DemoContext)
         {
         }
 
@@ -23,16 +23,16 @@ namespace EntityFramework.Exceptions.Tests
         [Fact(Skip = "Skippping because of https://github.com/dotnet/efcore/issues/27597")]
         public override async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
-            Context.Database.OpenConnection();
+            DemoContext.Database.OpenConnection();
             
-            var handle = (Context.Database.GetDbConnection() as SqliteConnection).Handle;
+            var handle = (DemoContext.Database.GetDbConnection() as SqliteConnection).Handle;
             var limit = SetLimit(handle, SqliteLimitLength, DemoContext.ProductNameMaxLength);
             
             await base.MaxLengthViolationThrowsMaxLengthExceededException();
 
             SetLimit(handle, SqliteLimitLength, limit);
 
-            Context.Database.CloseConnection();
+            DemoContext.Database.CloseConnection();
         }
 
         [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]
@@ -44,7 +44,7 @@ namespace EntityFramework.Exceptions.Tests
 
     public class SqliteDemoContextFixture : DemoContextFixture
     {
-        protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
         {
             return builder.UseSqlite(configuration.GetConnectionString("Sqlite")).UseExceptionProcessor();
         }

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using EFExceptionSchema.Entities.Incidents;
+using EntityFramework.Exceptions.Tests.ConstraintTests;
 using MySql.EntityFrameworkCore.Extensions;
 using Xunit;
 
@@ -13,29 +15,64 @@ public abstract class DatabaseTests : IDisposable
 {
     private readonly bool isMySql;
     private readonly bool isSqlite;
-    internal DemoContext Context { get; }
+    internal DemoContext DemoContext { get; }
+    internal SameNameIndexesContext SameNameIndexesContext { get; }
 
-    protected DatabaseTests(DemoContext context)
+    protected DatabaseTests(DemoContext demoContext, SameNameIndexesContext sameNameIndexesContext = null)
     {
-        Context = context;
-        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(Context.Database) || MySQLDatabaseFacadeExtensions.IsMySql(Context.Database);
-        isSqlite = context.Database.IsSqlite();
+        DemoContext = demoContext;
+        SameNameIndexesContext = sameNameIndexesContext;
+
+        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(DemoContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
+        isSqlite = demoContext.Database.IsSqlite();
     }
 
     [Fact]
     public virtual async Task UniqueColumnViolationThrowsUniqueConstraintException()
     {
-        Context.Products.Add(new Product { Name = "GD" });
-        Context.Products.Add(new Product { Name = "GD" });
+        DemoContext.Products.Add(new Product { Name = "GD" });
+        DemoContext.Products.Add(new Product { Name = "GD" });
 
-        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<UniqueConstraintException>(() => Context.SaveChangesAsync());
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
 
         if (!isSqlite)
         {
             Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
             Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
             Assert.Contains<string>(nameof(Product.Name), uniqueConstraintException.ConstraintProperties);
+            Assert.Equal(nameof(DemoContext.Products), uniqueConstraintException.SchemaQualifiedTableName);
+        }
+    }
+
+    [Fact]
+    public virtual async Task UniqueColumnViolationSameNamesIndexesInDifferentSchemasSetsCorrectTableName()
+    {
+        if (SameNameIndexesContext == null)
+        {
+            Assert.True(SameNameIndexesContext == null);
+            return;
+        }
+
+        SameNameIndexesContext.IncidentCategories.Add(new EFExceptionSchema.Entities.Incidents.Category
+        {
+            Name = "Rope Access"
+        });
+        
+        SameNameIndexesContext.IncidentCategories.Add(new EFExceptionSchema.Entities.Incidents.Category
+        {
+            Name = "Rope Access"
+        });
+
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => SameNameIndexesContext.SaveChanges());
+        await Assert.ThrowsAsync<UniqueConstraintException>(() => SameNameIndexesContext.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
+            Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
+            Assert.Contains<string>(nameof(Category.Name), uniqueConstraintException.ConstraintProperties);
+            Assert.Equal("Incidents.Category", uniqueConstraintException.SchemaQualifiedTableName);
         }
     }
 
@@ -45,52 +82,52 @@ public abstract class DatabaseTests : IDisposable
         var product1 = new Product { Name = "GD", Id = 42 };
         var product2 = new Product { Name = "GD", Id = 42 };
 
-        Context.Products.Add(product1);
-        Context.SaveChanges();
+        DemoContext.Products.Add(product1);
+        DemoContext.SaveChanges();
 
         CleanupContext();
 
-        Context.Products.Add(product2);
-        Assert.Throws<UniqueConstraintException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<UniqueConstraintException>(() => Context.SaveChangesAsync());
+        DemoContext.Products.Add(product2);
+        Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
     public virtual async Task RequiredColumnViolationThrowsCannotInsertNullException()
     {
-        Context.Products.Add(new Product());
+        DemoContext.Products.Add(new Product());
 
-        Assert.Throws<CannotInsertNullException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<CannotInsertNullException>(() => Context.SaveChangesAsync());
+        Assert.Throws<CannotInsertNullException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<CannotInsertNullException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
     public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
     {
-        Context.Products.Add(new Product { Name = new string('G', DemoContext.ProductNameMaxLength + 5) });
+        DemoContext.Products.Add(new Product { Name = new string('G', DemoContext.ProductNameMaxLength + 5) });
 
-        Assert.Throws<MaxLengthExceededException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<MaxLengthExceededException>(() => Context.SaveChangesAsync());
+        Assert.Throws<MaxLengthExceededException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<MaxLengthExceededException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
     public virtual async Task NumericOverflowViolationThrowsNumericOverflowException()
     {
         var product = new Product { Name = "Numeric Overflow Test" };
-        Context.Products.Add(product);
-        Context.ProductSales.Add(new ProductSale { Price = 3141.59265m, Product = product });
+        DemoContext.Products.Add(product);
+        DemoContext.ProductSales.Add(new ProductSale { Price = 3141.59265m, Product = product });
 
-        Assert.Throws<NumericOverflowException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<NumericOverflowException>(() => Context.SaveChangesAsync());
+        Assert.Throws<NumericOverflowException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<NumericOverflowException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
     public virtual async Task ReferenceViolationThrowsReferenceConstraintException()
     {
-        Context.ProductSales.Add(new ProductSale { Price = 3.14m });
+        DemoContext.ProductSales.Add(new ProductSale { Price = 3.14m });
 
-        var referenceConstraintException = Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
+        var referenceConstraintException = Assert.Throws<ReferenceConstraintException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
 
         if (!isSqlite)
         {
@@ -104,16 +141,16 @@ public abstract class DatabaseTests : IDisposable
     public virtual async Task DatabaseUnrelatedExceptionThrowsOriginalException()
     {
         var product = new Product { Name = "Unhandled Violation Test" };
-        Context.Products.Add(product);
+        DemoContext.Products.Add(product);
 
-        Context.SaveChanges();
-        Context.Database.ExecuteSqlInterpolated(isMySql
+        DemoContext.SaveChanges();
+        DemoContext.Database.ExecuteSqlInterpolated(isMySql
             ? $"Delete from products where id={product.Id}"
             : (FormattableString)$"Delete from \"Products\" where \"Id\"={product.Id}");
         product.Name = "G";
 
-        Assert.ThrowsAny<DbUpdateException>(() => Context.SaveChanges());
-        await Assert.ThrowsAnyAsync<DbUpdateException>(() => Context.SaveChangesAsync());
+        Assert.ThrowsAny<DbUpdateException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAnyAsync<DbUpdateException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
@@ -121,27 +158,27 @@ public abstract class DatabaseTests : IDisposable
     {
         var product = new Product { Name = "AN" };
         var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow.Date.AddDays(-10) };
-        Context.ProductPriceHistories.Add(productPriceHistory);
-        await Context.SaveChangesAsync();
+        DemoContext.ProductPriceHistories.Add(productPriceHistory);
+        await DemoContext.SaveChangesAsync();
 
         CleanupContext();
 
-        product = Context.Products.Find(product.Id);
-        Context.Products.Remove(product);
+        product = DemoContext.Products.Find(product.Id);
+        DemoContext.Products.Remove(product);
 
-        Assert.Throws<ReferenceConstraintException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<ReferenceConstraintException>(() => Context.SaveChangesAsync());
+        Assert.Throws<ReferenceConstraintException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
     }
 
     [Fact]
     public async Task NotHandledViolationReThrowsOriginalException()
     {
-        Context.Customers.Add(new Customer { Fullname = "Test" });
+        DemoContext.Customers.Add(new Customer { Fullname = "Test" });
 
-        await Context.Database.ExecuteSqlRawAsync(isMySql ? "Drop table customers" : "Drop table \"Customers\"");
+        await DemoContext.Database.ExecuteSqlRawAsync(isMySql ? "Drop table customers" : "Drop table \"Customers\"");
 
-        Assert.Throws<DbUpdateException>(() => Context.SaveChanges());
-        await Assert.ThrowsAsync<DbUpdateException>(() => Context.SaveChangesAsync());
+        Assert.Throws<DbUpdateException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<DbUpdateException>(() => DemoContext.SaveChangesAsync());
     }
 
     public virtual void Dispose()
@@ -151,7 +188,7 @@ public abstract class DatabaseTests : IDisposable
 
     protected void CleanupContext()
     {
-        foreach (var entityEntry in Context.ChangeTracker.Entries())
+        foreach (var entityEntry in DemoContext.ChangeTracker.Entries())
         {
             entityEntry.State = EntityState.Detached;
         }

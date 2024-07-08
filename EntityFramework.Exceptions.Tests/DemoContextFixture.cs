@@ -1,12 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using EntityFramework.Exceptions.Tests.ConstraintTests;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EntityFramework.Exceptions.Tests;
 
 public abstract class DemoContextFixture : IDisposable
 {
-    internal DemoContext Context { get; }
+    internal DemoContext DemoContext { get; }
+    internal SameNameIndexesContext SameNameIndexesContext {get; }
 
     protected DemoContextFixture()
     {
@@ -14,16 +18,25 @@ public abstract class DemoContextFixture : IDisposable
 
         var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
             
-        var builder = BuildOptions(new DbContextOptionsBuilder<DemoContext>(), configuration);
+        var demoContextOptions = BuildDemoContextOptions(new DbContextOptionsBuilder<DemoContext>(), configuration).Options;
 
-        Context = new DemoContext(builder.Options);
-        Context.Database.EnsureCreated();
+        DemoContext = new DemoContext(demoContextOptions);
+        DemoContext.Database.EnsureCreated();
+
+        var sameNameIndexesContextOptions = BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>(), configuration).Options;
+        
+        SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesContextOptions);
+        var relationalDatabaseCreator = SameNameIndexesContext.Database.GetService<IRelationalDatabaseCreator>();
+        var generateCreateScript = relationalDatabaseCreator.GenerateCreateScript();
+        relationalDatabaseCreator.CreateTables();
     }
 
-    protected abstract DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
+    protected abstract DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
+
+    protected virtual DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration) => builder;
 
     public void Dispose()
     {
-        Context.Database.EnsureDeleted();
+        DemoContext.Database.EnsureDeleted();
     }
 }

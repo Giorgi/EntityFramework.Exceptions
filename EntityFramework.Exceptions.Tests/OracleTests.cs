@@ -8,16 +8,20 @@ namespace EntityFramework.Exceptions.Tests;
 
 public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
 {
-    public OracleTests(OracleTestContextFixture fixture) : base(fixture.Context)
+    public OracleTests(OracleTestContextFixture fixture) : base(fixture.DemoContext, fixture.SameNameIndexesContext)
     {
     }
 }
 
 public class OracleTestContextFixture : DemoContextFixture
 {
-    protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
     {
-        var connectionString = Environment.GetEnvironmentVariable("Oracle");
-        return builder.UseOracle(connectionString).UseExceptionProcessor();
+        return builder.UseOracle(Environment.GetEnvironmentVariable("Oracle")).UseExceptionProcessor();
+    }
+
+    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+    {
+        return builder.UseOracle(Environment.GetEnvironmentVariable("Oracle")).UseExceptionProcessor();
     }
 }

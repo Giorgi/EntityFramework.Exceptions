@@ -103,8 +103,8 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         if (match != null)
         {
             exception.ConstraintName = match.Name;
-
             exception.ConstraintProperties = match.Properties.Select(property => property.Name).ToList();
+            exception.SchemaQualifiedTableName = match.SchemaQualifiedTableName;
         }
     }
 

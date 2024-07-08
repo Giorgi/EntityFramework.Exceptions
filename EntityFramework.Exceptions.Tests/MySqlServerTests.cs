@@ -16,7 +16,7 @@ namespace EntityFramework.Exceptions.Tests;
 
 public class MySQLDemoContextFixture : DemoContextFixture
 {
-    protected override DbContextOptionsBuilder<DemoContext> BuildOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
     {
         return builder.UseMySQL(configuration.GetConnectionString("MySQL")).UseExceptionProcessor();
     }

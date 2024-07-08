@@ -30,6 +30,7 @@ public class UniqueConstraintException : DbUpdateException
 
     public string ConstraintName { get; internal set; }
     public IReadOnlyList<string> ConstraintProperties { get; internal set; }
+    public string SchemaQualifiedTableName { get; internal set; }
 }
 
 public class CannotInsertNullException : DbUpdateException
