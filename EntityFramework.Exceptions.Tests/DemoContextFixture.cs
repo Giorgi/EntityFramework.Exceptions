@@ -4,6 +4,7 @@ using System;
 using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace EntityFramework.Exceptions.Tests;
 
@@ -24,11 +25,18 @@ public abstract class DemoContextFixture : IDisposable
         DemoContext.Database.EnsureCreated();
 
         var sameNameIndexesContextOptions = BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>(), configuration).Options;
-        
+
         SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesContextOptions);
-        var relationalDatabaseCreator = SameNameIndexesContext.Database.GetService<IRelationalDatabaseCreator>();
-        var generateCreateScript = relationalDatabaseCreator.GenerateCreateScript();
-        relationalDatabaseCreator.CreateTables();
+        
+        var isMySql = MySqlDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database);
+        var isSqlite = SameNameIndexesContext.Database.IsSqlite();
+
+        if (!(isMySql || isSqlite))
+        {
+            var relationalDatabaseCreator = SameNameIndexesContext.Database.GetService<IRelationalDatabaseCreator>();
+            var generateCreateScript = relationalDatabaseCreator.GenerateCreateScript();
+            relationalDatabaseCreator.CreateTables();
+        }
     }
 
     protected abstract DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
