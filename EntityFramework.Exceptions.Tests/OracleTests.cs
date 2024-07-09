@@ -8,7 +8,7 @@ namespace EntityFramework.Exceptions.Tests;
 
 public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture>
 {
-    public OracleTests(OracleTestContextFixture fixture) : base(fixture.DemoContext, fixture.SameNameIndexesContext)
+    public OracleTests(OracleTestContextFixture fixture) : base(fixture.DemoContext)
     {
     }
 }
