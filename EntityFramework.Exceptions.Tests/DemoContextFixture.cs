@@ -30,11 +30,11 @@ public abstract class DemoContextFixture : IDisposable
         
         var isMySql = MySqlDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database);
         var isSqlite = SameNameIndexesContext.Database.IsSqlite();
+        var isOracle = SameNameIndexesContext.Database.IsOracle();
 
-        if (!(isMySql || isSqlite))
+        if (!(isMySql || isSqlite || isOracle))
         {
             var relationalDatabaseCreator = SameNameIndexesContext.Database.GetService<IRelationalDatabaseCreator>();
-            var generateCreateScript = relationalDatabaseCreator.GenerateCreateScript();
             relationalDatabaseCreator.CreateTables();
         }
     }
