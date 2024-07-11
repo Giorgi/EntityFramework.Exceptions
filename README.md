@@ -37,8 +37,8 @@ whether the exception was caused by a unique constraint, value being too long or
 the concrete `DbException` subclass instance and check the error code to determine the exact cause.
 
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
-to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s) such as `UniqueConstraintException`,
-`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException` you need. 
+to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s)  you need, such as `UniqueConstraintException`,
+`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, or `ReferenceConstraintException`.
 
 In case of `UniqueConstraintException` and `ReferenceConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will contain the properties that are part of the constraint. 
 
