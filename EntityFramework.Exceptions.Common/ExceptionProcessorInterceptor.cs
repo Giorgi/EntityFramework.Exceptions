@@ -86,15 +86,32 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         return base.SaveChangesFailedAsync(eventData, cancellationToken);
     }
 
+
     private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
     {
         if (uniqueIndexDetailsList == null)
         {
             var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredIndexes().Where(index => index.IsUnique));
 
-            var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(), (index, tableIndex) => new { tableIndex, index.Properties });
+            var mappedIndexes = indexes.SelectMany(
+                index => index.GetMappedTableIndexes(),
+                (index, tableIndex) => new UniqueIndexDetail(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
+            
+            var primaryKeys = context.Model.GetEntityTypes().SelectMany(x =>
+            {
+                var primaryKey = x.FindPrimaryKey();
+                if (primaryKey is null) return Array.Empty<UniqueIndexDetail>();
 
-            uniqueIndexDetailsList = mappedIndexes.Select(arg => new IndexDetails(arg.tableIndex.Name, arg.tableIndex.Table.SchemaQualifiedName, arg.Properties)).ToList();
+                var primaryKeyName = primaryKey.GetName();
+                if (primaryKeyName is null) return Array.Empty<UniqueIndexDetail>();
+
+                return new [] { new UniqueIndexDetail(primaryKeyName, x.GetSchemaQualifiedTableName(), primaryKey.Properties) };
+            });
+
+            uniqueIndexDetailsList = mappedIndexes
+                .Union(primaryKeys)
+                .Select(arg => new IndexDetails(arg.Name, arg.SchemaQualifiedName, arg.Properties))
+                .ToList();
         }
 
         var matchingIndexes = uniqueIndexDetailsList.Where(index => providerException.Message.Contains(index.Name)).ToList();
@@ -107,6 +124,8 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             exception.SchemaQualifiedTableName = match.SchemaQualifiedTableName;
         }
     }
+    
+    private record UniqueIndexDetail(string Name, string SchemaQualifiedName, IReadOnlyList<IProperty> Properties);
 
     private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, Exception providerException)
     {
