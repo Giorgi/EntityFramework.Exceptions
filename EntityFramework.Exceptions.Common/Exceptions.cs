@@ -124,7 +124,7 @@ public class ReferenceConstraintException : DbUpdateException
     {
     }
 
-    public string TableName { get; set; }
     public string ConstraintName { get; internal set; }
     public IReadOnlyList<string> ConstraintProperties { get; internal set; }
+    public string SchemaQualifiedTableName { get; internal set; }
 }

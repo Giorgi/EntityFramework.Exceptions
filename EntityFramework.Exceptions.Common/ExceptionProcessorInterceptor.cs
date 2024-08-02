@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -12,8 +11,8 @@ namespace EntityFramework.Exceptions.Common;
 
 public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor where T : DbException
 {
-    private Dictionary<string, IReadOnlyList<IProperty>> foreignKeys;
     private List<IndexDetails> uniqueIndexDetailsList;
+    private List<ForeignKeyDetails> foreignKeyDetailsList;
 
     protected internal enum DatabaseError
     {
@@ -97,8 +96,8 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             uniqueIndexDetailsList = mappedIndexes.Select(arg => new IndexDetails(arg.tableIndex.Name, arg.tableIndex.Table.SchemaQualifiedName, arg.Properties)).ToList();
         }
 
-        var matchingIndexes = uniqueIndexDetailsList.Where(index => providerException.Message.Contains(index.Name)).ToList();
-        var match = matchingIndexes.Count == 1 ? matchingIndexes[0] : matchingIndexes.FirstOrDefault(index => providerException.Message.Contains(index.SchemaQualifiedTableName));
+        var matchingIndexes = uniqueIndexDetailsList.Where(index => providerException.Message.Contains(index.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+        var match = matchingIndexes.Count == 1 ? matchingIndexes[0] : matchingIndexes.FirstOrDefault(index => providerException.Message.Contains(index.SchemaQualifiedTableName, StringComparison.OrdinalIgnoreCase));
 
         if (match != null)
         {
@@ -110,22 +109,23 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
 
     private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, Exception providerException)
     {
-        if (foreignKeys == null)
+        if (foreignKeyDetailsList == null)
         {
             var keys = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredForeignKeys());
 
             var mappedConstraints = keys.SelectMany(index => index.GetMappedConstraints(), (index, constraint) => new { constraint, index.Properties });
 
-            foreignKeys = mappedConstraints.ToDictionary(arg => arg.constraint.Name, arg => arg.Properties);
+            foreignKeyDetailsList = mappedConstraints.Select(arg => new ForeignKeyDetails(arg.constraint.Name, arg.constraint.Table.SchemaQualifiedName, arg.Properties)).ToList();
         }
 
-        var (key, value) = foreignKeys.FirstOrDefault(pair => providerException.Message.Contains(pair.Key));
+        var matchingForeignKeys = foreignKeyDetailsList.Where(foreignKey => providerException.Message.Contains(foreignKey.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+        var match = matchingForeignKeys.Count == 1 ? matchingForeignKeys[0] : matchingForeignKeys.FirstOrDefault(foreignKey => providerException.Message.Contains(foreignKey.SchemaQualifiedTableName, StringComparison.OrdinalIgnoreCase));
 
-        exception.ConstraintName = key;
-
-        if (value != null)
+        if (match != null)
         {
-            exception.ConstraintProperties = value.Select(property => property.Name).ToList();
+            exception.ConstraintName = match.Name;
+            exception.ConstraintProperties = match.Properties.Select(property => property.Name).ToList();
+            exception.SchemaQualifiedTableName = match.SchemaQualifiedTableName;
         }
     }
 }

@@ -17,3 +17,17 @@ internal class IndexDetails
     public string SchemaQualifiedTableName { get; init; }
     public IReadOnlyList<IProperty> Properties { get; }
 }
+
+internal class ForeignKeyDetails
+{
+    public ForeignKeyDetails(string name, string schemaQualifiedTableName, IReadOnlyList<IProperty> properties)
+    {
+        Name = name;
+        SchemaQualifiedTableName = schemaQualifiedTableName;
+        Properties = properties;
+    }
+
+    public string Name { get; init; }
+    public string SchemaQualifiedTableName { get; init; }
+    public IReadOnlyList<IProperty> Properties { get; }
+}
