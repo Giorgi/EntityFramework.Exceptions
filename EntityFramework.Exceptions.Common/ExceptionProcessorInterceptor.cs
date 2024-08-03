@@ -95,7 +95,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
 
             var mappedIndexes = indexes.SelectMany(
                 index => index.GetMappedTableIndexes(),
-                (index, tableIndex) => new UniqueIndexDetail(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
+                (index, tableIndex) => new IndexDetails(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
             
             var primaryKeys = context.Model.GetEntityTypes().SelectMany(x =>
             {
@@ -105,12 +105,11 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
                 var primaryKeyName = primaryKey.GetName();
                 if (primaryKeyName is null) return Array.Empty<UniqueIndexDetail>();
 
-                return new [] { new UniqueIndexDetail(primaryKeyName, x.GetSchemaQualifiedTableName(), primaryKey.Properties) };
+                return new [] { new IndexDetails(primaryKeyName, x.GetSchemaQualifiedTableName(), primaryKey.Properties) };
             });
 
             uniqueIndexDetailsList = mappedIndexes
                 .Union(primaryKeys)
-                .Select(arg => new IndexDetails(arg.Name, arg.SchemaQualifiedName, arg.Properties))
                 .ToList();
         }
 
@@ -124,8 +123,6 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
             exception.SchemaQualifiedTableName = match.SchemaQualifiedTableName;
         }
     }
-    
-    private record UniqueIndexDetail(string Name, string SchemaQualifiedName, IReadOnlyList<IProperty> Properties);
 
     private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, Exception providerException)
     {
