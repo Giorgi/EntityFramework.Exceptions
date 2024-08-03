@@ -88,8 +88,13 @@ public abstract class DatabaseTests : IDisposable
         CleanupContext();
 
         DemoContext.Products.Add(product2);
-        Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
+        
+        Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
+        Assert.False(string.IsNullOrEmpty(uniqueConstraintException.SchemaQualifiedTableName));
+        Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
+        Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties);
     }
 
     [Fact]
