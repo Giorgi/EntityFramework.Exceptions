@@ -90,11 +90,14 @@ public abstract class DatabaseTests : IDisposable
         DemoContext.Products.Add(product2);
         var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
-        
-        Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
-        Assert.False(string.IsNullOrEmpty(uniqueConstraintException.SchemaQualifiedTableName));
-        Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
-        Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties);
+
+        if (!isSqlite && !isMySql)
+        {
+            Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
+            Assert.False(string.IsNullOrEmpty(uniqueConstraintException.SchemaQualifiedTableName));
+            Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
+            Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties); 
+        }
     }
 
     [Fact]

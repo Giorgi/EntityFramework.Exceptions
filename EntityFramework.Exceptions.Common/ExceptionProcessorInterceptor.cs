@@ -92,17 +92,23 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         {
             var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredIndexes().Where(index => index.IsUnique));
 
-            var mappedIndexes = indexes.SelectMany(
-                index => index.GetMappedTableIndexes(),
+            var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(), 
                 (index, tableIndex) => new IndexDetails(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
             
             var primaryKeys = context.Model.GetEntityTypes().SelectMany(x =>
             {
                 var primaryKey = x.FindPrimaryKey();
-                if (primaryKey is null) return Array.Empty<IndexDetails>();
+                if (primaryKey is null)
+                {
+                    return Array.Empty<IndexDetails>();
+                }
 
                 var primaryKeyName = primaryKey.GetName();
-                if (primaryKeyName is null) return Array.Empty<IndexDetails>();
+
+                if (primaryKeyName is null)
+                {
+                    return Array.Empty<IndexDetails>();
+                }
 
                 return new [] { new IndexDetails(primaryKeyName, x.GetSchemaQualifiedTableName(), primaryKey.Properties) };
             });
