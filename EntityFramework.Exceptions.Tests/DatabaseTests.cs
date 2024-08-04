@@ -1,12 +1,10 @@
-﻿using EntityFramework.Exceptions.Common;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
-using EFExceptionSchema.Entities.Incidents;
+﻿using EFExceptionSchema.Entities.Incidents;
+using EntityFramework.Exceptions.Common;
 using EntityFramework.Exceptions.Tests.ConstraintTests;
+using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
@@ -153,7 +151,7 @@ public abstract class DatabaseTests : IDisposable
 
         DemoContext.SaveChanges();
         DemoContext.Database.ExecuteSqlInterpolated(isMySql
-            ? $"Delete from products where id={product.Id}"
+            ? $"Delete from Products where id={product.Id}"
             : (FormattableString)$"Delete from \"Products\" where \"Id\"={product.Id}");
         product.Name = "G";
 
@@ -165,7 +163,7 @@ public abstract class DatabaseTests : IDisposable
     public virtual async Task DeleteParentItemThrowsReferenceConstraintException()
     {
         var product = new Product { Name = "AN" };
-        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow.Date.AddDays(-10) };
+        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
         DemoContext.ProductPriceHistories.Add(productPriceHistory);
         await DemoContext.SaveChangesAsync();
 
@@ -183,7 +181,7 @@ public abstract class DatabaseTests : IDisposable
     {
         DemoContext.Customers.Add(new Customer { Fullname = "Test" });
 
-        await DemoContext.Database.ExecuteSqlRawAsync(isMySql ? "Drop table customers" : "Drop table \"Customers\"");
+        await DemoContext.Database.ExecuteSqlRawAsync(isMySql ? "Drop table Customers" : "Drop table \"Customers\"");
 
         Assert.Throws<DbUpdateException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<DbUpdateException>(() => DemoContext.SaveChangesAsync());

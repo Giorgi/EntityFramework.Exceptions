@@ -1,10 +1,8 @@
-﻿using EntityFramework.Exceptions.SqlServer;
+﻿using DotNet.Testcontainers.Containers;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Threading.Tasks;
-using EntityFramework.Exceptions.Tests.ConstraintTests;
-using Microsoft.Data.SqlClient;
+using Testcontainers.MsSql;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
@@ -38,13 +36,26 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
 
 public class SqlServerDemoContextFixture : DemoContextFixture
 {
-    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    static readonly MsSqlContainer MsSqlContainer = new MsSqlBuilder().Build();
+
+    protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
+        => builder.UseSqlServer(await StartAndGetConnection()).UseExceptionProcessor();
+
+    protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) => 
+        builder.UseSqlServer(await StartAndGetConnection()).UseExceptionProcessor();
+
+    public override Task DisposeAsync()
     {
-        return builder.UseSqlServer(configuration.GetConnectionString("SqlServer")).UseExceptionProcessor();
+        return MsSqlContainer.DisposeAsync().AsTask();
     }
 
-    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+    private static async Task<string> StartAndGetConnection()
     {
-        return builder.UseSqlServer(configuration.GetConnectionString("SqlServer")).UseExceptionProcessor();
+        if (MsSqlContainer.State != TestcontainersStates.Running)
+        {
+            await MsSqlContainer.StartAsync();
+        }
+
+        return MsSqlContainer.GetConnectionString();
     }
 }

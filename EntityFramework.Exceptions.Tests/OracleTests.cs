@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using DotNet.Testcontainers.Containers;
 using EntityFramework.Exceptions.Oracle;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using Testcontainers.Oracle;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
@@ -15,13 +16,26 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
 
 public class OracleTestContextFixture : DemoContextFixture
 {
-    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    private static readonly OracleContainer OracleContainer = new OracleBuilder().Build();
+
+    protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
+        => builder.UseOracle(await StartAndGetConnection()).UseExceptionProcessor();
+
+    protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
+        => builder.UseOracle(await StartAndGetConnection()).UseExceptionProcessor();
+
+    private static async Task<string> StartAndGetConnection()
     {
-        return builder.UseOracle(Environment.GetEnvironmentVariable("Oracle")).UseExceptionProcessor();
+        if (OracleContainer.State != TestcontainersStates.Running)
+        {
+            await OracleContainer.StartAsync();
+        }
+
+        return OracleContainer.GetConnectionString();
     }
 
-    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+    public override Task DisposeAsync()
     {
-        return builder.UseOracle(Environment.GetEnvironmentVariable("Oracle")).UseExceptionProcessor();
+        return OracleContainer.DisposeAsync().AsTask();
     }
 }

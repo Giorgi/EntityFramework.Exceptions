@@ -1,29 +1,44 @@
-﻿using EntityFramework.Exceptions.MySQL.Pomelo;
+﻿using DotNet.Testcontainers.Containers;
+using EntityFramework.Exceptions.MySQL.Pomelo;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System.Threading.Tasks;
+using Testcontainers.MySql;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
 
-[Collection("MySQL Test Collection")]
-public class MySQLServerPomeloTests : DatabaseTests, IClassFixture<MySQLDemoContextPomeloFixture>
+[Collection("MySql Test Collection")]
+public class MySqlServerPomeloTests : DatabaseTests, IClassFixture<MySqlDemoContextPomeloFixture>
 {
-    public MySQLServerPomeloTests(MySQLDemoContextPomeloFixture fixture) : base(fixture.DemoContext)
+    public MySqlServerPomeloTests(MySqlDemoContextPomeloFixture fixture) : base(fixture.DemoContext)
     {
 
     }
 }
 
-public class MySQLDemoContextPomeloFixture : DemoContextFixture
+public class MySqlDemoContextPomeloFixture : DemoContextFixture
 {
-    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+    private static readonly MySqlContainer MySqlContainer = new MySqlBuilder().Build();
+
+    protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
+        => builder.UseMySql(await StartAndGetConnection(), new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+
+    protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
+        => builder.UseMySql(await StartAndGetConnection(), new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+
+    private static async Task<string> StartAndGetConnection()
     {
-        return builder.UseMySql(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("5.7"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+        if (MySqlContainer.State != TestcontainersStates.Running)
+        {
+            await MySqlContainer.StartAsync();
+        }
+
+        return MySqlContainer.GetConnectionString();
     }
 
-    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+    public override Task DisposeAsync()
     {
-        return builder.UseMySql(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("5.7"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+        return MySqlContainer.DisposeAsync().AsTask();
     }
 }

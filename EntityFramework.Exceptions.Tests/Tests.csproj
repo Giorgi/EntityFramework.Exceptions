@@ -9,8 +9,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.MySql" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.Oracle" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.PostgreSql" Version="3.9.0" />
     <PackageReference Include="xunit" Version="2.6.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
       <PrivateAssets>all</PrivateAssets>
@@ -49,16 +52,6 @@
     <ProjectReference Include="..\EntityFramework.Exceptions.PostgreSQL\PostgreSQL.csproj" />
     <ProjectReference Include="..\EntityFramework.Exceptions.Sqlite\Sqlite.csproj" />
     <ProjectReference Include="..\EntityFramework.Exceptions.SqlServer\SqlServer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.Appveyor.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DependentUpon>appsettings.json</DependentUpon>
-    </None>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

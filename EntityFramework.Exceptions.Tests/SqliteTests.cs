@@ -1,7 +1,7 @@
-﻿using EntityFramework.Exceptions.Sqlite;
+﻿using System.IO;
+using EntityFramework.Exceptions.Sqlite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using SQLitePCL;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -17,17 +17,17 @@ namespace EntityFramework.Exceptions.Tests
         {
         }
 
-        [DllImport("e_sqlite3", CallingConvention = CallingConvention.Cdecl,EntryPoint = "sqlite3_limit")]
+        [DllImport("e_sqlite3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "sqlite3_limit")]
         private static extern int SetLimit(sqlite3 db, int id, int newVal);
 
-        [Fact(Skip = "Skippping because of https://github.com/dotnet/efcore/issues/27597")]
+        [Fact(Skip = "Skipping because of https://github.com/dotnet/efcore/issues/27597")]
         public override async Task MaxLengthViolationThrowsMaxLengthExceededException()
         {
             DemoContext.Database.OpenConnection();
-            
+
             var handle = (DemoContext.Database.GetDbConnection() as SqliteConnection).Handle;
             var limit = SetLimit(handle, SqliteLimitLength, DemoContext.ProductNameMaxLength);
-            
+
             await base.MaxLengthViolationThrowsMaxLengthExceededException();
 
             SetLimit(handle, SqliteLimitLength, limit);
@@ -44,14 +44,17 @@ namespace EntityFramework.Exceptions.Tests
 
     public class SqliteDemoContextFixture : DemoContextFixture
     {
-        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
-        {
-            return builder.UseSqlite(configuration.GetConnectionString("Sqlite")).UseExceptionProcessor();
-        }
+        private const string ConnectionString = "DataSource=file::memory:?cache=shared";
 
-        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
+        protected override Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
+            => Task.FromResult(builder.UseSqlite(ConnectionString).UseExceptionProcessor());
+
+        protected override Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
+            => Task.FromResult(builder.UseSqlite(ConnectionString).UseExceptionProcessor());
+
+        public override Task DisposeAsync()
         {
-            return builder.UseSqlite(configuration.GetConnectionString("Sqlite")).UseExceptionProcessor();
+            return base.DisposeAsync();
         }
     }
 }

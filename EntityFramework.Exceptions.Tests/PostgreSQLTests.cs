@@ -1,7 +1,8 @@
-﻿using EntityFramework.Exceptions.PostgreSQL;
+﻿using DotNet.Testcontainers.Containers;
+using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
+using System.Threading.Tasks;
+using Testcontainers.PostgreSql;
 using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
@@ -15,14 +16,24 @@ namespace EntityFramework.Exceptions.Tests
 
     public class PostgreSQLDemoContextFixture : DemoContextFixture
     {
-        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration)
+        private static readonly PostgreSqlContainer PostgreSqlContainer = new PostgreSqlBuilder().Build();
+
+        protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
+            => builder.UseNpgsql(await StartAndGetConnection()).UseExceptionProcessor();
+
+        protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
+            => builder.UseNpgsql(await StartAndGetConnection()).UseExceptionProcessor();
+
+        private static async Task<string> StartAndGetConnection()
         {
-            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL")).UseExceptionProcessor();
+            if (PostgreSqlContainer.State != TestcontainersStates.Running)
+            {
+                await PostgreSqlContainer.StartAsync();
+            }
+
+            return PostgreSqlContainer.GetConnectionString();
         }
 
-        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration)
-        {
-            return builder.UseNpgsql(configuration.GetConnectionString("PostgreSQL")).UseExceptionProcessor();
-        }
+        public override Task DisposeAsync() => PostgreSqlContainer.DisposeAsync().AsTask();
     }
 }

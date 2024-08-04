@@ -1,33 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using EntityFramework.Exceptions.Tests.ConstraintTests;
+﻿using EntityFramework.Exceptions.Tests.ConstraintTests;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using MySql.EntityFrameworkCore.Extensions;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
 
-public abstract class DemoContextFixture : IDisposable
+public abstract class DemoContextFixture : IAsyncLifetime
 {
-    internal DemoContext DemoContext { get; }
-    internal SameNameIndexesContext SameNameIndexesContext {get; }
+    internal DemoContext DemoContext { get; private set; }
+    internal SameNameIndexesContext SameNameIndexesContext {get; private set; }
 
-    protected DemoContextFixture()
+    protected abstract Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder);
+
+    protected virtual Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) => Task.FromResult(builder);
+    
+    public async Task InitializeAsync()
     {
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
-        var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json", optional: true).Build();
-            
-        var demoContextOptions = BuildDemoContextOptions(new DbContextOptionsBuilder<DemoContext>(), configuration).Options;
-
-        DemoContext = new DemoContext(demoContextOptions);
+        var optionsBuilder = await BuildDemoContextOptions(new DbContextOptionsBuilder<DemoContext>());
+        DemoContext = new DemoContext(optionsBuilder.Options);
         DemoContext.Database.EnsureCreated();
 
-        var sameNameIndexesContextOptions = BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>(), configuration).Options;
+        var sameNameIndexesOptionsBuilder = await BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>());
+        SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesOptionsBuilder.Options);
 
-        SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesContextOptions);
-        
         var isMySql = MySqlDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database);
         var isSqlite = SameNameIndexesContext.Database.IsSqlite();
         var isOracle = SameNameIndexesContext.Database.IsOracle();
@@ -39,12 +37,8 @@ public abstract class DemoContextFixture : IDisposable
         }
     }
 
-    protected abstract DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, IConfigurationRoot configuration);
-
-    protected virtual DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, IConfigurationRoot configuration) => builder;
-
-    public void Dispose()
+    public virtual Task DisposeAsync()
     {
-        DemoContext.Database.EnsureDeleted();
+        return Task.CompletedTask;
     }
 }
