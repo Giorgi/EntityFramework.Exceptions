@@ -1,0 +1,36 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --logger GitHubActions /p:CollectCoverage=true /p:CoverletOutputFormat=lcov  /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v2.3.0
+      with: 
+        github-token: ${{ secrets.github_token }}
+        format: lcov
+        fail-on-error: false
+        path-to-lcov: EntityFramework.Exceptions.Tests/coverage.info
+                  
