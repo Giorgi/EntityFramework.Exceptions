@@ -1,4 +1,5 @@
-﻿using EntityFramework.Exceptions.Tests.ConstraintTests;
+﻿using DotNet.Testcontainers.Containers;
+using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -8,22 +9,32 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests;
 
-public abstract class DemoContextFixture : IAsyncLifetime
+public abstract class DemoContextFixture<T> : IAsyncLifetime where T : IContainer
 {
+    public static T Container { get; internal set; }
+
     internal DemoContext DemoContext { get; private set; }
-    internal SameNameIndexesContext SameNameIndexesContext {get; private set; }
+    internal SameNameIndexesContext SameNameIndexesContext { get; private set; }
 
-    protected abstract Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder);
+    protected abstract DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString);
 
-    protected virtual Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) => Task.FromResult(builder);
-    
+    protected virtual DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) => builder;
+
     public async Task InitializeAsync()
     {
-        var optionsBuilder = await BuildDemoContextOptions(new DbContextOptionsBuilder<DemoContext>());
+        var connectionString = "";
+
+        if (Container is not null && Container.State != TestcontainersStates.Running)
+        {
+            await Container.StartAsync();
+            connectionString = (Container as IDatabaseContainer)?.GetConnectionString();
+        }
+
+        var optionsBuilder = BuildDemoContextOptions(new DbContextOptionsBuilder<DemoContext>(), connectionString);
         DemoContext = new DemoContext(optionsBuilder.Options);
         DemoContext.Database.EnsureCreated();
 
-        var sameNameIndexesOptionsBuilder = await BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>());
+        var sameNameIndexesOptionsBuilder = BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>(), connectionString);
         SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesOptionsBuilder.Options);
 
         var isMySql = MySqlDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database);
@@ -37,8 +48,5 @@ public abstract class DemoContextFixture : IAsyncLifetime
         }
     }
 
-    public virtual Task DisposeAsync()
-    {
-        return Task.CompletedTask;
-    }
+    public virtual Task DisposeAsync() => Container != null ? Container.DisposeAsync().AsTask() : Task.CompletedTask;
 }

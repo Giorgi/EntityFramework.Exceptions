@@ -1,8 +1,6 @@
-﻿using DotNet.Testcontainers.Containers;
-using EntityFramework.Exceptions.MySQL.Pomelo;
+﻿using EntityFramework.Exceptions.MySQL.Pomelo;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using System.Threading.Tasks;
 using Testcontainers.MySql;
 using Xunit;
 
@@ -17,28 +15,18 @@ public class MySqlServerPomeloTests : DatabaseTests, IClassFixture<MySqlDemoCont
     }
 }
 
-public class MySqlDemoContextPomeloFixture : DemoContextFixture
+public class MySqlDemoContextPomeloFixture : DemoContextFixture<MySqlContainer>
 {
-    private static readonly MySqlContainer MySqlContainer = new MySqlBuilder().Build();
-
-    protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
-        => builder.UseMySql(await StartAndGetConnection(), new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
-
-    protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
-        => builder.UseMySql(await StartAndGetConnection(), new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
-
-    private static async Task<string> StartAndGetConnection()
+    static MySqlDemoContextPomeloFixture()
     {
-        if (MySqlContainer.State != TestcontainersStates.Running)
-        {
-            await MySqlContainer.StartAsync();
-        }
-
-        return MySqlContainer.GetConnectionString();
+        Container = new MySqlBuilder().Build();
     }
 
-    public override Task DisposeAsync()
-    {
-        return MySqlContainer.DisposeAsync().AsTask();
-    }
+    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+        => builder.UseMySql(connectionString, new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+
+    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(
+        DbContextOptionsBuilder builder, string connectionString) 
+        => builder.UseMySql(connectionString, new MySqlServerVersion("8.0"), o => o.SchemaBehavior(MySqlSchemaBehavior.Ignore)).UseExceptionProcessor();
+
 }

@@ -1,7 +1,5 @@
-﻿using DotNet.Testcontainers.Containers;
-using EntityFramework.Exceptions.PostgreSQL;
+﻿using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -14,26 +12,17 @@ namespace EntityFramework.Exceptions.Tests
         }
     }
 
-    public class PostgreSQLDemoContextFixture : DemoContextFixture
+    public class PostgreSQLDemoContextFixture : DemoContextFixture<PostgreSqlContainer>
     {
-        private static readonly PostgreSqlContainer PostgreSqlContainer = new PostgreSqlBuilder().Build();
-
-        protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
-            => builder.UseNpgsql(await StartAndGetConnection()).UseExceptionProcessor();
-
-        protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
-            => builder.UseNpgsql(await StartAndGetConnection()).UseExceptionProcessor();
-
-        private static async Task<string> StartAndGetConnection()
+        static PostgreSQLDemoContextFixture()
         {
-            if (PostgreSqlContainer.State != TestcontainersStates.Running)
-            {
-                await PostgreSqlContainer.StartAsync();
-            }
-
-            return PostgreSqlContainer.GetConnectionString();
+            Container = new PostgreSqlBuilder().Build();
         }
 
-        public override Task DisposeAsync() => PostgreSqlContainer.DisposeAsync().AsTask();
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
+            => builder.UseNpgsql(connectionString).UseExceptionProcessor();
+
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
+            => builder.UseNpgsql(connectionString).UseExceptionProcessor();
     }
 }

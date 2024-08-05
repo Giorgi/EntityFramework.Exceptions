@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using DotNet.Testcontainers.Containers;
 using EntityFramework.Exceptions.Sqlite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -42,19 +42,14 @@ namespace EntityFramework.Exceptions.Tests
         }
     }
 
-    public class SqliteDemoContextFixture : DemoContextFixture
+    public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
     {
         private const string ConnectionString = "DataSource=file::memory:?cache=shared";
 
-        protected override Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
-            => Task.FromResult(builder.UseSqlite(ConnectionString).UseExceptionProcessor());
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+            => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
 
-        protected override Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) 
-            => Task.FromResult(builder.UseSqlite(ConnectionString).UseExceptionProcessor());
-
-        public override Task DisposeAsync()
-        {
-            return base.DisposeAsync();
-        }
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) 
+            => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
     }
 }

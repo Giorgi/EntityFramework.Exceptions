@@ -1,5 +1,4 @@
-﻿using DotNet.Testcontainers.Containers;
-using EntityFramework.Exceptions.SqlServer;
+﻿using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Testcontainers.MsSql;
@@ -34,28 +33,16 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
     }
 }
 
-public class SqlServerDemoContextFixture : DemoContextFixture
+public class SqlServerDemoContextFixture : DemoContextFixture<MsSqlContainer>
 {
-    static readonly MsSqlContainer MsSqlContainer = new MsSqlBuilder().Build();
-
-    protected override async Task<DbContextOptionsBuilder<DemoContext>> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder) 
-        => builder.UseSqlServer(await StartAndGetConnection()).UseExceptionProcessor();
-
-    protected override async Task<DbContextOptionsBuilder> BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder) => 
-        builder.UseSqlServer(await StartAndGetConnection()).UseExceptionProcessor();
-
-    public override Task DisposeAsync()
+    static SqlServerDemoContextFixture()
     {
-        return MsSqlContainer.DisposeAsync().AsTask();
+        Container = new MsSqlBuilder().Build();
     }
 
-    private static async Task<string> StartAndGetConnection()
-    {
-        if (MsSqlContainer.State != TestcontainersStates.Running)
-        {
-            await MsSqlContainer.StartAsync();
-        }
+    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+        => builder.UseSqlServer(connectionString).UseExceptionProcessor();
 
-        return MsSqlContainer.GetConnectionString();
-    }
+    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) => 
+        builder.UseSqlServer(connectionString).UseExceptionProcessor();
 }
