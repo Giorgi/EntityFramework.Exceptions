@@ -29,9 +29,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     /// <inheritdoc />
     public override void SaveChangesFailed(DbContextErrorEventData eventData)
     {
-        var dbUpdateException = eventData.Exception as DbUpdateException;
-
-        ProcessException(eventData, dbUpdateException);
+        ProcessException(eventData, eventData.Exception as DbUpdateException);
 
         base.SaveChangesFailed(eventData);
     }
@@ -39,9 +37,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     /// <inheritdoc />
     public override Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
     {
-        var dbUpdateException = eventData.Exception as DbUpdateException;
-
-        ProcessException(eventData, dbUpdateException);
+        ProcessException(eventData, eventData.Exception as DbUpdateException);
 
         return base.SaveChangesFailedAsync(eventData, cancellationToken);
     }
@@ -49,26 +45,24 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     [StackTraceHidden]
     private void ProcessException(DbContextErrorEventData eventData, DbUpdateException dbUpdateException)
     {
-        if (eventData.Exception.GetBaseException() is T providerException)
+        if (dbUpdateException == null || eventData.Exception.GetBaseException() is not T providerException) return;
+        
+        var error = GetDatabaseError(providerException);
+
+        if (error == null) return;
+        
+        var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+
+        switch (exception)
         {
-            var error = GetDatabaseError(providerException);
-
-            if (error != null && dbUpdateException != null)
-            {
-                var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
-
-                switch (exception)
-                {
-                    case UniqueConstraintException uniqueConstraint when eventData.Context != null:
-                        SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
-                        break;
-                    case ReferenceConstraintException referenceConstraint when eventData.Context != null:
-                        SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
-                        break;
-                }
-                throw exception;
-            }
+            case UniqueConstraintException uniqueConstraint when eventData.Context != null:
+                SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+                break;
+            case ReferenceConstraintException referenceConstraint when eventData.Context != null:
+                SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
+                break;
         }
+        throw exception;
     }
 
     private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
