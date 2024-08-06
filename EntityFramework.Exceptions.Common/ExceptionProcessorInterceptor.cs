@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,27 +31,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     {
         var dbUpdateException = eventData.Exception as DbUpdateException;
 
-        if (eventData.Exception.GetBaseException() is T providerException)
-        {
-            var error = GetDatabaseError(providerException);
-
-            if (error != null && dbUpdateException != null)
-            {
-                var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
-
-                switch (exception)
-                {
-                    case UniqueConstraintException uniqueConstraint when eventData.Context != null:
-                        SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
-                        break;
-                    case ReferenceConstraintException referenceConstraint when eventData.Context != null:
-                        SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
-                        break;
-                }
-
-                throw exception;
-            }
-        }
+        ProcessException(eventData, dbUpdateException);
 
         base.SaveChangesFailed(eventData);
     }
@@ -60,6 +41,14 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
     {
         var dbUpdateException = eventData.Exception as DbUpdateException;
 
+        ProcessException(eventData, dbUpdateException);
+
+        return base.SaveChangesFailedAsync(eventData, cancellationToken);
+    }
+
+    [StackTraceHidden]
+    private void ProcessException(DbContextErrorEventData eventData, DbUpdateException dbUpdateException)
+    {
         if (eventData.Exception.GetBaseException() is T providerException)
         {
             var error = GetDatabaseError(providerException);
@@ -77,14 +66,10 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
                         SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
                         break;
                 }
-
                 throw exception;
             }
         }
-
-        return base.SaveChangesFailedAsync(eventData, cancellationToken);
     }
-
 
     private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
     {
