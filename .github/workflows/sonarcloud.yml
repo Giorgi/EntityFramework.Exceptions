@@ -65,7 +65,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"Giorgi_EntityFramework.Exceptions" /o:"giorgi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=EntityFramework.Exceptions.Tests/coverage.net8.0.opencover.xml /d:sonar.host.url="https://sonarcloud.io"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"EntityFramework.Exceptions" /o:"giorgi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=EntityFramework.Exceptions.Tests/coverage.net8.0.opencover.xml /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          dotnet test --configuration Release --verbosity normal --logger GitHubActions /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:BuildType=Full /p:DoesNotReturnAttribute="DoesNotReturnAttribute"
+          dotnet test  --no-build --configuration Release --verbosity normal --logger GitHubActions /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:BuildType=Full /p:DoesNotReturnAttribute="DoesNotReturnAttribute"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
