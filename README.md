@@ -16,8 +16,6 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=coverage)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
 
-[![Build Stats](https://buildstats.info/github/chart/Giorgi/EntityFramework.Exceptions)](https://buildstats.info/github/chart/Giorgi/EntityFramework.Exceptions)
-
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
@@ -28,6 +26,10 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 ### Entity Framework Community Standup Live Show
 
 [![Entity Framework Community Standup - Typed Exceptions for Entity Framework Core](https://img.youtube.com/vi/aUl5QfswNU4/0.jpg)](https://www.youtube.com/watch?v=aUl5QfswNU4)
+
+### Nick Chapsas - The Smart Way to Handle EF Core Exceptions
+
+[![Nick Chapsas - The Smart Way to Handle EF Core Exceptions](https://img.youtube.com/vi/QKwZlWvfh-o/0.jpg)](https://www.youtube.com/watch?v=QKwZlWvfh-o)
 
 ### What does EntityFramework.Exceptions do?
 
