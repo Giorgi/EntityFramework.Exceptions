@@ -37,7 +37,7 @@ public class SqlServerDemoContextFixture : DemoContextFixture<MsSqlContainer>
 {
     static SqlServerDemoContextFixture()
     {
-        Container = new MsSqlBuilder().Build();
+        Container = new MsSqlBuilder().WithImage("mcr.microsoft.com/mssql/server:2022-latest").Build();
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
