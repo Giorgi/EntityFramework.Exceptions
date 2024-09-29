@@ -126,6 +126,8 @@ using (var demoContext = new DemoContext())
     }
 }
 ```
+> [!WARNING]
+> If you want to use another native SQLite binary instead of `e_sqlite3.dll` use the [EntityFrameworkCore.Exceptions.Sqlite.Core](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite.Core) package. This package depends on Microsoft.Data.Sqlite.Core package, which doesn't include SQLite native binary so you can use any native binary you want.
 
 ### Usage with DbContext pooling
 
