@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 namespace EntityFramework.Exceptions.MySQL;
 #endif
 
-class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlException>
+class MySqlExceptionProcessorDbCommandInterceptor : ExceptionProcessorDbCommandInterceptor<MySqlException>
 {
     protected override DatabaseError? GetDatabaseError(MySqlException dbException)
     {

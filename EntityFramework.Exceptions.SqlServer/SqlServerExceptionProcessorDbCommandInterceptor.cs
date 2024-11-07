@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace EntityFramework.Exceptions.SqlServer;
 
-class SqlServerExceptionProcessorInterceptor: ExceptionProcessorInterceptor<SqlException>
+class SqlServerExceptionProcessorDbCommandInterceptor: ExceptionProcessorDbCommandInterceptor<SqlException>
 {
     private const int ReferenceConstraint = 547;
     private const int CannotInsertNull = 515;

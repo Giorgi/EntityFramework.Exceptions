@@ -3,7 +3,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace EntityFramework.Exceptions.Oracle;
 
-class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<OracleException>
+class OracleExceptionProcessorDbCommandInterceptor : ExceptionProcessorDbCommandInterceptor<OracleException>
 {
     private const int CannotInsertNull = 1400;
     private const int UniqueConstraintViolation = 1;

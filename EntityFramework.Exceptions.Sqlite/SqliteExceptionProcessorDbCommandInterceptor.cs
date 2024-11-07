@@ -1,10 +1,11 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using static SQLitePCL.raw;
 
 namespace EntityFramework.Exceptions.Sqlite;
 
-class SqliteExceptionProcessorInterceptor : ExceptionProcessorInterceptor<SqliteException>
+class SqliteExceptionProcessorDbCommandInterceptor : ExceptionProcessorDbCommandInterceptor<SqliteException>
 {
     protected override DatabaseError? GetDatabaseError(SqliteException dbException)
     {

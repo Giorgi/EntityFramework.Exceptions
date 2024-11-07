@@ -1,10 +1,9 @@
 ﻿using EntityFramework.Exceptions.Common;
-using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 namespace EntityFramework.Exceptions.PostgreSQL;
 
-class PostgresExceptionProcessorInterceptor : ExceptionProcessorInterceptor<PostgresException>
+class PostgresExceptionProcessorDbCommandInterceptor : ExceptionProcessorDbCommandInterceptor<PostgresException>
 {
     protected override DatabaseError? GetDatabaseError(PostgresException dbException)
     {
