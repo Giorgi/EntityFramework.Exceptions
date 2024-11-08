@@ -16,12 +16,8 @@ Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Co
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\EntityFramework.Exceptions.MySQL\ExceptionProcessorExtensions.cs">
-      <Link>ExceptionProcessorExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\EntityFramework.Exceptions.MySQL\MySqlExceptionProcessorDbCommandInterceptor.cs">
-      <Link>MySqlExceptionProcessorDbCommandInterceptor.cs</Link>
-    </Compile>
+    <Compile Include="..\EntityFramework.Exceptions.MySQL\ExceptionProcessorExtensions.cs" Link="ExceptionProcessorExtensions.cs" />
+    <Compile Include="..\EntityFramework.Exceptions.MySQL\MySqlExceptionProcessorDbCommandInterceptor.cs" Link="MySqlExceptionProcessorDbCommandInterceptor.cs" />
     <Compile Include="..\EntityFramework.Exceptions.MySQL\MySqlExceptionProcessorInterceptor.cs" Link="MySqlExceptionProcessorInterceptor.cs" />
   </ItemGroup>
 
