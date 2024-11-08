@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EntityFramework.Exceptions.Common;
 
@@ -20,7 +21,7 @@ public abstract class ExceptionProcessorDbCommandInterceptor<T> : DbCommandInter
     /// <inheritdoc />
     public override void CommandFailed(DbCommand command, CommandErrorEventData eventData)
     {
-        ProcessException(eventData, eventData.Exception as DbUpdateException);
+        ProcessException(eventData, eventData.Exception as DbException);
 
         base.CommandFailed(command, eventData);
     }
@@ -29,13 +30,13 @@ public abstract class ExceptionProcessorDbCommandInterceptor<T> : DbCommandInter
     public override Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData,
         CancellationToken cancellationToken = new CancellationToken())
     {
-        ProcessException(eventData, eventData.Exception as DbUpdateException);
+        ProcessException(eventData, eventData.Exception as DbException);
 
         return base.CommandFailedAsync(command, eventData, cancellationToken);
     }
 
     [StackTraceHidden]
-    private void ProcessException(CommandErrorEventData eventData, DbUpdateException dbUpdateException)
+    private void ProcessException(CommandErrorEventData eventData, DbException dbUpdateException)
     {
         if (dbUpdateException == null || eventData.Exception.GetBaseException() is not T providerException) return;
 
@@ -43,7 +44,7 @@ public abstract class ExceptionProcessorDbCommandInterceptor<T> : DbCommandInter
 
         if (error == null) return;
 
-        var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+        var exception = ExceptionFactory.Create(error.Value, dbUpdateException);
 
         switch (exception)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EntityFramework.Exceptions.Common;
@@ -21,6 +22,19 @@ static class ExceptionFactory
             DatabaseError.ReferenceConstraint when entries.Count == 0 => new ReferenceConstraintException("Reference constraint violation", exception.InnerException),
             DatabaseError.UniqueConstraint when entries.Count > 0 => new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries),
             DatabaseError.UniqueConstraint when entries.Count == 0 => new UniqueConstraintException("Unique constraint violation", exception.InnerException),
+            _ => null,
+        };
+    }
+    
+    internal static Exception Create(DatabaseError error, DbException exception)
+    {
+        return error switch
+        {
+            DatabaseError.CannotInsertNull => new CannotInsertNullException("Cannot insert null", exception.InnerException),
+            DatabaseError.MaxLength => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException),
+            DatabaseError.NumericOverflow => new NumericOverflowException("Numeric overflow", exception.InnerException),
+            DatabaseError.ReferenceConstraint => new ReferenceConstraintException("Reference constraint violation", exception.InnerException),
+            DatabaseError.UniqueConstraint => new UniqueConstraintException("Unique constraint violation", exception.InnerException),
             _ => null,
         };
     }
