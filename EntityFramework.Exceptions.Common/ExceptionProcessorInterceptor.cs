@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EntityFramework.Exceptions.Common;
 
-public abstract class ExceptionProcessorInterceptor<T> : IDbCommandInterceptor, ISaveChangesInterceptor
-    where T : DbException
+public abstract class ExceptionProcessorInterceptor<TProviderException> : IDbCommandInterceptor, ISaveChangesInterceptor
+    where TProviderException : DbException
 {
     private List<IndexDetails> uniqueIndexDetailsList;
     private List<ForeignKeyDetails> foreignKeyDetailsList;
@@ -53,12 +53,12 @@ public abstract class ExceptionProcessorInterceptor<T> : IDbCommandInterceptor, 
         return Task.CompletedTask;
     }
 
-    protected abstract DatabaseError? GetDatabaseError(T dbException);
+    protected abstract DatabaseError? GetDatabaseError(TProviderException dbException);
 
     [StackTraceHidden]
     private void ProcessDbUpdateException(DbContextErrorEventData eventData, DbUpdateException dbUpdateException)
     {
-        if (dbUpdateException == null || eventData.Exception.GetBaseException() is not T providerException) return;
+        if (dbUpdateException == null || eventData.Exception.GetBaseException() is not TProviderException providerException) return;
 
         var error = GetDatabaseError(providerException);
 
@@ -82,7 +82,7 @@ public abstract class ExceptionProcessorInterceptor<T> : IDbCommandInterceptor, 
     [StackTraceHidden]
     private void ProcessDbException(CommandErrorEventData eventData, DbException dbException)
     {
-        if (dbException == null || eventData.Exception.GetBaseException() is not T providerException) return;
+        if (dbException == null || eventData.Exception.GetBaseException() is not TProviderException providerException) return;
 
         var error = GetDatabaseError(providerException);
 
@@ -104,7 +104,7 @@ public abstract class ExceptionProcessorInterceptor<T> : IDbCommandInterceptor, 
     }
 
     private void SetConstraintDetails(DbContext context, UniqueConstraintException exception,
-        Exception providerException)
+        TProviderException providerException)
     {
         if (uniqueIndexDetailsList == null)
         {
@@ -155,7 +155,7 @@ public abstract class ExceptionProcessorInterceptor<T> : IDbCommandInterceptor, 
     }
 
     private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception,
-        Exception providerException)
+        TProviderException providerException)
     {
         if (foreignKeyDetailsList == null)
         {
