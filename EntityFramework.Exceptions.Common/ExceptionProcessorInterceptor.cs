@@ -28,75 +28,52 @@ public abstract class ExceptionProcessorInterceptor<TProviderException> : IDbCom
     /// <inheritdoc />
     public void SaveChangesFailed(DbContextErrorEventData eventData)
     {
-        ProcessDbUpdateException(eventData, eventData.Exception as DbUpdateException);
+        ProcessException(eventData.Exception, eventData.Context);
     }
 
     /// <inheritdoc />
     public Task SaveChangesFailedAsync(DbContextErrorEventData eventData,
         CancellationToken cancellationToken = new CancellationToken())
     {
-        ProcessDbUpdateException(eventData, eventData.Exception as DbUpdateException);
+        ProcessException(eventData.Exception, eventData.Context);
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
     public void CommandFailed(DbCommand command, CommandErrorEventData eventData)
     {
-        ProcessDbException(eventData, eventData.Exception as DbException);
+        ProcessException(eventData.Exception, eventData.Context);
     }
 
     /// <inheritdoc />
     public Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData,
         CancellationToken cancellationToken = new CancellationToken())
     {
-        ProcessDbException(eventData, eventData.Exception as DbException);
+        ProcessException(eventData.Exception, eventData.Context);
         return Task.CompletedTask;
     }
 
     protected abstract DatabaseError? GetDatabaseError(TProviderException dbException);
 
     [StackTraceHidden]
-    private void ProcessDbUpdateException(DbContextErrorEventData eventData, DbUpdateException dbUpdateException)
+    private void ProcessException(Exception eventException, DbContext eventContext)
     {
-        if (dbUpdateException == null || eventData.Exception.GetBaseException() is not TProviderException providerException) return;
+        if (eventException?.GetBaseException() is not TProviderException providerException) return;
 
         var error = GetDatabaseError(providerException);
 
         if (error == null) return;
 
-        var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+        var updateException = eventException as DbUpdateException;
+        var exception = ExceptionFactory.Create(error.Value, eventException, updateException?.Entries);
 
         switch (exception)
         {
-            case UniqueConstraintException uniqueConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+            case UniqueConstraintException uniqueConstraint when eventContext != null:
+                SetConstraintDetails(eventContext, uniqueConstraint, providerException);
                 break;
-            case ReferenceConstraintException referenceConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
-                break;
-        }
-
-        throw exception;
-    }
-
-    [StackTraceHidden]
-    private void ProcessDbException(CommandErrorEventData eventData, DbException dbException)
-    {
-        if (dbException == null || eventData.Exception.GetBaseException() is not TProviderException providerException) return;
-
-        var error = GetDatabaseError(providerException);
-
-        if (error == null) return;
-
-        var exception = ExceptionFactory.Create(error.Value, dbException);
-
-        switch (exception)
-        {
-            case UniqueConstraintException uniqueConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
-                break;
-            case ReferenceConstraintException referenceConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
+            case ReferenceConstraintException referenceConstraint when eventContext != null:
+                SetConstraintDetails(eventContext, referenceConstraint, providerException);
                 break;
         }
 
