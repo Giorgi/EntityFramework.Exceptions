@@ -40,16 +40,33 @@ namespace EntityFramework.Exceptions.Tests
         {
             return Task.CompletedTask;
         }
+
+#if BULK_OPERATIONS
+        // TODO figure this out
+        [Fact(Skip = "Skipping because SQLite appears to not check this")]
+        public override Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughExecuteUpdate()
+        {
+            return Task.CompletedTask;
+        }
+
+        [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]
+        public override Task NumericOverflowViolationThrowsNumericOverflowExceptionThroughExecuteUpdate()
+        {
+            return Task.CompletedTask;
+        }
+#endif
     }
 
     public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
     {
         private const string ConnectionString = "DataSource=file::memory:?cache=shared";
 
-        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(
+            DbContextOptionsBuilder<DemoContext> builder, string connectionString)
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
 
-        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) 
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder,
+            string connectionString)
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
     }
 }
