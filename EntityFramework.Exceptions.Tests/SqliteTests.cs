@@ -42,8 +42,7 @@ namespace EntityFramework.Exceptions.Tests
         }
 
 #if BULK_OPERATIONS
-        // TODO figure this out
-        [Fact(Skip = "Skipping because SQLite appears to not check this")]
+        [Fact(Skip = "Skipping due to an EF Core bug fixed in EF Core 9")]
         public override Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughExecuteUpdate()
         {
             return Task.CompletedTask;

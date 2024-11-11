@@ -13,8 +13,7 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
     }
     
 #if BULK_OPERATIONS
-    // TODO support ORA-01407: cannot update (string) to NULL 
-    [Fact(Skip = "Oracle has differing error codes for inserting null and updating to null")]
+    [Fact(Skip = "Skipping until ORA-01407 is supported")]
     public override Task RequiredColumnViolationThrowsCannotInsertNullExceptionThroughExecuteUpdate()
     {
         return Task.CompletedTask;
