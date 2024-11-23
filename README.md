@@ -4,7 +4,7 @@
 Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite, Oracle and MySql
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
-[![Target](https://img.shields.io/static/v1?label=target&message=net6.0;net8.0&color=512bd4&logo=.net&style=flat-square)](https://dotnet.microsoft.com/en-us/)
+[![Target](https://img.shields.io/static/v1?label=target&message=net8.0&color=512bd4&logo=.net&style=flat-square)](https://dotnet.microsoft.com/en-us/)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Giorgi/EntityFramework.Exceptions/dotnet.yml)
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
 [![Ko-Fi](https://img.shields.io/static/v1?style=flat-square&message=Support%20the%20Project&color=success&style=plastic&logo=ko-fi&label=$$)](https://ko-fi.com/U6U81LHU8)

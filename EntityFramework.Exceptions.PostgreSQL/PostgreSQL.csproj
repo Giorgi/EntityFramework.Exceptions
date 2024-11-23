@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="7.0.7" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="Npgsql" Version="8.0.3" Condition="'$(TargetFramework)' == 'net8.0'" />
   </ItemGroup>
 </Project>
