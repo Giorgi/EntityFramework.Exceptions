@@ -1,5 +1,3 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -7,10 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EntityFramework.Exceptions.Common;
 
-public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor where T : DbException
+public abstract class ExceptionProcessorInterceptor<TProviderException> : IDbCommandInterceptor, ISaveChangesInterceptor where TProviderException : DbException
 {
     private List<IndexDetails> uniqueIndexDetailsList;
     private List<ForeignKeyDetails> foreignKeyDetailsList;
@@ -24,48 +24,60 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         ReferenceConstraint
     }
 
-    protected abstract DatabaseError? GetDatabaseError(T dbException);
-
     /// <inheritdoc />
-    public override void SaveChangesFailed(DbContextErrorEventData eventData)
+    public void SaveChangesFailed(DbContextErrorEventData eventData)
     {
-        ProcessException(eventData, eventData.Exception as DbUpdateException);
-
-        base.SaveChangesFailed(eventData);
+        ProcessException(eventData.Exception, eventData.Context);
     }
 
     /// <inheritdoc />
-    public override Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
+    public Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
     {
-        ProcessException(eventData, eventData.Exception as DbUpdateException);
-
-        return base.SaveChangesFailedAsync(eventData, cancellationToken);
+        ProcessException(eventData.Exception, eventData.Context);
+        return Task.CompletedTask;
     }
+
+    /// <inheritdoc />
+    public void CommandFailed(DbCommand command, CommandErrorEventData eventData)
+    {
+        ProcessException(eventData.Exception, eventData.Context);
+    }
+
+    /// <inheritdoc />
+    public Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
+    {
+        ProcessException(eventData.Exception, eventData.Context);
+        return Task.CompletedTask;
+    }
+
+    protected abstract DatabaseError? GetDatabaseError(TProviderException dbException);
 
     [StackTraceHidden]
-    private void ProcessException(DbContextErrorEventData eventData, DbUpdateException dbUpdateException)
+    private void ProcessException(Exception eventException, DbContext eventContext)
     {
-        if (dbUpdateException == null || eventData.Exception.GetBaseException() is not T providerException) return;
-        
+        if (eventException?.GetBaseException() is not TProviderException providerException) return;
+
         var error = GetDatabaseError(providerException);
 
         if (error == null) return;
-        
-        var exception = ExceptionFactory.Create(error.Value, dbUpdateException, dbUpdateException.Entries);
+
+        var updateException = eventException as DbUpdateException;
+        var exception = ExceptionFactory.Create(error.Value, eventException, updateException?.Entries);
 
         switch (exception)
         {
-            case UniqueConstraintException uniqueConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, uniqueConstraint, providerException);
+            case UniqueConstraintException uniqueConstraint when eventContext != null:
+                SetConstraintDetails(eventContext, uniqueConstraint, providerException);
                 break;
-            case ReferenceConstraintException referenceConstraint when eventData.Context != null:
-                SetConstraintDetails(eventData.Context, referenceConstraint, providerException);
+            case ReferenceConstraintException referenceConstraint when eventContext != null:
+                SetConstraintDetails(eventContext, referenceConstraint, providerException);
                 break;
         }
+
         throw exception;
     }
 
-    private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, Exception providerException)
+    private void SetConstraintDetails(DbContext context, UniqueConstraintException exception, TProviderException providerException)
     {
         if (uniqueIndexDetailsList == null)
         {
@@ -108,7 +120,7 @@ public abstract class ExceptionProcessorInterceptor<T> : SaveChangesInterceptor 
         }
     }
 
-    private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, Exception providerException)
+    private void SetConstraintDetails(DbContext context, ReferenceConstraintException exception, TProviderException providerException)
     {
         if (foreignKeyDetailsList == null)
         {

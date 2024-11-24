@@ -40,6 +40,20 @@ namespace EntityFramework.Exceptions.Tests
         {
             return Task.CompletedTask;
         }
+
+#if BULK_OPERATIONS
+        [Fact(Skip = "Skipping due to an EF Core bug fixed in EF Core 9")]
+        public override Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughExecuteUpdate()
+        {
+            return Task.CompletedTask;
+        }
+
+        [Fact(Skip = "Skipping as SQLite does not enforce numeric length")]
+        public override Task NumericOverflowViolationThrowsNumericOverflowExceptionThroughExecuteUpdate()
+        {
+            return Task.CompletedTask;
+        }
+#endif
     }
 
     public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
