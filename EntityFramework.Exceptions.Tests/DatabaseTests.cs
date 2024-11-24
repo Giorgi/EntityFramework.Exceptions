@@ -22,8 +22,7 @@ public abstract class DatabaseTests : IDisposable
         DemoContext = demoContext;
         SameNameIndexesContext = sameNameIndexesContext;
 
-        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(DemoContext.Database) ||
-                  MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
+        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(DemoContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
         isSqlite = demoContext.Database.IsSqlite();
     }
 
@@ -53,10 +52,8 @@ public abstract class DatabaseTests : IDisposable
         DemoContext.Products.Add(new Product { Name = "Bulk Update 2" });
 
         await DemoContext.SaveChangesAsync();
-        Assert.Throws<UniqueConstraintException>(() =>
-            DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
-        await Assert.ThrowsAsync<UniqueConstraintException>(async () =>
-            await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
+        Assert.Throws<UniqueConstraintException>(() => DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
+        await Assert.ThrowsAsync<UniqueConstraintException>(async () => await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
         await DemoContext.Products
             .Where(p => p.Name == "Bulk Update 1" || p.Name == "Bulk Update 2")
             .ExecuteDeleteAsync();
@@ -76,14 +73,13 @@ public abstract class DatabaseTests : IDisposable
         {
             Name = "Rope Access"
         });
-
+        
         SameNameIndexesContext.IncidentCategories.Add(new EFExceptionSchema.Entities.Incidents.Category
         {
             Name = "Rope Access"
         });
 
-        var uniqueConstraintException =
-            Assert.Throws<UniqueConstraintException>(() => SameNameIndexesContext.SaveChanges());
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => SameNameIndexesContext.SaveChanges());
         await Assert.ThrowsAsync<UniqueConstraintException>(() => SameNameIndexesContext.SaveChangesAsync());
 
         if (!isSqlite)
@@ -115,7 +111,7 @@ public abstract class DatabaseTests : IDisposable
             Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
             Assert.False(string.IsNullOrEmpty(uniqueConstraintException.SchemaQualifiedTableName));
             Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
-            Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties);
+            Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties); 
         }
     }
 
@@ -135,10 +131,8 @@ public abstract class DatabaseTests : IDisposable
         DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });
         await DemoContext.SaveChangesAsync();
 
-        Assert.Throws<CannotInsertNullException>(() =>
-            DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, (string)null)));
-        await Assert.ThrowsAsync<CannotInsertNullException>(async () =>
-            await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, (string)null)));
+        Assert.Throws<CannotInsertNullException>(() => DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, (string)null)));
+        await Assert.ThrowsAsync<CannotInsertNullException>(async () => await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, (string)null)));
         await DemoContext.Products.Where(p => p.Name == "Bulk Update 1").ExecuteDeleteAsync();
     }
 #endif
@@ -174,16 +168,14 @@ public abstract class DatabaseTests : IDisposable
         {
             DemoContext.Products
                 .Where(p => p.Name == "Bulk Update 1")
-                .ExecuteUpdate(p =>
-                    p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
+                .ExecuteUpdate(p => p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
         }
 
         async Task QueryAsync()
         {
             await DemoContext.Products
                 .Where(p => p.Name == "Bulk Update 1")
-                .ExecuteUpdateAsync(p =>
-                    p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
+                .ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
         }
     }
 #endif
@@ -312,8 +304,7 @@ public abstract class DatabaseTests : IDisposable
     public virtual async Task DeleteParentItemThrowsReferenceConstraintException()
     {
         var product = new Product { Name = "AN" };
-        var productPriceHistory = new ProductPriceHistory
-            { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
+        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
         DemoContext.ProductPriceHistories.Add(productPriceHistory);
         await DemoContext.SaveChangesAsync();
 
@@ -331,8 +322,7 @@ public abstract class DatabaseTests : IDisposable
     public virtual async Task DeleteParentItemThrowsReferenceConstraintExceptionThroughExecuteDelete()
     {
         var product = new Product { Name = "AN2" };
-        var productPriceHistory = new ProductPriceHistory
-            { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
+        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
         DemoContext.ProductPriceHistories.Add(productPriceHistory);
         await DemoContext.SaveChangesAsync();
 

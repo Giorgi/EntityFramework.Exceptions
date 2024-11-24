@@ -1,3 +1,4 @@
+﻿using System;
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +7,6 @@ using MySqlConnector;
 namespace EntityFramework.Exceptions.MySQL.Pomelo;
 #else
 using MySql.Data.MySqlClient;
-
 namespace EntityFramework.Exceptions.MySQL;
 #endif
 
@@ -14,6 +14,7 @@ class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlEx
 {
     protected override DatabaseError? GetDatabaseError(MySqlException dbException)
     {
+
 #if POMELO
             return dbException.ErrorCode switch
 #else
@@ -21,7 +22,7 @@ class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlEx
 #endif
         {
             MySqlErrorCode.ColumnCannotBeNull => DatabaseError.CannotInsertNull,
-            MySqlErrorCode.DuplicateKeyEntry => DatabaseError.UniqueConstraint,
+            MySqlErrorCode.DuplicateKeyEntry=> DatabaseError.UniqueConstraint,
             MySqlErrorCode.WarningDataOutOfRange => DatabaseError.NumericOverflow,
             MySqlErrorCode.DataTooLong => DatabaseError.MaxLength,
             MySqlErrorCode.NoReferencedRow => DatabaseError.ReferenceConstraint,
@@ -35,10 +36,13 @@ class MySqlExceptionProcessorInterceptor : ExceptionProcessorInterceptor<MySqlEx
 
 public static class ExceptionProcessorExtensions
 {
-    public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self) =>
-        self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
+    public static DbContextOptionsBuilder UseExceptionProcessor(this DbContextOptionsBuilder self)
+    {
+        return self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
+    }
 
-    public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(
-        this DbContextOptionsBuilder<TContext> self) where TContext : DbContext =>
-        self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
+    public static DbContextOptionsBuilder<TContext> UseExceptionProcessor<TContext>(this DbContextOptionsBuilder<TContext> self) where TContext : DbContext
+    {
+        return self.AddInterceptors(new MySqlExceptionProcessorInterceptor());
+    }
 }

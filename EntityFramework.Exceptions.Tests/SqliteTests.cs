@@ -60,12 +60,10 @@ namespace EntityFramework.Exceptions.Tests
     {
         private const string ConnectionString = "DataSource=file::memory:?cache=shared";
 
-        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(
-            DbContextOptionsBuilder<DemoContext> builder, string connectionString)
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
 
-        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder,
-            string connectionString)
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) 
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
     }
 }
