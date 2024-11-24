@@ -31,8 +31,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException> : IDbCom
     }
 
     /// <inheritdoc />
-    public Task SaveChangesFailedAsync(DbContextErrorEventData eventData,
-        CancellationToken cancellationToken = new CancellationToken())
+    public Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
     {
         ProcessException(eventData.Exception, eventData.Context);
         return Task.CompletedTask;
