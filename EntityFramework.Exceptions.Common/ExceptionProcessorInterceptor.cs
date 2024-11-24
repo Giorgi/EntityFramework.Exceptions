@@ -44,8 +44,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException> : IDbCom
     }
 
     /// <inheritdoc />
-    public Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData,
-        CancellationToken cancellationToken = new CancellationToken())
+    public Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
     {
         ProcessException(eventData.Exception, eventData.Context);
         return Task.CompletedTask;
