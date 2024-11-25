@@ -4,6 +4,7 @@ using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -41,6 +42,20 @@ public abstract class DatabaseTests : IDisposable
             Assert.Contains<string>(nameof(Product.Name), uniqueConstraintException.ConstraintProperties);
             Assert.Equal(nameof(DemoContext.Products), uniqueConstraintException.SchemaQualifiedTableName);
         }
+    }
+
+    [Fact]
+    public virtual async Task UniqueColumnViolationThrowsUniqueConstraintExceptionThroughExecuteUpdate()
+    {
+        DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });
+        DemoContext.Products.Add(new Product { Name = "Bulk Update 2" });
+
+        await DemoContext.SaveChangesAsync();
+        Assert.Throws<UniqueConstraintException>(() => DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
+        await Assert.ThrowsAsync<UniqueConstraintException>(async () => await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, "Bulk Update 1")));
+        await DemoContext.Products
+            .Where(p => p.Name == "Bulk Update 1" || p.Name == "Bulk Update 2")
+            .ExecuteDeleteAsync();
     }
 
     [Fact]
@@ -108,12 +123,55 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
+    public virtual async Task RequiredColumnViolationThrowsCannotInsertNullExceptionThroughExecuteUpdate()
+    {
+        DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });
+        await DemoContext.SaveChangesAsync();
+
+        Assert.Throws<CannotInsertNullException>(() => DemoContext.Products.ExecuteUpdate(p => p.SetProperty(pp => pp.Name, (string)null)));
+        await Assert.ThrowsAsync<CannotInsertNullException>(async () => await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, (string)null)));
+        await DemoContext.Products.Where(p => p.Name == "Bulk Update 1").ExecuteDeleteAsync();
+    }
+
+    [Fact]
     public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
     {
         DemoContext.Products.Add(new Product { Name = new string('G', DemoContext.ProductNameMaxLength + 5) });
 
         Assert.Throws<MaxLengthExceededException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<MaxLengthExceededException>(() => DemoContext.SaveChangesAsync());
+    }
+
+    [Fact]
+    public virtual async Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughExecuteUpdate()
+    {
+        DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });
+        await DemoContext.SaveChangesAsync();
+
+        CleanupContext();
+
+        Assert.Throws<MaxLengthExceededException>(Query);
+        await Assert.ThrowsAsync<MaxLengthExceededException>(QueryAsync);
+
+        await DemoContext.Products
+            .Where(p => p.Name == "Bulk Update 1")
+            .ExecuteDeleteAsync();
+
+        return;
+
+        void Query()
+        {
+            DemoContext.Products
+                .Where(p => p.Name == "Bulk Update 1")
+                .ExecuteUpdate(p => p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
+        }
+
+        async Task QueryAsync()
+        {
+            await DemoContext.Products
+                .Where(p => p.Name == "Bulk Update 1")
+                .ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
+        }
     }
 
     [Fact]
@@ -125,6 +183,39 @@ public abstract class DatabaseTests : IDisposable
 
         Assert.Throws<NumericOverflowException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<NumericOverflowException>(() => DemoContext.SaveChangesAsync());
+    }
+
+    [Fact]
+    public virtual async Task NumericOverflowViolationThrowsNumericOverflowExceptionThroughExecuteUpdate()
+    {
+        var product = new Product { Name = "Numeric Overflow Test 2" };
+        DemoContext.Products.Add(product);
+        var sale = new ProductSale { Price = 1m, Product = product };
+        DemoContext.ProductSales.Add(sale);
+        await DemoContext.SaveChangesAsync();
+
+        Assert.Throws<NumericOverflowException>(Query);
+        await Assert.ThrowsAsync<NumericOverflowException>(QueryAsync);
+
+        DemoContext.Remove(sale);
+        DemoContext.Remove(product);
+        await DemoContext.SaveChangesAsync();
+
+        return;
+
+        void Query()
+        {
+            DemoContext.ProductSales
+                .Where(s => s.Id == sale.Id)
+                .ExecuteUpdate(s => s.SetProperty(ss => ss.Price, 3141.59265m));
+        }
+
+        async Task QueryAsync()
+        {
+            await DemoContext.ProductSales
+                .Where(s => s.Id == sale.Id)
+                .ExecuteUpdateAsync(s => s.SetProperty(ss => ss.Price, 3141.59265m));
+        }
     }
 
     [Fact]
@@ -140,6 +231,46 @@ public abstract class DatabaseTests : IDisposable
             Assert.False(string.IsNullOrEmpty(referenceConstraintException.ConstraintName));
             Assert.NotEmpty(referenceConstraintException.ConstraintProperties);
             Assert.Contains<string>(nameof(ProductSale.ProductId), referenceConstraintException.ConstraintProperties);
+        }
+    }
+
+    [Fact]
+    public virtual async Task ReferenceViolationThrowsReferenceConstraintExceptionThroughExecuteUpdate()
+    {
+        var product = new Product { Name = "RefConstraint Violation 1" };
+        DemoContext.Products.Add(product);
+        var sale = new ProductSale { Price = 1m, Product = product };
+        DemoContext.ProductSales.Add(sale);
+        await DemoContext.SaveChangesAsync();
+
+        var exception = Assert.Throws<ReferenceConstraintException>(Query);
+        var asyncException = await Assert.ThrowsAsync<ReferenceConstraintException>(QueryAsync);
+
+        if (!isSqlite)
+        {
+            Assert.False(string.IsNullOrEmpty(exception.ConstraintName));
+            Assert.NotEmpty(exception.ConstraintProperties);
+            Assert.Contains<string>(nameof(ProductSale.ProductId), exception.ConstraintProperties);
+
+            Assert.False(string.IsNullOrEmpty(asyncException.ConstraintName));
+            Assert.NotEmpty(asyncException.ConstraintProperties);
+            Assert.Contains<string>(nameof(ProductSale.ProductId), asyncException.ConstraintProperties);
+        }
+
+        return;
+
+        void Query()
+        {
+            DemoContext.ProductSales
+                .Where(s => s.Id == sale.Id)
+                .ExecuteUpdate(s => s.SetProperty(ss => ss.ProductId, 0));
+        }
+
+        async Task QueryAsync()
+        {
+            await DemoContext.ProductSales
+                .Where(s => s.Id == sale.Id)
+                .ExecuteUpdateAsync(s => s.SetProperty(ss => ss.ProductId, 0));
         }
     }
 
@@ -174,6 +305,36 @@ public abstract class DatabaseTests : IDisposable
 
         Assert.Throws<ReferenceConstraintException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
+    }
+
+    [Fact]
+    public virtual async Task DeleteParentItemThrowsReferenceConstraintExceptionThroughExecuteDelete()
+    {
+        var product = new Product { Name = "AN2" };
+        var productPriceHistory = new ProductPriceHistory { Product = product, Price = 15.27m, EffectiveDate = DateTimeOffset.UtcNow };
+        DemoContext.ProductPriceHistories.Add(productPriceHistory);
+        await DemoContext.SaveChangesAsync();
+
+        CleanupContext();
+
+        Assert.Throws<ReferenceConstraintException>(Query);
+        await Assert.ThrowsAsync<ReferenceConstraintException>(QueryAsync);
+
+        return;
+
+        void Query()
+        {
+            DemoContext.Products
+                .Where(p => p.Name == "AN2")
+                .ExecuteDelete();
+        }
+
+        async Task QueryAsync()
+        {
+            await DemoContext.Products
+                .Where(p => p.Name == "AN2")
+                .ExecuteDeleteAsync();
+        }
     }
 
     [Fact]
