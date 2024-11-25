@@ -44,7 +44,6 @@ public abstract class DatabaseTests : IDisposable
         }
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task UniqueColumnViolationThrowsUniqueConstraintExceptionThroughExecuteUpdate()
     {
@@ -58,7 +57,6 @@ public abstract class DatabaseTests : IDisposable
             .Where(p => p.Name == "Bulk Update 1" || p.Name == "Bulk Update 2")
             .ExecuteDeleteAsync();
     }
-#endif
 
     [Fact]
     public virtual async Task UniqueColumnViolationSameNamesIndexesInDifferentSchemasSetsCorrectTableName()
@@ -124,7 +122,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<CannotInsertNullException>(() => DemoContext.SaveChangesAsync());
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task RequiredColumnViolationThrowsCannotInsertNullExceptionThroughExecuteUpdate()
     {
@@ -135,7 +132,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<CannotInsertNullException>(async () => await DemoContext.Products.ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, (string)null)));
         await DemoContext.Products.Where(p => p.Name == "Bulk Update 1").ExecuteDeleteAsync();
     }
-#endif
 
     [Fact]
     public virtual async Task MaxLengthViolationThrowsMaxLengthExceededException()
@@ -146,7 +142,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<MaxLengthExceededException>(() => DemoContext.SaveChangesAsync());
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughExecuteUpdate()
     {
@@ -178,7 +173,6 @@ public abstract class DatabaseTests : IDisposable
                 .ExecuteUpdateAsync(p => p.SetProperty(pp => pp.Name, new string('G', DemoContext.ProductNameMaxLength + 5)));
         }
     }
-#endif
 
     [Fact]
     public virtual async Task NumericOverflowViolationThrowsNumericOverflowException()
@@ -191,7 +185,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<NumericOverflowException>(() => DemoContext.SaveChangesAsync());
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task NumericOverflowViolationThrowsNumericOverflowExceptionThroughExecuteUpdate()
     {
@@ -224,7 +217,6 @@ public abstract class DatabaseTests : IDisposable
                 .ExecuteUpdateAsync(s => s.SetProperty(ss => ss.Price, 3141.59265m));
         }
     }
-#endif
 
     [Fact]
     public virtual async Task ReferenceViolationThrowsReferenceConstraintException()
@@ -242,7 +234,6 @@ public abstract class DatabaseTests : IDisposable
         }
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task ReferenceViolationThrowsReferenceConstraintExceptionThroughExecuteUpdate()
     {
@@ -282,7 +273,6 @@ public abstract class DatabaseTests : IDisposable
                 .ExecuteUpdateAsync(s => s.SetProperty(ss => ss.ProductId, 0));
         }
     }
-#endif
 
     [Fact]
     public virtual async Task DatabaseUnrelatedExceptionThrowsOriginalException()
@@ -317,7 +307,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
     }
 
-#if BULK_OPERATIONS
     [Fact]
     public virtual async Task DeleteParentItemThrowsReferenceConstraintExceptionThroughExecuteDelete()
     {
@@ -347,7 +336,6 @@ public abstract class DatabaseTests : IDisposable
                 .ExecuteDeleteAsync();
         }
     }
-#endif
 
     [Fact]
     public async Task NotHandledViolationReThrowsOriginalException()

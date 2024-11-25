@@ -12,13 +12,11 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
     {
     }
     
-#if BULK_OPERATIONS
     [Fact(Skip = "Skipping until ORA-01407 is supported")]
     public override Task RequiredColumnViolationThrowsCannotInsertNullExceptionThroughExecuteUpdate()
     {
         return Task.CompletedTask;
     }
-#endif
 }
 
 public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
