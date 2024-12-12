@@ -7,6 +7,7 @@ namespace EntityFramework.Exceptions.Oracle;
 class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<OracleException>
 {
     private const int CannotInsertNull = 1400;
+    private const int CannotUpdateToNull = 1407;
     private const int UniqueConstraintViolation = 1;
     private const int IntegrityConstraintViolation = 2291;
     private const int ChildRecordFound = 2292;
@@ -20,6 +21,7 @@ class OracleExceptionProcessorInterceptor : ExceptionProcessorInterceptor<Oracle
             IntegrityConstraintViolation => DatabaseError.ReferenceConstraint,
             ChildRecordFound => DatabaseError.ReferenceConstraint,
             CannotInsertNull => DatabaseError.CannotInsertNull,
+            CannotUpdateToNull => DatabaseError.CannotInsertNull,
             NumericOrValueError => DatabaseError.MaxLength,
             NumericOverflow => DatabaseError.NumericOverflow,
             UniqueConstraintViolation => DatabaseError.UniqueConstraint,
