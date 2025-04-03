@@ -27,6 +27,10 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 
 [![Entity Framework Community Standup - Typed Exceptions for Entity Framework Core](https://img.youtube.com/vi/aUl5QfswNU4/0.jpg)](https://www.youtube.com/watch?v=aUl5QfswNU4)
 
+### OSS Power-Ups: EntityFramework.Exceptions
+
+[![OSS Power-Ups: EntityFramework.Exceptions](https://img.youtube.com/vi/IwxqFd80Si8/0.jpg)](https://www.youtube.com/watch?v=IwxqFd80Si8)
+
 ### Nick Chapsas - The Smart Way to Handle EF Core Exceptions
 
 [![Nick Chapsas - The Smart Way to Handle EF Core Exceptions](https://img.youtube.com/vi/QKwZlWvfh-o/0.jpg)](https://www.youtube.com/watch?v=QKwZlWvfh-o)
