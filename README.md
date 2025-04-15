@@ -9,13 +9,6 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 [![Coverage Status](https://img.shields.io/coveralls/github/Giorgi/EntityFramework.Exceptions?logo=coveralls&style=flat-square)](https://coveralls.io/github/Giorgi/EntityFramework.Exceptions)
 [![Ko-Fi](https://img.shields.io/static/v1?style=flat-square&message=Support%20the%20Project&color=success&style=plastic&logo=ko-fi&label=$$)](https://ko-fi.com/U6U81LHU8)
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=bugs)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=code_smells)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=EntityFramework.Exceptions&metric=coverage)](https://sonarcloud.io/dashboard?id=EntityFramework.Exceptions)
-
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
@@ -35,7 +28,19 @@ Handle database errors easily when working with Entity Framework Core. Supports 
 
 [![Nick Chapsas - The Smart Way to Handle EF Core Exceptions](https://img.youtube.com/vi/QKwZlWvfh-o/0.jpg)](https://www.youtube.com/watch?v=QKwZlWvfh-o)
 
-### What does EntityFramework.Exceptions do?
+## Sponsors
+
+A huge thanks to everyone (individuals or organisations) who have sponsored EntityFramework.Exceptions, but a massive thanks in particular to 
+
+ - [Entity Framework Extensions](https://entityframework-extensions.net/) and [Dapper Plus](https://dapper-plus.net/) are major sponsors and are proud to contribute to the development of EntityFramework.Exceptions
+ - [JetBrains](https://www.jetbrains.com/) is sponsoring the EntityFramework.Exceptions project as part of their [OSS Power-Ups series](https://lp.jetbrains.com/oss-powerups/)
+
+[![Entity Framework Extensions - Sponsor](.github/sponsors/entity-framework-extensions-sponsr.png)](https://entityframework-extensions.net/bulk-insert)
+
+[![Dapper Plus - Sponsor](.github/sponsors/dapper-plus-sponsor.png)](https://dapper-plus.net/bulk-insert)
+
+
+## What does EntityFramework.Exceptions do?
 
 When using Entity Framework Core for data access all database exceptions are wrapped in `DbUpdateException`. If you need to find 
 whether the exception was caused by a unique constraint, value being too long or value missing for a required column you need to dig into 
