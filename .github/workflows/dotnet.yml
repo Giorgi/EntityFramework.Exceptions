@@ -33,5 +33,5 @@ jobs:
         github-token: ${{ secrets.github_token }}
         format: lcov
         fail-on-error: false
-        path-to-lcov: EntityFramework.Exceptions.Tests/coverage.net8.0.info
+        path-to-lcov: EntityFramework.Exceptions/Tests/coverage.info
                   
