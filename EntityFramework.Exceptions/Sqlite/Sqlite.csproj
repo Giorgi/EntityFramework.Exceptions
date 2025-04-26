@@ -19,6 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DbExceptionClassifier\SQLite\Sqlite.csproj" />
+    <ProjectReference Include="..\..\DbExceptionClassifier\Sqlite\Sqlite.csproj" />
   </ItemGroup>
 </Project>
