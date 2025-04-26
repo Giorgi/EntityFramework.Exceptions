@@ -13,7 +13,7 @@
 
     <PackageIcon>Icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>Add ConstraintName, ConstraintProperties and SchemaQualifiedTableName to UniqueConstraintException and ReferenceConstraintException</PackageReleaseNotes>
     
