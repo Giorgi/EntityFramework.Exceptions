@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildType>ManagedOnly</BuildType>
+    <NoNativeText>This package does not include a copy of the native SQLite library.</NoNativeText>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
+    <PackageId>$(PackageId).Core</PackageId>
+    <Description>$(Description)$([System.Environment]::NewLine)$([System.Environment]::NewLine)$(NoNativeText)</Description>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BuildType)' == 'Full' ">
+    <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
+    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="8.0.0" />
+  </ItemGroup>
+</Project>

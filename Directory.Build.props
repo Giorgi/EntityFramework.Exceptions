@@ -1,11 +1,6 @@
 <Project>
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-  </PropertyGroup>
-  
-  <PropertyGroup Label="Configure assembly names and namespaces">
-    <AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Label="Common assembly attributes">
@@ -16,7 +11,6 @@
     <Copyright>Copyright (c) 2018 - 2024 Giorgi Dalakishvili</Copyright>
     <IsTrimmable>true</IsTrimmable>
 
-    <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>License.md</PackageLicenseFile>
@@ -35,16 +29,20 @@
 
   </PropertyGroup>
 
+  <ItemGroup Condition="$(MSBuildProjectName) != 'Common'">
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\Icon.png">
+    <None Include="..\..\Icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\License.md">
+    <None Include="..\..\License.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\README.md">
+    <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -52,9 +50,5 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$(MSBuildProjectName) != 'Common'">
-    <ProjectReference Include="..\EntityFramework.Exceptions.Common\Common.csproj" />
   </ItemGroup>
 </Project>

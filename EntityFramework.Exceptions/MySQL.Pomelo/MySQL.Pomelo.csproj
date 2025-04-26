@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageTags>EntityFramework EF MySql MySqlConnector Pomelo EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
+    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException
+
+Use this package if you use Pomelo.EntityFrameworkCore.MySql Entity Framework Core provider for MySQL</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;POMELO</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;POMELO</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MySQL\MySqlExceptionProcessorInterceptor.cs" Link="MySqlExceptionProcessorInterceptor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DbExceptionClassifier\MySQL.Pomelo\MySQL.Pomelo.csproj" />
+  </ItemGroup>
+</Project>

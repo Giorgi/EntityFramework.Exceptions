@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Configure assembly names and namespaces">
+    <AssemblyName>DbExceptionClassifier.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <PackageId>DbExceptionClassifier.$(MSBuildProjectName)</PackageId>
+  </PropertyGroup>
+</Project>

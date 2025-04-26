@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageTags>EntityFramework EF Sqlite EntityFrameworkCore entity-framework-core EFCore Data Database</PackageTags>
+    <Description>Handle database errors easily when working with Entity Framework Core. Catch specific exceptions such as UniqueConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException or ReferenceConstraintException instead of generic DbUpdateException.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildType>ManagedOnly</BuildType>
+    <NoNativeText>This package does not include a copy of the native SQLite library.</NoNativeText>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
+    <PackageId>$(PackageId).Core</PackageId>
+    <Description>$(Description)$([System.Environment]::NewLine)$([System.Environment]::NewLine)$(NoNativeText)</Description>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BuildType)' == 'Full' ">
+    <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DbExceptionClassifier\SQLite\Sqlite.csproj" />
+  </ItemGroup>
+</Project>

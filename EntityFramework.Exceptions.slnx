@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/DbExceptionClassifier/">
+    <Project Path="DbExceptionClassifier/Common/Common.csproj" />
+    <Project Path="DbExceptionClassifier/MySQL.Pomelo/MySQL.Pomelo.csproj" Id="1ecbe784-4401-46a3-a84c-70da709eea6a" />
+    <Project Path="DbExceptionClassifier/MySQL/MySQL.csproj" Id="9264a653-120d-46bd-bec6-8fafd1353b92" />
+    <Project Path="DbExceptionClassifier/Oracle/Oracle.csproj" Id="13eee1f0-82ee-4030-88cd-16a2e5a99055" />
+    <Project Path="DbExceptionClassifier/PostgreSQL/PostgreSQL.csproj" />
+    <Project Path="DbExceptionClassifier/SQLite/SQLite.csproj" Id="5469d6c8-9d53-4f02-a926-8ebfa8ccf7d3" DisplayName="Sqlite" />
+    <Project Path="DbExceptionClassifier/SqlServer/SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/EntityFramework.Exceptions/">
+    <Project Path="EntityFramework.Exceptions/Common/Common.csproj" />
+    <Project Path="EntityFramework.Exceptions/MySQL.Pomelo/MySQL.Pomelo.csproj" />
+    <Project Path="EntityFramework.Exceptions/MySQL/MySQL.csproj" />
+    <Project Path="EntityFramework.Exceptions/Oracle/Oracle.csproj" />
+    <Project Path="EntityFramework.Exceptions/PostgreSQL/PostgreSQL.csproj" />
+    <Project Path="EntityFramework.Exceptions/Sqlite/Sqlite.csproj" />
+    <Project Path="EntityFramework.Exceptions/SqlServer/SqlServer.csproj" />
+    <Project Path="EntityFramework.Exceptions/Tests/Tests.csproj" />
+  </Folder>
+  <Folder Name="/SolutionItems/">
+    <File Path="appveyor.yml" />
+    <File Path="Icon.png" />
+    <File Path="License.md" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>

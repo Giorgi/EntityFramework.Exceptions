@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Configure assembly names and namespaces">
+    <AssemblyName>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
+  </PropertyGroup>
+</Project>
