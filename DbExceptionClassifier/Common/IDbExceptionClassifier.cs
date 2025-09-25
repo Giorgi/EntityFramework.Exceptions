@@ -9,6 +9,6 @@ namespace DbExceptionClassifier.Common
         public bool IsNumericOverflowError(DbException exception);
         public bool IsUniqueConstraintError(DbException exception);
         public bool IsMaxLengthExceededError(DbException exception);
-        public bool IsDeadlockError(DbException exception) => false;
+        public bool IsDeadlockError(DbException exception);
     }
 }

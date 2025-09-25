@@ -359,9 +359,9 @@ public abstract class DatabaseTests : IDisposable
         var id1 = p1.Entity.Id;
         var id2 = p2.Entity.Id;
 
-        using var controlContext = new DemoContext(DemoContext.Options);
-        using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
-        using var transaction2 = await controlContext.Database.BeginTransactionAsync();
+        await using var controlContext = new DemoContext(DemoContext.Options);
+        await using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
+        await using var transaction2 = await controlContext.Database.BeginTransactionAsync();
 
         await DemoContext.Products.Where(c => c.Id == id1)
             .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test11"));

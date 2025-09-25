@@ -1,8 +1,10 @@
 ﻿using DotNet.Testcontainers.Containers;
+using EntityFramework.Exceptions.Common;
 using EntityFramework.Exceptions.Sqlite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Xunit;
@@ -53,10 +55,20 @@ namespace EntityFramework.Exceptions.Tests
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Skipping as SQLite no deadlock.")]
-        public override Task Deadlock()
+        [Fact]
+        public override async Task Deadlock()
         {
-            return Task.CompletedTask;
+            var product = new Product { Name = "Test1" };
+            DemoContext.Products.Add(product);
+
+            await DemoContext.SaveChangesAsync();
+
+            await using var controlContext = new DemoContext(DemoContext.Options);
+            await using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
+
+            await Assert.ThrowsAsync<DeadlockException>(() => controlContext.Products
+                .Where(c => c.Id == product.Id)
+                .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test12")));
         }
     }
 
