@@ -11,4 +11,5 @@ public class PostgreSQLExceptionClassifier : IDbExceptionClassifier
     public bool IsNumericOverflowError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.NumericValueOutOfRange };
     public bool IsUniqueConstraintError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation };
     public bool IsMaxLengthExceededError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.StringDataRightTruncation };
+    public bool IsDeadlockError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.DeadlockDetected };
 }

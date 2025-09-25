@@ -16,6 +16,7 @@ static class ExceptionFactory
             ExceptionProcessorInterceptor<T>.DatabaseError.NumericOverflow => new NumericOverflowException("Numeric overflow", exception.InnerException, entries),
             ExceptionProcessorInterceptor<T>.DatabaseError.ReferenceConstraint => new ReferenceConstraintException("Reference constraint violation", exception.InnerException, entries),
             ExceptionProcessorInterceptor<T>.DatabaseError.UniqueConstraint => new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.DeadLock => new DeadlockException("Deadlock", exception.InnerException, entries),
             _ => null,
         };
     }

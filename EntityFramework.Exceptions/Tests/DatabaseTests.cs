@@ -71,7 +71,7 @@ public abstract class DatabaseTests : IDisposable
         {
             Name = "Rope Access"
         });
-        
+
         SameNameIndexesContext.IncidentCategories.Add(new EFExceptionSchema.Entities.Incidents.Category
         {
             Name = "Rope Access"
@@ -109,7 +109,7 @@ public abstract class DatabaseTests : IDisposable
             Assert.False(string.IsNullOrEmpty(uniqueConstraintException.ConstraintName));
             Assert.False(string.IsNullOrEmpty(uniqueConstraintException.SchemaQualifiedTableName));
             Assert.NotEmpty(uniqueConstraintException.ConstraintProperties);
-            Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties); 
+            Assert.Contains<string>(nameof(Product.Id), uniqueConstraintException.ConstraintProperties);
         }
     }
 
@@ -346,6 +346,34 @@ public abstract class DatabaseTests : IDisposable
 
         Assert.Throws<DbUpdateException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<DbUpdateException>(() => DemoContext.SaveChangesAsync());
+    }
+
+    [Fact]
+    public virtual async Task Deadlock()
+    {
+        var p1 = DemoContext.Products.Add(new() { Name = "Test1" });
+        var p2 = DemoContext.Products.Add(new() { Name = "Test2" });
+
+        await DemoContext.SaveChangesAsync();
+
+        var id1 = p1.Entity.Id;
+        var id2 = p2.Entity.Id;
+
+        using var controlContext = new DemoContext(DemoContext.Options);
+        using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
+        using var transaction2 = await controlContext.Database.BeginTransactionAsync();
+
+        await DemoContext.Products.Where(c => c.Id == id1)
+            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test11"));
+
+        await controlContext.Products.Where(c => c.Id == id2)
+            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test21"));
+
+        await Assert.ThrowsAsync<DeadlockException>(() => Task.WhenAll(Task.Run(() => DemoContext.Products
+            .Where(c => c.Id == id2)
+            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test22"))), controlContext.Products
+            .Where(c => c.Id == id1)
+            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test12"))));
     }
 
     public virtual void Dispose()

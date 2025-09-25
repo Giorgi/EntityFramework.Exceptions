@@ -52,16 +52,22 @@ namespace EntityFramework.Exceptions.Tests
         {
             return Task.CompletedTask;
         }
+
+        [Fact(Skip = "Skipping as SQLite no deadlock.")]
+        public override Task Deadlock()
+        {
+            return Task.CompletedTask;
+        }
     }
 
     public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
     {
         private const string ConnectionString = "DataSource=file::memory:?cache=shared";
 
-        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+        protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
 
-        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) 
+        protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
             => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
     }
 }

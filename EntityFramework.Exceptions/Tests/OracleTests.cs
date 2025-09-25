@@ -11,6 +11,12 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
     public OracleTests(OracleTestContextFixture fixture) : base(fixture.DemoContext)
     {
     }
+
+    [Fact(Skip = "Skipping as oracle can't trigger deadlock.")]
+    public override Task Deadlock()
+    {
+        return Task.CompletedTask;
+    }
 }
 
 public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
@@ -20,9 +26,9 @@ public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
         Container = new OracleBuilder().Build();
     }
 
-    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString) 
+    protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
         => builder.UseOracle(connectionString).UseExceptionProcessor();
 
-    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) 
+    protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
         => builder.UseOracle(connectionString).UseExceptionProcessor();
 }

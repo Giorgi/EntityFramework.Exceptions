@@ -5,10 +5,9 @@ namespace EntityFramework.Exceptions.Tests;
 
 public class DemoContext : DbContext
 {
-    public DemoContext(DbContextOptions options) : base(options)
-    {
-    }
+    public DemoContext(DbContextOptions options) : base(options) => Options = options;
 
+    public DbContextOptions Options { get; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSale> ProductSales { get; set; }

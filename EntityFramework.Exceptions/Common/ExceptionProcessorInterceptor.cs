@@ -23,7 +23,8 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         CannotInsertNull,
         MaxLength,
         NumericOverflow,
-        ReferenceConstraint
+        ReferenceConstraint,
+        DeadLock,
     }
 
     /// <inheritdoc />
@@ -59,6 +60,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         if (exceptionClassifier.IsCannotInsertNullError(dbException)) return DatabaseError.CannotInsertNull;
         if (exceptionClassifier.IsUniqueConstraintError(dbException)) return DatabaseError.UniqueConstraint;
         if (exceptionClassifier.IsReferenceConstraintError(dbException)) return DatabaseError.ReferenceConstraint;
+        if (exceptionClassifier.IsDeadlockError(dbException)) return DatabaseError.DeadLock;
 
         return null;
     }
@@ -94,9 +96,9 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         {
             var indexes = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredIndexes().Where(index => index.IsUnique));
 
-            var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(), 
+            var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(),
                 (index, tableIndex) => new IndexDetails(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
-            
+
             var primaryKeys = context.Model.GetEntityTypes().SelectMany(x =>
             {
                 var primaryKey = x.FindPrimaryKey();
