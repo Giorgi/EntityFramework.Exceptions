@@ -7,10 +7,10 @@ Typed exception handling for Entity Framework Core. Converts database-specific e
 ```bash
 dotnet restore                # Restore NuGet dependencies
 dotnet build --no-restore     # Build all projects
-dotnet test --no-build        # Run tests (requires Docker for Testcontainers)
+dotnet test --no-restore      # Run tests (requires Docker for Testcontainers)
 ```
 
-Tests use **Testcontainers** and require a running Docker daemon. Each database provider (SQL Server, PostgreSQL, MySQL, Oracle, SQLite) spins up its own container.
+Tests use **Testcontainers** and require a running Docker daemon for containerized providers (SQL Server, PostgreSQL, MySQL, Oracle), each of which spins up its own container. **SQLite** tests run in-process and do not require Docker.
 
 ## Project Structure
 
