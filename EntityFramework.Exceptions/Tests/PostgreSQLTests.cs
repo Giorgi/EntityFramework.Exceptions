@@ -1,5 +1,7 @@
-﻿using EntityFramework.Exceptions.PostgreSQL;
+﻿using EntityFramework.Exceptions.Common;
+using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -9,6 +11,19 @@ namespace EntityFramework.Exceptions.Tests
     {
         public PostgreSQLTests(PostgreSQLDemoContextFixture fixture) : base(fixture.DemoContext, fixture.SameNameIndexesContext)
         {
+        }
+
+        [Fact]
+        public async Task MaxLengthViolationThrowsMaxLengthExceededExceptionThroughRawSql()
+        {
+            var longName = new string('G', DemoContext.ProductNameMaxLength + 5);
+
+            Assert.Throws<MaxLengthExceededException>(() =>
+                DemoContext.Database.ExecuteSqlInterpolated(
+                    $"INSERT INTO \"Products\" (\"Name\") VALUES ({longName})"));
+            await Assert.ThrowsAsync<MaxLengthExceededException>(() =>
+                DemoContext.Database.ExecuteSqlInterpolatedAsync(
+                    $"INSERT INTO \"Products\" (\"Name\") VALUES ({longName})"));
         }
     }
 
