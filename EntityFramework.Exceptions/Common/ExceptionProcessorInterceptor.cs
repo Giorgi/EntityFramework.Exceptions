@@ -24,7 +24,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         MaxLength,
         NumericOverflow,
         ReferenceConstraint,
-        DeadLock,
+        Deadlock,
     }
 
     /// <inheritdoc />
