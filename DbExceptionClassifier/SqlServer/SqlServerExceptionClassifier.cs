@@ -8,6 +8,7 @@ public class SqlServerExceptionClassifier : IDbExceptionClassifier
 {
     private const int ReferenceConstraint = 547;
     private const int CannotInsertNull = 515;
+    private const int Deadlock = 1205;
     private const int CannotInsertDuplicateKeyUniqueIndex = 2601;
     private const int CannotInsertDuplicateKeyUniqueConstraint = 2627;
     private const int ArithmeticOverflow = 8115;
@@ -21,4 +22,5 @@ public class SqlServerExceptionClassifier : IDbExceptionClassifier
     public bool IsNumericOverflowError(DbException exception) => exception is SqlException { Number: ArithmeticOverflow };
     public bool IsUniqueConstraintError(DbException exception) => exception is SqlException { Number: CannotInsertDuplicateKeyUniqueConstraint or CannotInsertDuplicateKeyUniqueIndex };
     public bool IsMaxLengthExceededError(DbException exception) => exception is SqlException { Number: StringOrBinaryDataWouldBeTruncated or StringOrBinaryDataWouldBeTruncated2019 };
+    public bool IsDeadlockError(DbException exception) => exception is SqlException { Number: Deadlock };
 }

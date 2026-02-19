@@ -128,3 +128,26 @@ public class ReferenceConstraintException : DbUpdateException
     public IReadOnlyList<string> ConstraintProperties { get; internal set; }
     public string SchemaQualifiedTableName { get; internal set; }
 }
+
+public class DeadlockException : DbUpdateException
+{
+    public DeadlockException()
+    {
+    }
+
+    public DeadlockException(string message) : base(message)
+    {
+    }
+
+    public DeadlockException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    public DeadlockException(string message, IReadOnlyList<EntityEntry> entries) : base(message, entries)
+    {
+    }
+
+    public DeadlockException(string message, Exception innerException, IReadOnlyList<EntityEntry> entries) : base(message, innerException, entries)
+    {
+    }
+}

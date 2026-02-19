@@ -59,4 +59,10 @@ public class MySQLExceptionClassifier : IDbExceptionClassifier
         var errorCode = GetErrorCode(exception);
         return errorCode == MySqlErrorCode.DataTooLong;
     }
+
+    public bool IsDeadlockError(DbException exception)
+    {
+        var errorCode = GetErrorCode(exception);
+        return errorCode is MySqlErrorCode.LockDeadlock or MySqlErrorCode.XARBDeadlock;
+    }
 }

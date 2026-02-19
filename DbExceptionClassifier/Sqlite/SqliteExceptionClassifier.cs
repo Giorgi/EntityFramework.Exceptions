@@ -19,4 +19,6 @@ public class SqliteExceptionClassifier : IDbExceptionClassifier
     };
 
     public bool IsMaxLengthExceededError(DbException exception) => exception is SqliteException { SqliteExtendedErrorCode: SQLITE_TOOBIG };
+
+    public bool IsDeadlockError(DbException exception) => exception is SqliteException { SqliteExtendedErrorCode: SQLITE_LOCKED_SHAREDCACHE};
 }
