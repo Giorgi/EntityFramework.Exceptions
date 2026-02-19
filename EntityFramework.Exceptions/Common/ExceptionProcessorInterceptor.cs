@@ -60,7 +60,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         if (exceptionClassifier.IsCannotInsertNullError(dbException)) return DatabaseError.CannotInsertNull;
         if (exceptionClassifier.IsUniqueConstraintError(dbException)) return DatabaseError.UniqueConstraint;
         if (exceptionClassifier.IsReferenceConstraintError(dbException)) return DatabaseError.ReferenceConstraint;
-        if (exceptionClassifier.IsDeadlockError(dbException)) return DatabaseError.DeadLock;
+        if (exceptionClassifier.IsDeadlockError(dbException)) return DatabaseError.Deadlock;
 
         return null;
     }
