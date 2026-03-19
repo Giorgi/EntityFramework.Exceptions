@@ -5,5 +5,17 @@
     <AssemblyName>DbExceptionClassifier.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageId>DbExceptionClassifier.$(MSBuildProjectName)</PackageId>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="..\..\README.md" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

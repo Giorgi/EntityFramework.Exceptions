@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'Full' ">
-    <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SQLite" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>

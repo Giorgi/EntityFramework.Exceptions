@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageTags>Exception Database DbException ADO.NET MySQL</PackageTags>
+    <Description>Classify MySQL database exceptions by error type such as unique constraint violation, foreign key violation, and more</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.3.0" />
+    <PackageReference Include="MySql.Data" Version="9.6.0" />
   </ItemGroup>
 </Project>

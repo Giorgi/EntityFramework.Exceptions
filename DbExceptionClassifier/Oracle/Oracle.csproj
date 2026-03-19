@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageTags>Exception Database DbException ADO.NET Oracle ODP.NET</PackageTags>
+    <Description>Classify Oracle database exceptions by error type such as unique constraint violation, foreign key violation, and more</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.120" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.100" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageTags>Exception Database DbException ADO.NET PostgreSQL Npgsql</PackageTags>
+    <Description>Classify PostgreSQL database exceptions by error type such as unique constraint violation, foreign key violation, and more</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="8.0.6" />
+    <PackageReference Include="Npgsql" Version="10.0.2" />
   </ItemGroup>
 
 </Project>

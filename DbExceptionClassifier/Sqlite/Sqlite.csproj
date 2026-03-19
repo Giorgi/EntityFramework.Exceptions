@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageTags>Exception Database DbException ADO.NET Sqlite</PackageTags>
+    <Description>Classify SQLite database exceptions by error type such as unique constraint violation, foreign key violation, and more</Description>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,10 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'Full' ">
-    <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SQLite" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
-    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="10.0.5" />
   </ItemGroup>
 </Project>
