@@ -1,7 +1,7 @@
 ![EntityFramework.Exceptions](https://raw.githubusercontent.com/Giorgi/EntityFramework.Exceptions/main/Icon.png "EntityFramework.Exceptions")
 
 # EntityFramework.Exceptions
-Handle database errors easily when working with Entity Framework Core. Supports SQLServer, PostgreSQL, SQLite, Oracle and MySql
+Handle database errors easily when working with Entity Framework Core and ADO.NET. Supports SQLServer, PostgreSQL, SQLite, Oracle and MySql
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
 [![Target](https://img.shields.io/static/v1?label=target&message=net10.0&color=512bd4&logo=.net&style=flat-square)](https://dotnet.microsoft.com/en-us/)
@@ -48,7 +48,7 @@ the concrete `DbException` subclass instance and check the error code to determi
 
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
 to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s)  you need, such as `UniqueConstraintException`,
-`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, or `ReferenceConstraintException`.
+`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException`, or `DeadlockException`.
 
 In case of `UniqueConstraintException` and `ReferenceConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will contain the properties that are part of the constraint. 
 
