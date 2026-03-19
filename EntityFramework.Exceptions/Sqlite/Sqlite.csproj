@@ -14,10 +14,6 @@
     <Description>$(Description)$([System.Environment]::NewLine)$([System.Environment]::NewLine)$(NoNativeText)</Description>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(BuildType)' == 'Full' ">
-    <PackageReference Include="Microsoft.Data.SQLite" Version="10.0.5" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\DbExceptionClassifier\Sqlite\Sqlite.csproj" />
   </ItemGroup>

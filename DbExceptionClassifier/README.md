@@ -6,8 +6,15 @@ Classify ADO.NET database exceptions by error type. Works with any ADO.NET provi
 
 Supports **PostgreSQL**, **SQL Server**, **SQLite**, **Oracle**, **MySQL** (MySql.Data and MySqlConnector).
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](License.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square&logo=Apache)](../License.md)
 [![Target](https://img.shields.io/static/v1?label=target&message=net10.0&color=512bd4&logo=.net&style=flat-square)](https://dotnet.microsoft.com/en-us/)
+
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.SqlServer.svg?label=DbExceptionClassifier.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/DbExceptionClassifier.SqlServer/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.PostgreSQL.svg?label=DbExceptionClassifier.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/DbExceptionClassifier.PostgreSQL/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.MySQL.svg?label=DbExceptionClassifier.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/DbExceptionClassifier.MySQL/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.MySQL.Pomelo.svg?label=DbExceptionClassifier.MySQL.Pomelo&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/DbExceptionClassifier.MySQL.Pomelo/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.Sqlite.Core.svg?label=DbExceptionClassifier.Sqlite.Core&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/DbExceptionClassifier.Sqlite.Core/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.Oracle.svg?label=DbExceptionClassifier.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/DbExceptionClassifier.Oracle/)
 
 ## What does DbExceptionClassifier do?
 
@@ -35,7 +42,7 @@ dotnet add package DbExceptionClassifier.SqlServer
 ```
 
 ```
-dotnet add package DbExceptionClassifier.Sqlite.Core
+dotnet add package DbExceptionClassifier.Sqlite
 ```
 
 ```
@@ -105,6 +112,9 @@ catch (DbException ex) when (classifier.IsUniqueConstraintError(ex))
     // Works regardless of which database threw the exception
 }
 ```
+
+> [!TIP]
+> If you want to use another native SQLite binary instead of `e_sqlite3.dll` use the [DbExceptionClassifier.Sqlite.Core](https://www.nuget.org/packages/DbExceptionClassifier.Sqlite.Core) package. This package depends on `Microsoft.Data.Sqlite.Core`, which doesn't include the native SQLite binary so you can use any native binary you want.
 
 ## Entity Framework Core
 
