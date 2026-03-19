@@ -31,6 +31,12 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
     {
         return Task.CompletedTask;
     }
+
+    [Fact(Skip = "Skipping as Microsoft.Data.SqlClient throws ArgumentException when numeric value is not in range.")]
+    public override Task NumericOverflowViolationThrowsNumericOverflowExceptionThroughExecuteUpdate()
+    {
+        return Task.CompletedTask;
+    }
 }
 
 public class SqlServerDemoContextFixture : DemoContextFixture<MsSqlContainer>

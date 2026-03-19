@@ -36,12 +36,11 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.1" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="10.23.26100" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\MySQL.Pomelo\MySQL.Pomelo.csproj" />
+    <ProjectReference Include="..\MySQL\MySQL.csproj" />
     <ProjectReference Include="..\Oracle\Oracle.csproj" />
     <ProjectReference Include="..\PostgreSQL\PostgreSQL.csproj" />
     <ProjectReference Include="..\Sqlite\Sqlite.csproj" />

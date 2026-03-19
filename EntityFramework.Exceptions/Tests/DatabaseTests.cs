@@ -22,7 +22,7 @@ public abstract class DatabaseTests : IDisposable
         DemoContext = demoContext;
         SameNameIndexesContext = sameNameIndexesContext;
 
-        isMySql = MySqlDatabaseFacadeExtensions.IsMySql(DemoContext.Database) || MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
+        isMySql = MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
         isSqlite = demoContext.Database.IsSqlite();
     }
 
