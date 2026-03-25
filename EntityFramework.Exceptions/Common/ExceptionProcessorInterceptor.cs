@@ -43,13 +43,24 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
     /// <inheritdoc />
     public void CommandFailed(DbCommand command, CommandErrorEventData eventData)
     {
-        ProcessException(eventData.Exception, eventData.Context);
+        // Skip SaveChanges commands — CommandFailed fires before SaveChangesFailed and only receives
+        // the raw provider exception (no DbUpdateException, no Entries). Let SaveChangesFailed handle
+        // these so the typed exception preserves the full exception chain and entity entries.
+        if (eventData.CommandSource != CommandSource.SaveChanges)
+        {
+            ProcessException(eventData.Exception, eventData.Context);
+        }
     }
 
     /// <inheritdoc />
     public Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = new CancellationToken())
     {
-        ProcessException(eventData.Exception, eventData.Context);
+        // See comment in CommandFailed.
+        if (eventData.CommandSource != CommandSource.SaveChanges)
+        {
+            ProcessException(eventData.Exception, eventData.Context);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -75,7 +86,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         if (error == null) return;
 
         var updateException = eventException as DbUpdateException;
-        var exception = ExceptionFactory.Create(error.Value, eventException, updateException?.Entries);
+        var exception = ExceptionFactory.Create(error.Value, providerException, updateException?.Entries);
 
         switch (exception)
         {

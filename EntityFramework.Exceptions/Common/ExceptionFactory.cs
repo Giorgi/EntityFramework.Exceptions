@@ -11,12 +11,16 @@ static class ExceptionFactory
     {
         return error switch
         {
-            ExceptionProcessorInterceptor<T>.DatabaseError.CannotInsertNull => new CannotInsertNullException("Cannot insert null", exception.InnerException, entries),
-            ExceptionProcessorInterceptor<T>.DatabaseError.MaxLength => new MaxLengthExceededException("Maximum length exceeded", exception.InnerException, entries),
-            ExceptionProcessorInterceptor<T>.DatabaseError.NumericOverflow => new NumericOverflowException("Numeric overflow", exception.InnerException, entries),
-            ExceptionProcessorInterceptor<T>.DatabaseError.ReferenceConstraint => new ReferenceConstraintException("Reference constraint violation", exception.InnerException, entries),
-            ExceptionProcessorInterceptor<T>.DatabaseError.UniqueConstraint => new UniqueConstraintException("Unique constraint violation", exception.InnerException, entries),
-            ExceptionProcessorInterceptor<T>.DatabaseError.Deadlock => new DeadlockException("Deadlock", exception.InnerException, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.CannotInsertNull => new CannotInsertNullException("Cannot insert null", exception, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.MaxLength => new MaxLengthExceededException("Maximum length exceeded", exception, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.NumericOverflow => new NumericOverflowException("Numeric overflow", exception, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.ReferenceConstraint => new ReferenceConstraintException("Reference constraint violation", exception, entries),
+            ExceptionProcessorInterceptor<T>.DatabaseError.UniqueConstraint => new UniqueConstraintException("Unique constraint violation", exception, entries),
+            // DeadlockException intentionally has no InnerException. EF Core's ExecutionStrategy uses
+            // CallOnWrappedException to unwrap through DbUpdateException and check InnerException for
+            // transient errors. Setting a transient provider exception as InnerException would cause
+            // the execution strategy to wrap DeadlockException in InvalidOperationException.
+            ExceptionProcessorInterceptor<T>.DatabaseError.Deadlock => new DeadlockException("Deadlock", null, entries),
             _ => null,
         };
     }

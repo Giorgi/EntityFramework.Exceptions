@@ -4,6 +4,7 @@ using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
 using System;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -22,7 +23,7 @@ public abstract class DatabaseTests : IDisposable
         DemoContext = demoContext;
         SameNameIndexesContext = sameNameIndexesContext;
 
-        isMySql = MySQLDatabaseFacadeExtensions.IsMySql(DemoContext.Database);
+        isMySql = DemoContext.Database.IsMySql();
         isSqlite = demoContext.Database.IsSqlite();
     }
 
@@ -34,6 +35,9 @@ public abstract class DatabaseTests : IDisposable
 
         var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
         await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
+
+        Assert.IsAssignableFrom<DbException>(uniqueConstraintException.InnerException);
+        Assert.NotEmpty(uniqueConstraintException.Entries);
 
         if (!isSqlite)
         {
