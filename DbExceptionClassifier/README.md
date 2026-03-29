@@ -13,7 +13,7 @@ Supports **PostgreSQL**, **SQL Server**, **SQLite**, **Oracle**, **MySQL** (MySq
 [![](https://img.shields.io/nuget/dt/DbExceptionClassifier.PostgreSQL.svg?label=DbExceptionClassifier.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/DbExceptionClassifier.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/DbExceptionClassifier.MySQL.svg?label=DbExceptionClassifier.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/DbExceptionClassifier.MySQL/)
 [![](https://img.shields.io/nuget/dt/DbExceptionClassifier.MySQL.Pomelo.svg?label=DbExceptionClassifier.MySQL.Pomelo&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/DbExceptionClassifier.MySQL.Pomelo/)
-[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.Sqlite.Core.svg?label=DbExceptionClassifier.Sqlite.Core&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/DbExceptionClassifier.Sqlite.Core/)
+[![](https://img.shields.io/nuget/dt/DbExceptionClassifier.Sqlite.svg?label=DbExceptionClassifier.Sqlite&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/DbExceptionClassifier.Sqlite/)
 [![](https://img.shields.io/nuget/dt/DbExceptionClassifier.Oracle.svg?label=DbExceptionClassifier.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/DbExceptionClassifier.Oracle/)
 
 ## What does DbExceptionClassifier do?
