@@ -5,10 +5,10 @@
     <AssemblyName>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
-    <Version>10.0.0</Version>
-    <FileVersion>10.0.0</FileVersion>
-    <AssemblyVersion>10.0.0</AssemblyVersion>
+    <Version>10.0.1</Version>
+    <FileVersion>10.0.1</FileVersion>
+    <AssemblyVersion>10.0.1</AssemblyVersion>
     <PackageReleaseNotes>- Update to .NET 10 and Entity Framework Core 10
-- Map ORA-01407 to CannotInsertNullException</PackageReleaseNotes>
+- Set InnerException when throwing custom exceptions</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
