@@ -11,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EntityFramework.Exceptions.Common;
 
-public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExceptionClassifier exceptionClassifier)
+public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExceptionClassifier exceptionClassifier, ExceptionProcessorOptions options = null)
     : IDbCommandInterceptor, ISaveChangesInterceptor where TProviderException : DbException
 {
+    private readonly ExceptionProcessorOptions options = options ?? new ExceptionProcessorOptions();
     private List<IndexDetails> uniqueIndexDetailsList;
     private List<ForeignKeyDetails> foreignKeyDetailsList;
 
@@ -84,6 +85,11 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         var error = GetDatabaseError(providerException);
 
         if (error == null) return;
+
+        // Deadlocks are transient errors. Converting them to DeadlockException prevents the execution
+        // strategy from detecting the transient failure and retrying automatically. Skip deadlock
+        // processing unless explicitly opted in via HandleDeadlock.
+        if (error == DatabaseError.Deadlock && !options.HandleDeadlock) return;
 
         var updateException = eventException as DbUpdateException;
         var exception = ExceptionFactory.Create(error.Value, providerException, updateException?.Entries);

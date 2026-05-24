@@ -64,14 +64,16 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
 
 public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
 {
+    private static readonly ExceptionProcessorOptions Options = new() { HandleDeadlock = true };
+
     static OracleTestContextFixture()
     {
         Container = new OracleBuilder().Build();
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
-        => builder.UseOracle(connectionString).UseExceptionProcessor();
+        => builder.UseOracle(connectionString).UseExceptionProcessor(Options);
 
     protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
-        => builder.UseOracle(connectionString).UseExceptionProcessor();
+        => builder.UseOracle(connectionString).UseExceptionProcessor(Options);
 }
