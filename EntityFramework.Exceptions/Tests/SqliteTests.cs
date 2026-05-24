@@ -1,10 +1,8 @@
-﻿using DotNet.Testcontainers.Containers;
-using EntityFramework.Exceptions.Common;
+using DotNet.Testcontainers.Containers;
 using EntityFramework.Exceptions.Sqlite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Xunit;
@@ -54,52 +52,16 @@ namespace EntityFramework.Exceptions.Tests
         {
             return Task.CompletedTask;
         }
-
-        [Fact]
-        public override async Task Deadlock()
-        {
-            var product = new Product { Name = "Test1" };
-            DemoContext.Products.Add(product);
-
-            await DemoContext.SaveChangesAsync();
-
-            await using var controlContext = new DemoContext(DemoContext.Options);
-            await using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
-
-            await Assert.ThrowsAsync<DeadlockException>(() => controlContext.Products
-                .Where(c => c.Id == product.Id)
-                .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test12")));
-        }
-
-        [Fact]
-        public async Task SaveChangesDeadlockThrowsDeadlockException()
-        {
-            var product = new Product { Name = "DLSqliteSave" };
-            DemoContext.Products.Add(product);
-            await DemoContext.SaveChangesAsync();
-
-            var id = product.Id;
-            DemoContext.ChangeTracker.Clear();
-
-            await using var controlContext = new DemoContext(DemoContext.Options);
-            await using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
-
-            var pCross = new Product { Id = id, Name = "DLSqliteSaveB" };
-            controlContext.Attach(pCross).Property(p => p.Name).IsModified = true;
-
-            await Assert.ThrowsAsync<DeadlockException>(() => controlContext.SaveChangesAsync());
-        }
     }
 
     public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
     {
         private const string ConnectionString = "DataSource=file::memory:?cache=shared";
-        private static readonly ExceptionProcessorOptions Options = new() { HandleDeadlock = true };
 
         protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
-            => builder.UseSqlite(ConnectionString).UseExceptionProcessor(Options);
+            => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
 
         protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
-            => builder.UseSqlite(ConnectionString).UseExceptionProcessor(Options);
+            => builder.UseSqlite(ConnectionString).UseExceptionProcessor();
     }
 }

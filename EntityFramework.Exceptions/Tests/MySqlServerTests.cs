@@ -1,4 +1,3 @@
-using EntityFramework.Exceptions.Common;
 using EntityFramework.Exceptions.MySQL;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.MySql;
@@ -17,17 +16,15 @@ public class MySqlServerTests : DatabaseTests, IClassFixture<MySqlDemoContextFix
 
 public class MySqlDemoContextFixture : DemoContextFixture<MySqlContainer>
 {
-    private static readonly ExceptionProcessorOptions Options = new() { HandleDeadlock = true };
-
     static MySqlDemoContextFixture()
     {
         Container = new MySqlBuilder().Build();
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
-        => builder.UseMySQL(connectionString).UseExceptionProcessor(Options);
+        => builder.UseMySQL(connectionString).UseExceptionProcessor();
 
     protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(
         DbContextOptionsBuilder builder, string connectionString)
-        => builder.UseMySQL(connectionString).UseExceptionProcessor(Options);
+        => builder.UseMySQL(connectionString).UseExceptionProcessor();
 }

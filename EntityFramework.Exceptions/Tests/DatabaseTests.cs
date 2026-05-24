@@ -352,34 +352,6 @@ public abstract class DatabaseTests : IDisposable
         await Assert.ThrowsAsync<DbUpdateException>(() => DemoContext.SaveChangesAsync());
     }
 
-    [Fact]
-    public virtual async Task Deadlock()
-    {
-        var p1 = DemoContext.Products.Add(new() { Name = "Test1" });
-        var p2 = DemoContext.Products.Add(new() { Name = "Test2" });
-
-        await DemoContext.SaveChangesAsync();
-
-        var id1 = p1.Entity.Id;
-        var id2 = p2.Entity.Id;
-
-        await using var controlContext = new DemoContext(DemoContext.Options);
-        await using var transaction1 = await DemoContext.Database.BeginTransactionAsync();
-        await using var transaction2 = await controlContext.Database.BeginTransactionAsync();
-
-        await DemoContext.Products.Where(c => c.Id == id1)
-            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test11"));
-
-        await controlContext.Products.Where(c => c.Id == id2)
-            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test21"));
-
-        await Assert.ThrowsAsync<DeadlockException>(() => Task.WhenAll(Task.Run(() => DemoContext.Products
-            .Where(c => c.Id == id2)
-            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test22"))), controlContext.Products
-            .Where(c => c.Id == id1)
-            .ExecuteUpdateAsync(c => c.SetProperty(p => p.Name, "Test12"))));
-    }
-
     public virtual void Dispose()
     {
         CleanupContext();

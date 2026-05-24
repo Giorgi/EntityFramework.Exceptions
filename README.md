@@ -48,7 +48,7 @@ the concrete `DbException` subclass instance and check the error code to determi
 
 EntityFramework.Exceptions simplifies this by handling all the database specific details and throwing different exceptions. All you have
 to do is to configure `DbContext` by calling `UseExceptionProcessor` and handle the exception(s)  you need, such as `UniqueConstraintException`,
-`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, `ReferenceConstraintException`, or `DeadlockException` (if enabled).
+`CannotInsertNullException`, `MaxLengthExceededException`, `NumericOverflowException`, or `ReferenceConstraintException`.
 
 In case of `UniqueConstraintException` and `ReferenceConstraintException` you can get the name of the associated constraint with **`ConstraintName`** property. The **`ConstraintProperties`** will contain the properties that are part of the constraint. 
 
@@ -148,19 +148,6 @@ builder.Services.AddDbContextPool<DemoContext>(options => options
     .UseNpgsql(config.GetConnectionString("DemoConnection"))
     .UseExceptionProcessor());
 ```
-
-### Deadlock handling
-
-By default, deadlock exceptions are **not** converted to `DeadlockException`. This is because deadlocks are transient errors and converting them would prevent EF Core's execution strategy from detecting the failure and retrying automatically.
-
-If you want deadlocks to be converted to `DeadlockException`, opt in via `ExceptionProcessorOptions`:
-
-```csharp
-optionsBuilder.UseExceptionProcessor(new ExceptionProcessorOptions { HandleDeadlock = true });
-```
-
-> [!WARNING]
-> Enabling `HandleDeadlock` prevents the execution strategy from retrying deadlocks automatically. If you use `EnableRetryOnFailure`, deadlock retries will no longer work.
 
 ## DbExceptionClassifier
 

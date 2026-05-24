@@ -11,10 +11,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EntityFramework.Exceptions.Common;
 
-public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExceptionClassifier exceptionClassifier, ExceptionProcessorOptions options = null)
+public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExceptionClassifier exceptionClassifier)
     : IDbCommandInterceptor, ISaveChangesInterceptor where TProviderException : DbException
 {
-    private readonly ExceptionProcessorOptions options = options ?? new ExceptionProcessorOptions();
     private List<IndexDetails> uniqueIndexDetailsList;
     private List<ForeignKeyDetails> foreignKeyDetailsList;
 
@@ -25,7 +24,6 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         MaxLength,
         NumericOverflow,
         ReferenceConstraint,
-        Deadlock,
     }
 
     /// <inheritdoc />
@@ -72,7 +70,6 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         if (exceptionClassifier.IsCannotInsertNullError(dbException)) return DatabaseError.CannotInsertNull;
         if (exceptionClassifier.IsUniqueConstraintError(dbException)) return DatabaseError.UniqueConstraint;
         if (exceptionClassifier.IsReferenceConstraintError(dbException)) return DatabaseError.ReferenceConstraint;
-        if (exceptionClassifier.IsDeadlockError(dbException)) return DatabaseError.Deadlock;
 
         return null;
     }
@@ -85,11 +82,6 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
         var error = GetDatabaseError(providerException);
 
         if (error == null) return;
-
-        // Deadlocks are transient errors. Converting them to DeadlockException prevents the execution
-        // strategy from detecting the transient failure and retrying automatically. Skip deadlock
-        // processing unless explicitly opted in via HandleDeadlock.
-        if (error == DatabaseError.Deadlock && !options.HandleDeadlock) return;
 
         var updateException = eventException as DbUpdateException;
         var exception = ExceptionFactory.Create(error.Value, providerException, updateException?.Entries);
