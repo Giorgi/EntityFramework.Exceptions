@@ -342,6 +342,53 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
+    public virtual async Task DeleteParentItemWithRestrictThrowsReferenceConstraintException()
+    {
+        var product = new Product { Name = "AN3" };
+        var productReview = new ProductReview { Product = product, Comment = "Great" };
+        DemoContext.ProductReviews.Add(productReview);
+        await DemoContext.SaveChangesAsync();
+
+        CleanupContext();
+
+        product = DemoContext.Products.Find(product.Id);
+        DemoContext.Products.Remove(product);
+
+        Assert.Throws<ReferenceConstraintException>(() => DemoContext.SaveChanges());
+        await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
+    }
+
+    [Fact]
+    public virtual async Task DeleteParentItemWithRestrictThrowsReferenceConstraintExceptionThroughExecuteDelete()
+    {
+        var product = new Product { Name = "AN4" };
+        var productReview = new ProductReview { Product = product, Comment = "Great" };
+        DemoContext.ProductReviews.Add(productReview);
+        await DemoContext.SaveChangesAsync();
+
+        CleanupContext();
+
+        Assert.Throws<ReferenceConstraintException>(Query);
+        await Assert.ThrowsAsync<ReferenceConstraintException>(QueryAsync);
+
+        return;
+
+        void Query()
+        {
+            DemoContext.Products
+                .Where(p => p.Name == "AN4")
+                .ExecuteDelete();
+        }
+
+        async Task QueryAsync()
+        {
+            await DemoContext.Products
+                .Where(p => p.Name == "AN4")
+                .ExecuteDeleteAsync();
+        }
+    }
+
+    [Fact]
     public async Task NotHandledViolationReThrowsOriginalException()
     {
         DemoContext.Customers.Add(new Customer { Fullname = "Test" });

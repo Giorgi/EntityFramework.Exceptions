@@ -12,6 +12,7 @@ public class DemoContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSale> ProductSales { get; set; }
     public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
+    public DbSet<ProductReview> ProductReviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -21,6 +22,7 @@ public class DemoContext : DbContext
         builder.Entity<ProductPriceHistory>().Property(b => b.Price).HasColumnType("decimal(5,2)").IsRequired();
         builder.Entity<ProductPriceHistory>().Property(p => p.EffectiveDate).IsRequired();
         builder.Entity<ProductPriceHistory>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.NoAction);
+        builder.Entity<ProductReview>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.Restrict);
     }
 
     public const int ProductNameMaxLength = 25;
@@ -46,6 +48,14 @@ public class ProductPriceHistory
     public long Id { get; set; }
     public decimal Price { get; set; }
     public DateTimeOffset EffectiveDate { get; set; }
+    public int ProductId { get; set; }
+    public Product Product { get; set; }
+}
+
+public class ProductReview
+{
+    public int Id { get; set; }
+    public string Comment { get; set; }
     public int ProductId { get; set; }
     public Product Product { get; set; }
 }
