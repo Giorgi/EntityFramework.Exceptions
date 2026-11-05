@@ -6,7 +6,7 @@ namespace DbExceptionClassifier.PostgreSQL;
 
 public class PostgreSQLExceptionClassifier : IDbExceptionClassifier
 {
-    public bool IsReferenceConstraintError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.ForeignKeyViolation };
+    public bool IsReferenceConstraintError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.ForeignKeyViolation or PostgresErrorCodes.RestrictViolation };
     public bool IsCannotInsertNullError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.NotNullViolation };
     public bool IsNumericOverflowError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.NumericValueOutOfRange };
     public bool IsUniqueConstraintError(DbException exception) => exception is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation };

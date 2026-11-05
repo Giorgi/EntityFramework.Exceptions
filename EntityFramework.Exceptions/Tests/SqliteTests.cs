@@ -52,6 +52,18 @@ namespace EntityFramework.Exceptions.Tests
         {
             return Task.CompletedTask;
         }
+
+        [Fact(Skip = "Skipping as SQLite reports RESTRICT violations with SQLITE_CONSTRAINT_TRIGGER instead of SQLITE_CONSTRAINT_FOREIGNKEY")]
+        public override Task DeleteParentItemWithRestrictThrowsReferenceConstraintException()
+        {
+            return Task.CompletedTask;
+        }
+
+        [Fact(Skip = "Skipping as SQLite reports RESTRICT violations with SQLITE_CONSTRAINT_TRIGGER instead of SQLITE_CONSTRAINT_FOREIGNKEY")]
+        public override Task DeleteParentItemWithRestrictThrowsReferenceConstraintExceptionThroughExecuteDelete()
+        {
+            return Task.CompletedTask;
+        }
     }
 
     public class SqliteDemoContextFixture : DemoContextFixture<IContainer>
