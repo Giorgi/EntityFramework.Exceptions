@@ -26,12 +26,20 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal --logger GitHubActions /p:CollectCoverage=true /p:CoverletOutputFormat=lcov  /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+      run: >-
+        dotnet test --no-build --verbosity normal --report-github
+        --coverlet --coverlet-output-format lcov
+        --coverlet-include "[EntityFrameworkCore.Exceptions.*]*" --coverlet-include "[DbExceptionClassifier.*]*"
+        --coverlet-exclude "[*]EntityFramework.Exceptions.Common.*Exception"
+        --results-directory TestResults
+    - name: Collect coverage report
+      # coverlet.MTP adds a timestamp to the report name
+      run: mv TestResults/coverage.*.info TestResults/coverage.info
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
       with: 
         github-token: ${{ secrets.github_token }}
         format: lcov
         fail-on-error: false
-        path-to-lcov: EntityFramework.Exceptions/Tests/coverage.info
+        path-to-lcov: TestResults/coverage.info
                   
