@@ -5,7 +5,7 @@ namespace EntityFramework.Exceptions.Common;
 
 internal class IndexDetails
 {
-    public IndexDetails(string name, string schemaQualifiedTableName, IReadOnlyList<IProperty> properties)
+    public IndexDetails(string name, string schemaQualifiedTableName, IReadOnlyList<IPropertyBase> properties)
     {
         Name = name;
         SchemaQualifiedTableName = schemaQualifiedTableName;
@@ -14,7 +14,7 @@ internal class IndexDetails
 
     public string Name { get; init; }
     public string SchemaQualifiedTableName { get; init; }
-    public IReadOnlyList<IProperty> Properties { get; }
+    public IReadOnlyList<IPropertyBase> Properties { get; }
 }
 
 internal class ForeignKeyDetails

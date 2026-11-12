@@ -1,14 +1,17 @@
 <Project>
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup Label="Configure assembly names and namespaces">
     <AssemblyName>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
-    <Version>10.0.1</Version>
-    <FileVersion>10.0.1</FileVersion>
-    <AssemblyVersion>10.0.1</AssemblyVersion>
-    <PackageReleaseNotes>- Update to .NET 10 and Entity Framework Core 10
-- Set InnerException when throwing custom exceptions</PackageReleaseNotes>
+    <Version>11.0.0</Version>
+    <FileVersion>11.0.0</FileVersion>
+    <AssemblyVersion>11.0.0</AssemblyVersion>
+    <PackageReleaseNotes>- Update to .NET 11 and Entity Framework Core 11</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
