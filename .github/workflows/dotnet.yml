@@ -26,7 +26,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal --logger GitHubActions /p:CollectCoverage=true /p:CoverletOutputFormat=lcov  /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+      # Oracle.EntityFrameworkCore has no release for EF Core 11 yet
+      run: dotnet test --no-build --verbosity normal --logger GitHubActions --filter "FullyQualifiedName!~OracleTests" /p:CollectCoverage=true /p:CoverletOutputFormat=lcov  /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
       with: 
