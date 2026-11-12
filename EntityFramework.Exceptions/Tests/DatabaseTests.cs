@@ -285,7 +285,7 @@ public abstract class DatabaseTests : IDisposable
         DemoContext.Products.Add(product);
 
         DemoContext.SaveChanges();
-        DemoContext.Database.ExecuteSqlInterpolated(isMySql
+        DemoContext.Database.ExecuteSql(isMySql
             ? $"Delete from Products where id={product.Id}"
             : (FormattableString)$"Delete from \"Products\" where \"Id\"={product.Id}");
         product.Name = "G";
