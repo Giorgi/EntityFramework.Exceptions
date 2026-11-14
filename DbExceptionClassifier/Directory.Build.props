@@ -5,10 +5,10 @@
     <AssemblyName>DbExceptionClassifier.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageId>DbExceptionClassifier.$(MSBuildProjectName)</PackageId>
-    <Version>1.0.1</Version>
-    <FileVersion>1.0.1</FileVersion>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+    <FileVersion>1.0.2</FileVersion>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <PackageReleaseNotes>- Update MySqlConnector to 2.6.1 (fixes GHSA-473q-m89c-ghf8)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

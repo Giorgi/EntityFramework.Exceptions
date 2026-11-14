@@ -5,10 +5,9 @@
     <AssemblyName>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageId>EntityFrameworkCore.Exceptions.$(MSBuildProjectName)</PackageId>
-    <Version>10.0.1</Version>
-    <FileVersion>10.0.1</FileVersion>
-    <AssemblyVersion>10.0.1</AssemblyVersion>
-    <PackageReleaseNotes>- Update to .NET 10 and Entity Framework Core 10
-- Set InnerException when throwing custom exceptions</PackageReleaseNotes>
+    <Version>10.0.2</Version>
+    <FileVersion>10.0.2</FileVersion>
+    <AssemblyVersion>10.0.2</AssemblyVersion>
+    <PackageReleaseNotes>- Update MySqlConnector to 2.6.1 in the Pomelo package (fixes GHSA-473q-m89c-ghf8)</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
