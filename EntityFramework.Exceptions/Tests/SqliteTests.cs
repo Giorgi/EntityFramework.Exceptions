@@ -9,11 +9,13 @@ using Xunit;
 
 namespace EntityFramework.Exceptions.Tests
 {
-    public class SqliteTests : DatabaseTests, IClassFixture<SqliteDemoContextFixture>
+    public class SqliteTests(SqliteDemoContextFixture fixture) : SqliteTestsBase(fixture), IClassFixture<SqliteDemoContextFixture>;
+
+    public abstract class SqliteTestsBase : DatabaseTests
     {
         private const int SqliteLimitLength = 0;
 
-        public SqliteTests(SqliteDemoContextFixture fixture) : base(fixture.DemoContext)
+        protected SqliteTestsBase(DemoContextFixture<IContainer> fixture) : base(fixture.DemoContext)
         {
         }
 

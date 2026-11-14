@@ -149,6 +149,32 @@ builder.Services.AddDbContextPool<DemoContext>(options => options
     .UseExceptionProcessor());
 ```
 
+### Using a provider without a dedicated package
+
+If your database provider has no `EntityFrameworkCore.Exceptions.*` package (for example, Devart dotConnect providers), implement
+`IDbExceptionClassifier` yourself and pass it to `UseExceptionProcessor`. This overload lives in the base
+`EntityFrameworkCore.Exceptions.Common` package, so you can reference that package directly:
+
+```csharp
+using DbExceptionClassifier.Common;
+using EntityFramework.Exceptions.Common;
+
+public class MyProviderExceptionClassifier : IDbExceptionClassifier
+{
+    // Inspect your provider's exception type and error codes here.
+    public bool IsUniqueConstraintError(DbException exception) => ...;
+    public bool IsReferenceConstraintError(DbException exception) => ...;
+    public bool IsCannotInsertNullError(DbException exception) => ...;
+    public bool IsMaxLengthExceededError(DbException exception) => ...;
+    public bool IsNumericOverflowError(DbException exception) => ...;
+    public bool IsDeadlockError(DbException exception) => ...;
+}
+
+optionsBuilder.UseExceptionProcessor(new MyProviderExceptionClassifier());
+```
+
+`ConstraintName` and `ConstraintProperties` are populated the same way as for built-in providers: by matching constraint names from the EF Core model against the database error message.
+
 ## DbExceptionClassifier
 
 If you don't use Entity Framework Core, you can use the **DbExceptionClassifier** packages to classify ADO.NET database exceptions directly. They provide a unified `IDbExceptionClassifier` interface without any EF Core dependency.
