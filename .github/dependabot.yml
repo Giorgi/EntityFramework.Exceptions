@@ -8,21 +8,9 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 10
     ignore:
-      # Majors track .NET / EF Core releases and are done together with the target framework upgrade.
-      # Microsoft.Data.SqlClient stays on 6.x to match Microsoft.EntityFrameworkCore.SqlServer 10.
-      - dependency-name: "Microsoft.EntityFrameworkCore*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "Microsoft.Data.Sqlite*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "Microsoft.Data.SqlClient"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "System.Security.Cryptography.Pkcs"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "Npgsql*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "MySql.EntityFrameworkCore"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "Oracle.EntityFrameworkCore"
+      # Major versions are upgraded by hand: most track .NET / EF Core releases, and a major bump of a
+      # driver raises the minimum version for every package consumer.
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     groups:
       test-dependencies:
