@@ -3,7 +3,6 @@ name: Publish EntityFrameworkCore.Exceptions
 # Manually triggered: packs the EntityFrameworkCore.Exceptions.* packages and pushes them to nuget.org.
 # These depend on the DbExceptionClassifier.* packages of the version referenced in source, so publish
 # those first (publish-classifier.yml) when their version changed.
-# MySQL.Pomelo is not published: there is no Pomelo provider for EF Core 10.
 # Auth uses NuGet Trusted Publishing (OIDC), so no long-lived API key is stored.
 on:
   workflow_dispatch:

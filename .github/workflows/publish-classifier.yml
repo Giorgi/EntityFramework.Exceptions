@@ -24,7 +24,7 @@ jobs:
     - name: Pack
       run: |
         set -e
-        for p in Common MySQL MySQL.Pomelo Oracle PostgreSQL SqlServer Sqlite; do
+        for p in Common MySQL MySqlConnector Oracle PostgreSQL SqlServer Sqlite; do
           dotnet pack DbExceptionClassifier/$p/$p.csproj -c Release -o nupkgs -p:GeneratePackageOnBuild=false
         done
         # Second Sqlite variant: includes the native library, package id without .Core
