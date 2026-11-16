@@ -149,6 +149,40 @@ builder.Services.AddDbContextPool<DemoContext>(options => options
     .UseExceptionProcessor());
 ```
 
+### Using a provider without a dedicated package
+
+If your database provider has no `EntityFrameworkCore.Exceptions.*` package (for example, Devart dotConnect providers), implement
+`IDbExceptionClassifier` yourself and pass it to `UseExceptionProcessor`. This overload lives in the base
+`EntityFrameworkCore.Exceptions.Common` package, so you can reference that package directly:
+
+For example, with [Devart dotConnect for PostgreSQL](https://www.devart.com/dotconnect/postgresql/), classify errors by the
+SQLSTATE code exposed by `PgSqlException.ErrorCode`:
+
+```csharp
+using System.Data.Common;
+using DbExceptionClassifier.Common;
+using Devart.Data.PostgreSql;
+using EntityFramework.Exceptions.Common;
+
+public class DevartPostgreSqlExceptionClassifier : IDbExceptionClassifier
+{
+    public bool IsReferenceConstraintError(DbException exception) => exception is PgSqlException { ErrorCode: "23503" or "23001" }; // foreign_key_violation, restrict_violation
+    public bool IsCannotInsertNullError(DbException exception) => exception is PgSqlException { ErrorCode: "23502" };             // not_null_violation
+    public bool IsNumericOverflowError(DbException exception) => exception is PgSqlException { ErrorCode: "22003" };              // numeric_value_out_of_range
+    public bool IsUniqueConstraintError(DbException exception) => exception is PgSqlException { ErrorCode: "23505" };             // unique_violation
+    public bool IsMaxLengthExceededError(DbException exception) => exception is PgSqlException { ErrorCode: "22001" };            // string_data_right_truncation
+    public bool IsDeadlockError(DbException exception) => exception is PgSqlException { ErrorCode: "40P01" };                     // deadlock_detected
+}
+
+optionsBuilder
+    .UsePostgreSql(connectionString)
+    .UseExceptionProcessor(new DevartPostgreSqlExceptionClassifier());
+```
+
+The same approach works for any other ADO.NET provider: check the provider's exception type and its error codes.
+
+`ConstraintName` and `ConstraintProperties` are populated the same way as for built-in providers: by matching constraint names from the EF Core model against the database error message.
+
 ## DbExceptionClassifier
 
 If you don't use Entity Framework Core, you can use the **DbExceptionClassifier** packages to classify ADO.NET database exceptions directly. They provide a unified `IDbExceptionClassifier` interface without any EF Core dependency.
