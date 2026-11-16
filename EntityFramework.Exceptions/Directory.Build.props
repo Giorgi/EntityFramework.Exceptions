@@ -8,6 +8,7 @@
     <Version>10.0.2</Version>
     <FileVersion>10.0.2</FileVersion>
     <AssemblyVersion>10.0.2</AssemblyVersion>
-    <PackageReleaseNotes>- Update MySqlConnector to 2.6.1 in the Pomelo package (fixes GHSA-473q-m89c-ghf8)</PackageReleaseNotes>
+    <PackageReleaseNotes>- PostgreSQL: throw ReferenceConstraintException for RESTRICT violations (SQLSTATE 23001)
+- Update MySqlConnector to 2.6.1 in the Pomelo package (fixes GHSA-473q-m89c-ghf8)</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
