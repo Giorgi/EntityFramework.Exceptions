@@ -16,7 +16,7 @@ namespace EntityFramework.Exceptions.Tests
     {
         static PostgreSQLDemoContextFixture()
         {
-            Container = new PostgreSqlBuilder().WithImage("postgres:18").Build();
+            Container = new PostgreSqlBuilder("postgres:18").Build();
         }
 
         protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
