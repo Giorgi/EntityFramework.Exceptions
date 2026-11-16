@@ -28,10 +28,10 @@ jobs:
       run: |
         set -e
         for p in Common MySQL Oracle PostgreSQL SqlServer Sqlite; do
-          dotnet pack EntityFramework.Exceptions/$p/$p.csproj -c Release -o nupkgs
+          dotnet pack EntityFramework.Exceptions/$p/$p.csproj -c Release -o nupkgs -p:GeneratePackageOnBuild=false
         done
         # Second Sqlite variant: depends on the full SQLite package, package id without .Core
-        dotnet pack EntityFramework.Exceptions/Sqlite/Sqlite.csproj -c Release -o nupkgs -p:BuildType=Full
+        dotnet pack EntityFramework.Exceptions/Sqlite/Sqlite.csproj -c Release -o nupkgs -p:GeneratePackageOnBuild=false -p:BuildType=Full
         # Project references also pack the DbExceptionClassifier packages; those are published separately
         rm -f nupkgs/DbExceptionClassifier.*
         ls -1 nupkgs/*.nupkg
