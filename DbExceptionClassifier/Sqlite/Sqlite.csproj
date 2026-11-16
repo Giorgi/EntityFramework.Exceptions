@@ -21,6 +21,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
-    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="10.0.15" />
   </ItemGroup>
 </Project>

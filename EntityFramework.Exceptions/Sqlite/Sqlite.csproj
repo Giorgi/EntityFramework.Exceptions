@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.15" />
     <ProjectReference Include="..\..\DbExceptionClassifier\Sqlite\Sqlite.csproj" />
   </ItemGroup>
 </Project>
