@@ -17,10 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'Full' ">
-    <PackageReference Include="Microsoft.Data.SQLite" Version="10.0.15" />
+    <PackageReference Include="Microsoft.Data.SQLite" Version="10.0.11" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(BuildType)' == 'ManagedOnly' ">
-    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="10.0.15" />
+    <PackageReference Include="Microsoft.Data.SQLite.Core" Version="10.0.11" />
   </ItemGroup>
 </Project>

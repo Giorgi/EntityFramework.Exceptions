@@ -1,25 +1,34 @@
 version: 2
 updates:
+  # Published packages: no version updates. Every bump raises the minimum dependency version for package
+  # consumers, so only security updates are wanted. open-pull-requests-limit: 0 disables version updates;
+  # Dependabot security updates are not affected by it.
   - package-ecosystem: "nuget"
     directories:
       - "/DbExceptionClassifier/*"
-      - "/EntityFramework.Exceptions/*"
+      - "/EntityFramework.Exceptions/Common"
+      - "/EntityFramework.Exceptions/MySQL"
+      - "/EntityFramework.Exceptions/MySQL.Pomelo"
+      - "/EntityFramework.Exceptions/Oracle"
+      - "/EntityFramework.Exceptions/PostgreSQL"
+      - "/EntityFramework.Exceptions/SqlServer"
+      - "/EntityFramework.Exceptions/Sqlite"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
+
+  # Test project: not shipped, keep it current. Majors are upgraded by hand.
+  - package-ecosystem: "nuget"
+    directory: "/EntityFramework.Exceptions/Tests"
+    schedule:
+      interval: "weekly"
     ignore:
-      # Major versions are upgraded by hand: most track .NET / EF Core releases, and a major bump of a
-      # driver raises the minimum version for every package consumer.
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     groups:
       test-dependencies:
         patterns:
-          - "xunit*"
-          - "coverlet*"
-          - "Microsoft.NET.Test.Sdk"
-          - "GitHubActionsTestLogger"
-          - "Testcontainers*"
+          - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
