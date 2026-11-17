@@ -16,7 +16,7 @@ public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
 {
     static OracleTestContextFixture()
     {
-        Container = new OracleBuilder().Build();
+        Container = new OracleBuilder("gvenzl/oracle-xe:21.3.0-slim-faststart").Build();
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)

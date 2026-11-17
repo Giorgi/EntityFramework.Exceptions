@@ -1,0 +1,55 @@
+name: Publish EntityFrameworkCore.Exceptions
+
+# Manually triggered: packs the EntityFrameworkCore.Exceptions.* packages and pushes them to nuget.org.
+# These depend on the DbExceptionClassifier.* packages of the version referenced in source, so publish
+# those first (publish-classifier.yml) when their version changed.
+# Auth uses NuGet Trusted Publishing (OIDC), so no long-lived API key is stored.
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write # required for NuGet Trusted Publishing
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 11.0.x
+
+    - name: Pack
+      run: |
+        set -e
+        for p in Common MySQL Oracle PostgreSQL SqlServer Sqlite; do
+          dotnet pack EntityFramework.Exceptions/$p/$p.csproj -c Release -o nupkgs -p:GeneratePackageOnBuild=false
+        done
+        # Second Sqlite variant: depends on the full SQLite package, package id without .Core
+        dotnet pack EntityFramework.Exceptions/Sqlite/Sqlite.csproj -c Release -o nupkgs -p:GeneratePackageOnBuild=false -p:BuildType=Full
+        # Project references also pack the DbExceptionClassifier packages; those are published separately
+        rm -f nupkgs/DbExceptionClassifier.*
+        ls -1 nupkgs/*.nupkg
+
+    - name: Check package count
+      run: |
+        count=$(ls nupkgs/*.nupkg | wc -l)
+        if [ "$count" -ne 7 ]; then echo "Expected 7 packages, found $count"; exit 1; fi
+
+    - uses: actions/upload-artifact@v7
+      with:
+        name: nupkgs
+        path: nupkgs/*.*nupkg
+
+    - name: NuGet login (OIDC)
+      id: login
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
+    - name: Push
+      run: dotnet nuget push "nupkgs/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

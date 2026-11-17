@@ -45,9 +45,11 @@ Each provider project is minimal — just a concrete interceptor subclass inject
 
 It then matches the constraint name found in the provider exception message against this list. `ConstraintProperties` is only populated when a match is found. SQLite never populates these properties.
 
-### MySQL/Pomelo code sharing
+### MySQL code sharing
 
-MySQL has two variants (MySql.Data and Pomelo). They share source files via `<Compile Include>` links with `#if POMELO` preprocessor directives. The Pomelo projects set `DefineConstants=POMELO`.
+The MySQL classifier has two variants: MySql.Data (`DbExceptionClassifier/MySQL`) and MySqlConnector (`DbExceptionClassifier/MySqlConnector`, published as `DbExceptionClassifier.MySqlConnector`; named `DbExceptionClassifier.MySQL.Pomelo` before the .NET 11 release). The MySqlConnector project links `MySQL/MySQLExceptionClassifier.cs` via `<Compile Include>` and adds the `MYSQLCONNECTOR` define, which selects the `#if MYSQLCONNECTOR` branches.
+
+The EF Core layer ships only `EntityFramework.Exceptions/MySQL` (the official MySql.EntityFrameworkCore provider). The EF Pomelo package was dropped: Pomelo has no EF Core 10+ provider (the maintained fork is Microting.EntityFrameworkCore.MySql, still on MySqlConnector), so MySqlConnector-based providers use `UseExceptionProcessor(IDbExceptionClassifier)` from `Common` with the MySqlConnector classifier (see README).
 
 ### Naming conventions
 

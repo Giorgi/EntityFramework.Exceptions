@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageTags>Exception Database DbException ADO.NET MySQL MySqlConnector Pomelo</PackageTags>
+    <Description>Classify MySQL database exceptions by error type such as unique constraint violation, foreign key violation, and more. Use this package if you use MySqlConnector, including with MySqlConnector-based EF Core providers such as Pomelo.EntityFrameworkCore.MySql and its forks</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- MySQLExceptionClassifier.cs is shared with the MySql.Data project; this selects the MySqlConnector branch. -->
+    <DefineConstants>$(DefineConstants);MYSQLCONNECTOR</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MySQL\MySQLExceptionClassifier.cs" Link="MySQLExceptionClassifier.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.6.1" />
+  </ItemGroup>
+
+</Project>

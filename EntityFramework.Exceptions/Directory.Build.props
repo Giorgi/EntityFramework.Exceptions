@@ -12,6 +12,7 @@
     <Version>11.0.0</Version>
     <FileVersion>11.0.0</FileVersion>
     <AssemblyVersion>11.0.0</AssemblyVersion>
-    <PackageReleaseNotes>- Update to .NET 11 and Entity Framework Core 11</PackageReleaseNotes>
+    <PackageReleaseNotes>- Update to .NET 11 and Entity Framework Core 11
+- Add UseExceptionProcessor overload that accepts a custom IDbExceptionClassifier</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

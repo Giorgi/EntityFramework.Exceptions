@@ -1,16 +1,20 @@
 ﻿using System.Data.Common;
 using DbExceptionClassifier.Common;
 
-#if POMELO
+#if MYSQLCONNECTOR
 using MySqlConnector;
-namespace DbExceptionClassifier.MySQL.Pomelo;
+namespace DbExceptionClassifier.MySqlConnector;
 #else
 using MySql.Data.MySqlClient;
 namespace DbExceptionClassifier.MySQL;
 #endif
 
 
+#if MYSQLCONNECTOR
+public class MySqlConnectorExceptionClassifier : IDbExceptionClassifier
+#else
 public class MySQLExceptionClassifier : IDbExceptionClassifier
+#endif
 {
     private static MySqlErrorCode GetErrorCode(DbException dbException)
     {
@@ -19,7 +23,7 @@ public class MySQLExceptionClassifier : IDbExceptionClassifier
             return MySqlErrorCode.None;
         }
 
-#if POMELO
+#if MYSQLCONNECTOR
         return mySqlException.ErrorCode;
 #else
         return (MySqlErrorCode)mySqlException.Number;

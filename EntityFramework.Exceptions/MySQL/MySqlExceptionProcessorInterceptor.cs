@@ -1,15 +1,9 @@
 using EntityFramework.Exceptions.Common;
 using Microsoft.EntityFrameworkCore;
-
-#if POMELO
-using MySqlConnector;
-using DbExceptionClassifier.MySQL.Pomelo;
-namespace EntityFramework.Exceptions.MySQL.Pomelo;
-#else
 using MySql.Data.MySqlClient;
 using DbExceptionClassifier.MySQL;
+
 namespace EntityFramework.Exceptions.MySQL;
-#endif
 
 class MySqlExceptionProcessorInterceptor() : ExceptionProcessorInterceptor<MySqlException>(new MySQLExceptionClassifier());
 

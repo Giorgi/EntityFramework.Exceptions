@@ -12,7 +12,6 @@ Handle database errors easily when working with Entity Framework Core and ADO.NE
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
-[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.Pomelo.svg?label=EntityFrameworkCore.Exceptions.MySQL.Pomelo&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL.Pomelo/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Oracle.svg?label=EntityFrameworkCore.Exceptions.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Oracle/)
 
@@ -72,10 +71,6 @@ dotnet add package EntityFrameworkCore.Exceptions.MySql
 ```
 
 ```
-dotnet add package EntityFrameworkCore.Exceptions.MySql.Pomelo
-```
-
-```
 dotnet add package EntityFrameworkCore.Exceptions.PostgreSQL
 ```
 
@@ -86,6 +81,9 @@ dotnet add package EntityFrameworkCore.Exceptions.Sqlite
 ```
 dotnet add package EntityFrameworkCore.Exceptions.Oracle
 ```
+
+`EntityFrameworkCore.Exceptions.MySql` supports the official `MySql.EntityFrameworkCore` provider. If you use a MySqlConnector-based
+provider (Pomelo or its forks such as Microting.EntityFrameworkCore.MySql), see [MySqlConnector-based providers](#mysqlconnector-based-providers).
 
 Next, in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
 
@@ -147,6 +145,60 @@ Instead of calling `UseExceptionProcessor` in the `OnConfiguring` method, add it
 builder.Services.AddDbContextPool<DemoContext>(options => options
     .UseNpgsql(config.GetConnectionString("DemoConnection"))
     .UseExceptionProcessor());
+```
+
+### Using a provider without a dedicated package
+
+If your database provider has no `EntityFrameworkCore.Exceptions.*` package (for example, Devart dotConnect providers), implement
+`IDbExceptionClassifier` yourself and pass it to `UseExceptionProcessor`. This overload lives in the base
+`EntityFrameworkCore.Exceptions.Common` package, so you can reference that package directly:
+
+For example, with [Devart dotConnect for PostgreSQL](https://www.devart.com/dotconnect/postgresql/), classify errors by the
+SQLSTATE code exposed by `PgSqlException.ErrorCode`:
+
+```csharp
+using System.Data.Common;
+using DbExceptionClassifier.Common;
+using Devart.Data.PostgreSql;
+using EntityFramework.Exceptions.Common;
+
+public class DevartPostgreSqlExceptionClassifier : IDbExceptionClassifier
+{
+    public bool IsReferenceConstraintError(DbException exception) => exception is PgSqlException { ErrorCode: "23503" or "23001" }; // foreign_key_violation, restrict_violation
+    public bool IsCannotInsertNullError(DbException exception) => exception is PgSqlException { ErrorCode: "23502" };             // not_null_violation
+    public bool IsNumericOverflowError(DbException exception) => exception is PgSqlException { ErrorCode: "22003" };              // numeric_value_out_of_range
+    public bool IsUniqueConstraintError(DbException exception) => exception is PgSqlException { ErrorCode: "23505" };             // unique_violation
+    public bool IsMaxLengthExceededError(DbException exception) => exception is PgSqlException { ErrorCode: "22001" };            // string_data_right_truncation
+    public bool IsDeadlockError(DbException exception) => exception is PgSqlException { ErrorCode: "40P01" };                     // deadlock_detected
+}
+
+optionsBuilder
+    .UsePostgreSql(connectionString)
+    .UseExceptionProcessor(new DevartPostgreSqlExceptionClassifier());
+```
+
+The same approach works for any other ADO.NET provider: check the provider's exception type and its error codes.
+
+`ConstraintName` and `ConstraintProperties` are populated the same way as for built-in providers: by matching constraint names from the EF Core model against the database error message.
+
+#### MySqlConnector-based providers
+
+There is no dedicated package for EF Core providers built on [MySqlConnector](https://mysqlconnector.net/), such as
+Pomelo.EntityFrameworkCore.MySql and its forks (for example Microting.EntityFrameworkCore.MySql for EF Core 10). You don't need to write a classifier for them:
+the `DbExceptionClassifier.MySqlConnector` package already has one for MySqlConnector.
+
+```
+dotnet add package EntityFrameworkCore.Exceptions.Common
+dotnet add package DbExceptionClassifier.MySqlConnector
+```
+
+```csharp
+using DbExceptionClassifier.MySqlConnector;
+using EntityFramework.Exceptions.Common;
+
+optionsBuilder
+    .UseMySql(connectionString, serverVersion)
+    .UseExceptionProcessor(new MySqlConnectorExceptionClassifier());
 ```
 
 ## DbExceptionClassifier

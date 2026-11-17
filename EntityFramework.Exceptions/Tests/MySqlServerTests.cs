@@ -18,7 +18,7 @@ public class MySqlDemoContextFixture : DemoContextFixture<MySqlContainer>
 {
     static MySqlDemoContextFixture()
     {
-        Container = new MySqlBuilder().Build();
+        Container = new MySqlBuilder("mysql:8.0").Build();
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
