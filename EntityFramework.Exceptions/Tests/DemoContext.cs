@@ -15,6 +15,8 @@ public class DemoContext : DbContext
     public DbSet<ProductReview> ProductReviews { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Department> Departments { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -31,6 +33,19 @@ public class DemoContext : DbContext
         builder.Entity<Employee>().HasIndex(e => e.BadgeNumber).IsUnique();
 
         builder.Entity<Department>().HasAlternateKey(d => d.Code);
+
+        // A TPH hierarchy shares one primary key. The key name deliberately does not contain the table name,
+        // so a duplicate key entry per entity type could not be resolved from the table name in the message.
+        builder.Entity<Vehicle>().HasKey(v => v.Id).HasName("pk_fleet");
+        builder.Entity<Vehicle>().Property(v => v.Id).ValueGeneratedNever();
+        builder.Entity<Car>();
+        builder.Entity<Truck>();
+
+        // FK_Tickets_Product_Spare contains FK_Tickets_Product. NoAction avoids multiple cascade paths on SQL Server.
+        builder.Entity<Ticket>().HasOne<Product>().WithMany().HasForeignKey(t => t.ProductId)
+            .HasConstraintName("FK_Tickets_Product").OnDelete(DeleteBehavior.NoAction);
+        builder.Entity<Ticket>().HasOne<Product>().WithMany().HasForeignKey(t => t.SpareProductId)
+            .HasConstraintName("FK_Tickets_Product_Spare").OnDelete(DeleteBehavior.NoAction);
     }
 
     public const int ProductNameMaxLength = 25;
@@ -79,6 +94,28 @@ public class Department
 {
     public int Id { get; set; }
     public int Code { get; set; }
+}
+
+public abstract class Vehicle
+{
+    public int Id { get; set; }
+}
+
+public class Car : Vehicle
+{
+    public int Seats { get; set; }
+}
+
+public class Truck : Vehicle
+{
+    public int Axles { get; set; }
+}
+
+public class Ticket
+{
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public int SpareProductId { get; set; }
 }
 
 public class Customer

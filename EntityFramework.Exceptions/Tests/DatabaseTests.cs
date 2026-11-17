@@ -165,6 +165,30 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
+    public virtual async Task PrimaryKeyViolationInTphHierarchySetsConstraintDetails()
+    {
+        DemoContext.Vehicles.Add(new Car { Id = 1, Seats = 4 });
+        DemoContext.SaveChanges();
+
+        CleanupContext();
+
+        DemoContext.Vehicles.Add(new Truck { Id = 1, Axles = 3 });
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        var asyncUniqueConstraintException = await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
+
+        // MySQL always names the primary key PRIMARY, so it cannot be matched to the model.
+        if (!isSqlite && !isMySql)
+        {
+            foreach (var exception in new[] { uniqueConstraintException, asyncUniqueConstraintException })
+            {
+                Assert.Equal("pk_fleet", exception.ConstraintName, ignoreCase: true);
+                Assert.Equal([nameof(Vehicle.Id)], exception.ConstraintProperties);
+                Assert.Equal(nameof(DemoContext.Vehicles), exception.SchemaQualifiedTableName);
+            }
+        }
+    }
+
+    [Fact]
     public virtual async Task RequiredColumnViolationThrowsCannotInsertNullException()
     {
         DemoContext.Products.Add(new Product());
@@ -282,6 +306,30 @@ public abstract class DatabaseTests : IDisposable
             Assert.False(string.IsNullOrEmpty(referenceConstraintException.ConstraintName));
             Assert.NotEmpty(referenceConstraintException.ConstraintProperties);
             Assert.Contains<string>(nameof(ProductSale.ProductId), referenceConstraintException.ConstraintProperties);
+        }
+    }
+
+    [Fact]
+    public virtual async Task ReferenceViolationPicksLongestMatchingForeignKeyName()
+    {
+        var product = new Product { Name = "Ticket Product" };
+        DemoContext.Products.Add(product);
+        await DemoContext.SaveChangesAsync();
+
+        // FK_Tickets_Product_Spare contains FK_Tickets_Product, so both names appear in the error message.
+        DemoContext.Tickets.Add(new Ticket { ProductId = product.Id, SpareProductId = 0 });
+
+        var referenceConstraintException = Assert.Throws<ReferenceConstraintException>(() => DemoContext.SaveChanges());
+        var asyncReferenceConstraintException = await Assert.ThrowsAsync<ReferenceConstraintException>(() => DemoContext.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            foreach (var exception in new[] { referenceConstraintException, asyncReferenceConstraintException })
+            {
+                Assert.Equal("FK_Tickets_Product_Spare", exception.ConstraintName, ignoreCase: true);
+                Assert.Equal([nameof(Ticket.SpareProductId)], exception.ConstraintProperties);
+                Assert.Equal(nameof(DemoContext.Tickets), exception.SchemaQualifiedTableName);
+            }
         }
     }
 
