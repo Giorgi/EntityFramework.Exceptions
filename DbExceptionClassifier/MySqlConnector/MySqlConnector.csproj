@@ -12,6 +12,13 @@
     <DefineConstants>$(DefineConstants);MYSQLCONNECTOR</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- First release under this ID; overrides the shared 1.0.2 notes in DbExceptionClassifier/Directory.Build.props. -->
+    <PackageReleaseNotes>- Renamed from DbExceptionClassifier.MySQL.Pomelo: the package only depends on the MySqlConnector driver, not on Pomelo.
+  The classifier class is now MySqlConnectorExceptionClassifier in the DbExceptionClassifier.MySqlConnector namespace.
+- Same classification logic as DbExceptionClassifier.MySQL.Pomelo 1.0.2 (MySqlConnector 2.6.1, fixes GHSA-473q-m89c-ghf8).</PackageReleaseNotes>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\MySQL\MySQLExceptionClassifier.cs" Link="MySQLExceptionClassifier.cs" />
   </ItemGroup>
