@@ -24,6 +24,18 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Dependencies of the published projects. Tests references those projects, so without this the test
+      # job bumps them in the published .csproj files (see #127). Tests doesn't reference any of them directly.
+      # Exact names: a wildcard such as "Npgsql*" would also block Npgsql.EntityFrameworkCore.PostgreSQL.
+      - dependency-name: "Microsoft.Data.SqlClient"
+      - dependency-name: "Microsoft.Data.Sqlite"
+      - dependency-name: "Microsoft.Data.Sqlite.Core"
+      - dependency-name: "Microsoft.EntityFrameworkCore.Relational"
+      - dependency-name: "MySql.Data"
+      - dependency-name: "MySqlConnector"
+      - dependency-name: "Npgsql"
+      - dependency-name: "Oracle.ManagedDataAccess.Core"
+      - dependency-name: "System.Security.Cryptography.Pkcs"
     groups:
       test-dependencies:
         patterns:
