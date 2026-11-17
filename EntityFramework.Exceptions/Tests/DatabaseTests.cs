@@ -70,6 +70,32 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
+    public virtual async Task AlternateKeyViolationThrowsUniqueConstraintException()
+    {
+        // The change tracker rejects two tracked entities with the same alternate key,
+        // so the duplicate has to come from the database.
+        DemoContext.Departments.Add(new Department { Code = 7 });
+        DemoContext.SaveChanges();
+
+        CleanupContext();
+
+        DemoContext.Departments.Add(new Department { Code = 7 });
+
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        var asyncUniqueConstraintException = await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            foreach (var exception in new[] { uniqueConstraintException, asyncUniqueConstraintException })
+            {
+                Assert.Equal("AK_Departments_Code", exception.ConstraintName, ignoreCase: true);
+                Assert.Equal([nameof(Department.Code)], exception.ConstraintProperties);
+                Assert.Equal(nameof(DemoContext.Departments), exception.SchemaQualifiedTableName);
+            }
+        }
+    }
+
+    [Fact]
     public virtual async Task UniqueColumnViolationThrowsUniqueConstraintExceptionThroughExecuteUpdate()
     {
         DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });

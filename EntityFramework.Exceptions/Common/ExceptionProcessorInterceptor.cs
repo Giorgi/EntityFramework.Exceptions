@@ -108,26 +108,14 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
             var mappedIndexes = indexes.SelectMany(index => index.GetMappedTableIndexes(),
                 (index, tableIndex) => new IndexDetails(tableIndex.Name, tableIndex.Table.SchemaQualifiedName, index.Properties));
 
-            var primaryKeys = context.Model.GetEntityTypes().SelectMany(x =>
-            {
-                var primaryKey = x.FindPrimaryKey();
-                if (primaryKey is null)
-                {
-                    return Array.Empty<IndexDetails>();
-                }
+            // Primary and alternate keys. Declared keys only, so a key shared by a type hierarchy is listed once.
+            var keys = context.Model.GetEntityTypes().SelectMany(x => x.GetDeclaredKeys());
 
-                var primaryKeyName = primaryKey.GetName();
-
-                if (primaryKeyName is null)
-                {
-                    return Array.Empty<IndexDetails>();
-                }
-
-                return [new IndexDetails(primaryKeyName, x.GetSchemaQualifiedTableName(), primaryKey.Properties)];
-            });
+            var mappedKeys = keys.SelectMany(key => key.GetMappedConstraints(),
+                (key, constraint) => new IndexDetails(constraint.Name, constraint.Table.SchemaQualifiedName, key.Properties));
 
             uniqueIndexDetailsList = mappedIndexes
-                .Union(primaryKeys)
+                .Concat(mappedKeys)
                 .ToList();
         }
 

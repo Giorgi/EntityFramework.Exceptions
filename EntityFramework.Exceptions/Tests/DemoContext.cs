@@ -14,6 +14,7 @@ public class DemoContext : DbContext
     public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
     public DbSet<ProductReview> ProductReviews { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -28,6 +29,8 @@ public class DemoContext : DbContext
         // The default index names are IX_Employees_Badge and IX_Employees_BadgeNumber: one is a prefix of the other.
         builder.Entity<Employee>().HasIndex(e => e.Badge).IsUnique();
         builder.Entity<Employee>().HasIndex(e => e.BadgeNumber).IsUnique();
+
+        builder.Entity<Department>().HasAlternateKey(d => d.Code);
     }
 
     public const int ProductNameMaxLength = 25;
@@ -70,6 +73,12 @@ public class Employee
     public int Id { get; set; }
     public int Badge { get; set; }
     public int BadgeNumber { get; set; }
+}
+
+public class Department
+{
+    public int Id { get; set; }
+    public int Code { get; set; }
 }
 
 public class Customer
