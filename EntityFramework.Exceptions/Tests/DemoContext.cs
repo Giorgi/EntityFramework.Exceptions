@@ -13,6 +13,7 @@ public class DemoContext : DbContext
     public DbSet<ProductSale> ProductSales { get; set; }
     public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
     public DbSet<ProductReview> ProductReviews { get; set; }
+    public DbSet<Employee> Employees { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -23,6 +24,10 @@ public class DemoContext : DbContext
         builder.Entity<ProductPriceHistory>().Property(p => p.EffectiveDate).IsRequired();
         builder.Entity<ProductPriceHistory>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.NoAction);
         builder.Entity<ProductReview>().HasOne(p => p.Product).WithMany().OnDelete(DeleteBehavior.Restrict);
+
+        // The default index names are IX_Employees_Badge and IX_Employees_BadgeNumber: one is a prefix of the other.
+        builder.Entity<Employee>().HasIndex(e => e.Badge).IsUnique();
+        builder.Entity<Employee>().HasIndex(e => e.BadgeNumber).IsUnique();
     }
 
     public const int ProductNameMaxLength = 25;
@@ -58,6 +63,13 @@ public class ProductReview
     public string Comment { get; set; }
     public int ProductId { get; set; }
     public Product Product { get; set; }
+}
+
+public class Employee
+{
+    public int Id { get; set; }
+    public int Badge { get; set; }
+    public int BadgeNumber { get; set; }
 }
 
 public class Customer

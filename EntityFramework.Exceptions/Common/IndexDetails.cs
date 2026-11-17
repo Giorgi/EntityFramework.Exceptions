@@ -3,7 +3,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EntityFramework.Exceptions.Common;
 
-internal class IndexDetails
+internal interface IConstraintDetails
+{
+    string Name { get; }
+    string SchemaQualifiedTableName { get; }
+}
+
+internal class IndexDetails : IConstraintDetails
 {
     public IndexDetails(string name, string schemaQualifiedTableName, IReadOnlyList<IPropertyBase> properties)
     {
@@ -17,7 +23,7 @@ internal class IndexDetails
     public IReadOnlyList<IPropertyBase> Properties { get; }
 }
 
-internal class ForeignKeyDetails
+internal class ForeignKeyDetails : IConstraintDetails
 {
     public ForeignKeyDetails(string name, string schemaQualifiedTableName, IReadOnlyList<IProperty> properties)
     {

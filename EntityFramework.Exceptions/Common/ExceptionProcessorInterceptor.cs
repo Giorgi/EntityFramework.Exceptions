@@ -131,8 +131,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
                 .ToList();
         }
 
-        var matchingIndexes = uniqueIndexDetailsList.Where(index => providerException.Message.Contains(index.Name, StringComparison.OrdinalIgnoreCase)).ToList();
-        var match = matchingIndexes.Count == 1 ? matchingIndexes[0] : matchingIndexes.FirstOrDefault(index => providerException.Message.Contains(index.SchemaQualifiedTableName, StringComparison.OrdinalIgnoreCase));
+        var match = FindMatchingConstraint(uniqueIndexDetailsList, providerException.Message);
 
         if (match != null)
         {
@@ -153,8 +152,7 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
             foreignKeyDetailsList = mappedConstraints.Select(arg => new ForeignKeyDetails(arg.constraint.Name, arg.constraint.Table.SchemaQualifiedName, arg.Properties)).ToList();
         }
 
-        var matchingForeignKeys = foreignKeyDetailsList.Where(foreignKey => providerException.Message.Contains(foreignKey.Name, StringComparison.OrdinalIgnoreCase)).ToList();
-        var match = matchingForeignKeys.Count == 1 ? matchingForeignKeys[0] : matchingForeignKeys.FirstOrDefault(foreignKey => providerException.Message.Contains(foreignKey.SchemaQualifiedTableName, StringComparison.OrdinalIgnoreCase));
+        var match = FindMatchingConstraint(foreignKeyDetailsList, providerException.Message);
 
         if (match != null)
         {
@@ -162,5 +160,22 @@ public abstract class ExceptionProcessorInterceptor<TProviderException>(IDbExcep
             exception.ConstraintProperties = match.Properties.Select(property => property.Name).ToList();
             exception.SchemaQualifiedTableName = match.SchemaQualifiedTableName;
         }
+    }
+
+    private static T FindMatchingConstraint<T>(List<T> constraints, string message) where T : class, IConstraintDetails
+    {
+        var matches = constraints.Where(constraint => message.Contains(constraint.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        if (matches.Count == 0) return null;
+
+        // Matching is by substring, so a violation of IX_Users_Name also matches IX_Users.
+        // The longest matching name is the one the database reported.
+        var longestNameLength = matches.Max(constraint => constraint.Name.Length);
+        var longestMatches = matches.Where(constraint => constraint.Name.Length == longestNameLength).ToList();
+
+        // The same name can still exist on several tables (for example in different schemas).
+        return longestMatches.Count == 1
+            ? longestMatches[0]
+            : longestMatches.FirstOrDefault(constraint => message.Contains(constraint.SchemaQualifiedTableName, StringComparison.OrdinalIgnoreCase));
     }
 }

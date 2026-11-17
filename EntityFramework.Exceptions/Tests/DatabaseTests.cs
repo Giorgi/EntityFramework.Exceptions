@@ -49,6 +49,27 @@ public abstract class DatabaseTests : IDisposable
     }
 
     [Fact]
+    public virtual async Task UniqueColumnViolationPicksLongestMatchingIndexName()
+    {
+        // IX_Employees_BadgeNumber contains IX_Employees_Badge, so both names appear in the error message.
+        DemoContext.Employees.Add(new Employee { Badge = 1, BadgeNumber = 100 });
+        DemoContext.Employees.Add(new Employee { Badge = 2, BadgeNumber = 100 });
+
+        var uniqueConstraintException = Assert.Throws<UniqueConstraintException>(() => DemoContext.SaveChanges());
+        var asyncUniqueConstraintException = await Assert.ThrowsAsync<UniqueConstraintException>(() => DemoContext.SaveChangesAsync());
+
+        if (!isSqlite)
+        {
+            foreach (var exception in new[] { uniqueConstraintException, asyncUniqueConstraintException })
+            {
+                Assert.Equal("IX_Employees_BadgeNumber", exception.ConstraintName, ignoreCase: true);
+                Assert.Equal([nameof(Employee.BadgeNumber)], exception.ConstraintProperties);
+                Assert.Equal(nameof(DemoContext.Employees), exception.SchemaQualifiedTableName);
+            }
+        }
+    }
+
+    [Fact]
     public virtual async Task UniqueColumnViolationThrowsUniqueConstraintExceptionThroughExecuteUpdate()
     {
         DemoContext.Products.Add(new Product { Name = "Bulk Update 1" });
