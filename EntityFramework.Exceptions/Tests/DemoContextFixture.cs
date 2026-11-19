@@ -20,7 +20,7 @@ public abstract class DemoContextFixture<T> : IAsyncLifetime where T : IContaine
 
     protected virtual DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString) => builder;
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         var connectionString = "";
 
@@ -48,5 +48,5 @@ public abstract class DemoContextFixture<T> : IAsyncLifetime where T : IContaine
         }
     }
 
-    public virtual Task DisposeAsync() => Container != null ? Container.DisposeAsync().AsTask() : Task.CompletedTask;
+    public virtual ValueTask DisposeAsync() => Container?.DisposeAsync() ?? ValueTask.CompletedTask;
 }
