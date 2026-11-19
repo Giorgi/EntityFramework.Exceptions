@@ -9,17 +9,19 @@ This file provides guidance to AI coding agents when working with code in this r
 dotnet build EntityFramework.Exceptions.slnx
 
 # Run all tests (requires Docker for Testcontainers)
-dotnet test EntityFramework.Exceptions/Tests/Tests.csproj
+dotnet test --project EntityFramework.Exceptions/Tests/Tests.csproj
 
 # Run a specific test class
-dotnet test EntityFramework.Exceptions/Tests/Tests.csproj --filter ClassName=EntityFramework.Exceptions.Tests.PostgreSQLTests
+dotnet test --project EntityFramework.Exceptions/Tests/Tests.csproj --filter-class EntityFramework.Exceptions.Tests.PostgreSQLTests
 
 # Run a specific test by name
-dotnet test EntityFramework.Exceptions/Tests/Tests.csproj --filter Name=UniqueColumnViolationThrowsUniqueConstraintException
+dotnet test --project EntityFramework.Exceptions/Tests/Tests.csproj --filter-method "*.UniqueColumnViolationThrowsUniqueConstraintException"
 
 # Run tests with coverage (CI command)
-dotnet test EntityFramework.Exceptions/Tests/Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:Exclude="[*]EntityFramework.Exceptions.Common.*Exception"
+dotnet test --project EntityFramework.Exceptions/Tests/Tests.csproj --coverlet --coverlet-output-format lcov --coverlet-include "[EntityFrameworkCore.Exceptions.*]*" --coverlet-include "[DbExceptionClassifier.*]*" --coverlet-exclude "[*]EntityFramework.Exceptions.Common.*Exception"
 ```
+
+`global.json` runs `dotnet test` on Microsoft.Testing.Platform: select the project with `--project` and filter with the xUnit v3 options (`--filter-class`, `--filter-method`, `--filter-not-class`), not the VSTest `--filter` expression.
 
 Tests use Testcontainers for PostgreSQL, SQL Server, MySQL, and Oracle (Docker required). SQLite tests use an in-memory shared database and don't need Docker.
 
