@@ -16,6 +16,6 @@
 - Add UseExceptionProcessor overload that accepts a custom IDbExceptionClassifier
 - Populate ConstraintName and ConstraintProperties for alternate key violations
 - Fix constraint details when one constraint name contains another (for example IX_Users and IX_Users_Name): the longest matching name is now used
-- EntityFrameworkCore.Exceptions.MySQL.Pomelo is discontinued. With Pomelo or other MySqlConnector-based providers, use UseExceptionProcessor(new MySqlConnectorExceptionClassifier()) from the DbExceptionClassifier.MySqlConnector package</PackageReleaseNotes>
+- Add EntityFrameworkCore.Exceptions.MySqlConnector for EF Core providers built on MySqlConnector, such as Pomelo.EntityFrameworkCore.MySql and Microting.EntityFrameworkCore.MySql. It replaces EntityFrameworkCore.Exceptions.MySQL.Pomelo, which is discontinued</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

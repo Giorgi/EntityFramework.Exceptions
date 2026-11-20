@@ -12,6 +12,7 @@ Handle database errors easily when working with Entity Framework Core and ADO.NE
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.SqlServer.svg?label=EntityFrameworkCore.Exceptions.SqlServer&style=flat-square&logo=Microsoft-Sql-Server)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.SqlServer/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.PostgreSQL.svg?label=EntityFrameworkCore.Exceptions.PostgreSQL&style=flat-square&logo=PostgreSQL)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.PostgreSQL/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySQL.svg?label=EntityFrameworkCore.Exceptions.MySQL&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySQL/)
+[![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.MySqlConnector.svg?label=EntityFrameworkCore.Exceptions.MySqlConnector&style=flat-square&logo=MySQL&logoColor=white)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.MySqlConnector/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Sqlite.svg?label=EntityFrameworkCore.Exceptions.Sqlite&style=flat-square&logo=Sqlite)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Sqlite/)
 [![](https://img.shields.io/nuget/dt/EntityFrameworkCore.Exceptions.Oracle.svg?label=EntityFrameworkCore.Exceptions.Oracle&style=flat-square&logo=Oracle)](https://www.nuget.org/packages/EntityFrameworkCore.Exceptions.Oracle/)
 
@@ -71,6 +72,10 @@ dotnet add package EntityFrameworkCore.Exceptions.MySql
 ```
 
 ```
+dotnet add package EntityFrameworkCore.Exceptions.MySqlConnector
+```
+
+```
 dotnet add package EntityFrameworkCore.Exceptions.PostgreSQL
 ```
 
@@ -82,8 +87,13 @@ dotnet add package EntityFrameworkCore.Exceptions.Sqlite
 dotnet add package EntityFrameworkCore.Exceptions.Oracle
 ```
 
-`EntityFrameworkCore.Exceptions.MySql` supports the official `MySql.EntityFrameworkCore` provider. If you use a MySqlConnector-based
-provider (Pomelo or its forks such as Microting.EntityFrameworkCore.MySql), see [MySqlConnector-based providers](#mysqlconnector-based-providers).
+<a id="mysqlconnector-based-providers"></a>
+There are two MySQL packages, one for each MySQL driver:
+
+- `EntityFrameworkCore.Exceptions.MySql`: for the official `MySql.EntityFrameworkCore` provider (MySql.Data driver).
+- `EntityFrameworkCore.Exceptions.MySqlConnector`: for EF Core providers built on [MySqlConnector](https://mysqlconnector.net/),
+  such as Pomelo.EntityFrameworkCore.MySql and its forks such as Microting.EntityFrameworkCore.MySql. It replaces
+  `EntityFrameworkCore.Exceptions.MySQL.Pomelo`; the extension method is in the `EntityFramework.Exceptions.MySqlConnector` namespace.
 
 Next, in your DbContext `OnConfiguring` method call `UseExceptionProcessor` extension method:
 
@@ -180,26 +190,6 @@ optionsBuilder
 The same approach works for any other ADO.NET provider: check the provider's exception type and its error codes.
 
 `ConstraintName` and `ConstraintProperties` are populated the same way as for built-in providers: by matching constraint names from the EF Core model against the database error message.
-
-#### MySqlConnector-based providers
-
-There is no dedicated package for EF Core providers built on [MySqlConnector](https://mysqlconnector.net/), such as
-Pomelo.EntityFrameworkCore.MySql and its forks such as Microting.EntityFrameworkCore.MySql. You don't need to write a classifier for them:
-the `DbExceptionClassifier.MySqlConnector` package already has one for MySqlConnector.
-
-```
-dotnet add package EntityFrameworkCore.Exceptions.Common
-dotnet add package DbExceptionClassifier.MySqlConnector
-```
-
-```csharp
-using DbExceptionClassifier.MySqlConnector;
-using EntityFramework.Exceptions.Common;
-
-optionsBuilder
-    .UseMySql(connectionString, serverVersion)
-    .UseExceptionProcessor(new MySqlConnectorExceptionClassifier());
-```
 
 ## DbExceptionClassifier
 

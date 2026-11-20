@@ -8,6 +8,7 @@ updates:
       - "/DbExceptionClassifier/*"
       - "/EntityFramework.Exceptions/Common"
       - "/EntityFramework.Exceptions/MySQL"
+      - "/EntityFramework.Exceptions/MySqlConnector"
       - "/EntityFramework.Exceptions/Oracle"
       - "/EntityFramework.Exceptions/PostgreSQL"
       - "/EntityFramework.Exceptions/SqlServer"

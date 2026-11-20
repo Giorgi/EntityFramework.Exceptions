@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DbExceptionClassifier\MySqlConnector\MySqlConnector.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\MySQL\MySQL.csproj" />
+    <ProjectReference Include="..\MySqlConnector\MySqlConnector.csproj" />
     <ProjectReference Include="..\Oracle\Oracle.csproj" />
     <ProjectReference Include="..\PostgreSQL\PostgreSQL.csproj" />
     <ProjectReference Include="..\Sqlite\Sqlite.csproj" />

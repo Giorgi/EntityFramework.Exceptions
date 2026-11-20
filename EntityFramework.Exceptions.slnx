@@ -11,6 +11,7 @@
   <Folder Name="/EntityFramework.Exceptions/">
     <Project Path="EntityFramework.Exceptions/Common/Common.csproj" />
     <Project Path="EntityFramework.Exceptions/MySQL/MySQL.csproj" />
+    <Project Path="EntityFramework.Exceptions/MySqlConnector/MySqlConnector.csproj" />
     <Project Path="EntityFramework.Exceptions/Oracle/Oracle.csproj" />
     <Project Path="EntityFramework.Exceptions/PostgreSQL/PostgreSQL.csproj" />
     <Project Path="EntityFramework.Exceptions/Sqlite/Sqlite.csproj" />

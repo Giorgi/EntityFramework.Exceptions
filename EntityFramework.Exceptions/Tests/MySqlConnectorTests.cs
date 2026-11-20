@@ -1,5 +1,4 @@
-using DbExceptionClassifier.MySqlConnector;
-using EntityFramework.Exceptions.Common;
+using EntityFramework.Exceptions.MySqlConnector;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -9,7 +8,7 @@ using Xunit;
 namespace EntityFramework.Exceptions.Tests;
 
 // Runs the MySQL suite on Microting.EntityFrameworkCore.MySql (the maintained Pomelo fork, built on MySqlConnector)
-// through the generic UseExceptionProcessor(IDbExceptionClassifier) overload, as documented in the README.
+// with the EntityFrameworkCore.Exceptions.MySqlConnector package.
 [Collection("MySqlConnector Test Collection")]
 public class MySqlConnectorTests(MySqlConnectorDemoContextFixture fixture)
     : DatabaseTests(fixture.DemoContext), IClassFixture<MySqlConnectorDemoContextFixture>;
@@ -24,10 +23,10 @@ public class MySqlConnectorDemoContextFixture : DemoContextFixture<MySqlContaine
     }
 
     protected override DbContextOptionsBuilder<DemoContext> BuildDemoContextOptions(DbContextOptionsBuilder<DemoContext> builder, string connectionString)
-        => builder.UseMySql(connectionString, ServerVersion).UseExceptionProcessor(new MySqlConnectorExceptionClassifier());
+        => builder.UseMySql(connectionString, ServerVersion).UseExceptionProcessor();
 
     protected override DbContextOptionsBuilder BuildSameNameIndexesContextOptions(DbContextOptionsBuilder builder, string connectionString)
-        => builder.UseMySql(connectionString, ServerVersion).UseExceptionProcessor(new MySqlConnectorExceptionClassifier());
+        => builder.UseMySql(connectionString, ServerVersion).UseExceptionProcessor();
 }
 
 static class MySqlDatabaseFacadeTestExtensions

@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 EntityFramework.Exceptions.Tests/appsettings.Development.json
+.serena
