@@ -41,7 +41,7 @@ public class SqlServerTests : DatabaseTests, IClassFixture<SqlServerDemoContextF
 
 public class SqlServerDemoContextFixture : DemoContextFixture<MsSqlContainer>
 {
-    static SqlServerDemoContextFixture()
+    public SqlServerDemoContextFixture()
     {
         Container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest").Build();
     }

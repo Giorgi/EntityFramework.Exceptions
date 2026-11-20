@@ -14,7 +14,7 @@ namespace EntityFramework.Exceptions.Tests
 
     public class PostgreSQLDemoContextFixture : DemoContextFixture<PostgreSqlContainer>
     {
-        static PostgreSQLDemoContextFixture()
+        public PostgreSQLDemoContextFixture()
         {
             Container = new PostgreSqlBuilder("postgres:18").Build();
         }

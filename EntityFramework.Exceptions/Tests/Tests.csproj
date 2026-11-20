@@ -21,10 +21,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="11.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="11.0.0-rc.3" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="11.0.0-preview" />
+    <PackageReference Include="Microting.EntityFrameworkCore.MySql" Version="11.0.0" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="10.23.26100" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DbExceptionClassifier\MySqlConnector\MySqlConnector.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\MySQL\MySQL.csproj" />
     <ProjectReference Include="..\Oracle\Oracle.csproj" />

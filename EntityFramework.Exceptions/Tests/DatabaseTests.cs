@@ -2,7 +2,6 @@
 using EntityFramework.Exceptions.Common;
 using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 using System;
 using System.Data.Common;
 using System.Linq;
@@ -23,7 +22,7 @@ public abstract class DatabaseTests : IDisposable
         DemoContext = demoContext;
         SameNameIndexesContext = sameNameIndexesContext;
 
-        isMySql = DemoContext.Database.IsMySql();
+        isMySql = DemoContext.Database.IsAnyMySql();
         isSqlite = demoContext.Database.IsSqlite();
     }
 

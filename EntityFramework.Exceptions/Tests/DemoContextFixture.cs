@@ -3,7 +3,6 @@ using EntityFramework.Exceptions.Tests.ConstraintTests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using MySql.EntityFrameworkCore.Extensions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,7 +10,8 @@ namespace EntityFramework.Exceptions.Tests;
 
 public abstract class DemoContextFixture<T> : IAsyncLifetime where T : IContainer
 {
-    public static T Container { get; internal set; }
+    // Per fixture, not static: fixtures that share a container type (both MySQL providers) need their own container.
+    protected T Container { get; set; }
 
     internal DemoContext DemoContext { get; private set; }
     internal SameNameIndexesContext SameNameIndexesContext { get; private set; }
@@ -37,7 +37,7 @@ public abstract class DemoContextFixture<T> : IAsyncLifetime where T : IContaine
         var sameNameIndexesOptionsBuilder = BuildSameNameIndexesContextOptions(new DbContextOptionsBuilder<SameNameIndexesContext>(), connectionString);
         SameNameIndexesContext = new SameNameIndexesContext(sameNameIndexesOptionsBuilder.Options);
 
-        var isMySql = MySQLDatabaseFacadeExtensions.IsMySql(SameNameIndexesContext.Database);
+        var isMySql = SameNameIndexesContext.Database.IsAnyMySql();
         var isSqlite = SameNameIndexesContext.Database.IsSqlite();
         var isOracle = SameNameIndexesContext.Database.IsOracle();
 

@@ -14,7 +14,7 @@ public class OracleTests : DatabaseTests, IClassFixture<OracleTestContextFixture
 
 public class OracleTestContextFixture : DemoContextFixture<OracleContainer>
 {
-    static OracleTestContextFixture()
+    public OracleTestContextFixture()
     {
         Container = new OracleBuilder("gvenzl/oracle-xe:21.3.0-slim-faststart").Build();
     }

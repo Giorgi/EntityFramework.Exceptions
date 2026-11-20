@@ -16,7 +16,7 @@ public class MySqlServerTests : DatabaseTests, IClassFixture<MySqlDemoContextFix
 
 public class MySqlDemoContextFixture : DemoContextFixture<MySqlContainer>
 {
-    static MySqlDemoContextFixture()
+    public MySqlDemoContextFixture()
     {
         Container = new MySqlBuilder("mysql:8.0").Build();
     }

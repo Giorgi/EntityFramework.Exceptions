@@ -51,7 +51,7 @@ It then matches the constraint name found in the provider exception message agai
 
 The MySQL classifier has two variants: MySql.Data (`DbExceptionClassifier/MySQL`) and MySqlConnector (`DbExceptionClassifier/MySqlConnector`, published as `DbExceptionClassifier.MySqlConnector`; named `DbExceptionClassifier.MySQL.Pomelo` before the .NET 11 release). The MySqlConnector project links `MySQL/MySQLExceptionClassifier.cs` via `<Compile Include>` and adds the `MYSQLCONNECTOR` define, which selects the `#if MYSQLCONNECTOR` branches.
 
-The EF Core layer ships only `EntityFramework.Exceptions/MySQL` (the official MySql.EntityFrameworkCore provider). The EF Pomelo package was dropped: Pomelo has no EF Core 10+ provider (the maintained fork is Microting.EntityFrameworkCore.MySql, still on MySqlConnector), so MySqlConnector-based providers use `UseExceptionProcessor(IDbExceptionClassifier)` from `Common` with the MySqlConnector classifier (see README).
+The EF Core layer ships only `EntityFramework.Exceptions/MySQL` (the official MySql.EntityFrameworkCore provider). The EF Pomelo package was dropped: Pomelo has no EF Core 10+ provider; the maintained fork Microting.EntityFrameworkCore.MySql (11.0.0 supports EF Core 11, on MySqlConnector 3.0) is used instead. MySqlConnector-based providers use `UseExceptionProcessor(IDbExceptionClassifier)` from `Common` with the MySqlConnector classifier (see README). `Tests/MySqlConnectorTests.cs` runs the shared suite that way on Microting. Shared tests detect MySQL with `IsAnyMySql()` (by provider name), because both providers define an `IsMySql()` extension and calling it is ambiguous.
 
 ### Naming conventions
 
